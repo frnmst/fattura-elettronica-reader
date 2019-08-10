@@ -85,7 +85,11 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    'github_user': 'frnmst',
+    'github_repo': 'fattura-elettronica-reader',
+    'github_banner': True,
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -155,7 +159,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'fattura-elettronica-reader', 'fattura-elettronica-reader Documentation',
-     author, 'fattura-elettronica-reader', 'One line description of project.',
+     author, 'Franco Masotti', 'manual',
      'Miscellaneous'),
 ]
 
