@@ -50,6 +50,6 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 3',
     ],
-    install_requires=['atomicwrites==1.3', 'filetype==1.0', 'appdirs==1.4', 'requests==2.21'],
+    install_requires=['atomicwrites==1.3', 'filetype==1.0', 'appdirs==1.4', 'requests==2.21', 'lxml==4.3'],
 )
 
