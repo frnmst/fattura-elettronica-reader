@@ -40,7 +40,7 @@ test:
 	python setup.py test
 
 uninstall:
-	pip uninstall md_toc
+	pip uninstall fattura_elettronica_reader
 
 dist:
 	python setup.py sdist
