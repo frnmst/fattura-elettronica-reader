@@ -603,14 +603,20 @@ def pipeline(metadata_file: str,
 
     # Create a temporary directory to store the original XML invoice file.
     with tempfile.TemporaryDirectory() as tmpdirname:
+        # invoice_original_file is the path of the non-signed invoice file. If an invoice file is signed,
+        # the filename usually ends in '.p7m' so the destination file must end with '.xml'
+        # to be transformed into an xml file. On the contrary, the filename of non-signed invoice files
+        # already ends in '.xml'.
         if invoice_file_is_not_p7m:
             invoice_original_file = invoice_filename
         else:
             invoice_original_file = invoice_filename + '.xml'
 
         if invoice_file_is_not_p7m:
+            # There is no signature to extract but we need to copy the file in the temporary store.
             shutil.copyfile(invoice_original_file, str(pathlib.Path(tmpdirname, invoice_original_file)))
         else:
+            # Extract the original invoice and copy it in the temporary store.
             if not remove_signature_from_invoice_file(invoice_filename,
                                                       str(pathlib.Path(tmpdirname, invoice_original_file))):
                 raise CannotExtractOriginalInvoiceFile
