@@ -519,7 +519,8 @@ def pipeline(metadata_file: str,
              invoice_xslt_type: str = 'ordinaria',
              ignore_attachment_extension_whitelist: bool = False,
              ignore_attachment_filetype_whitelist: bool = False,
-             write_default_configuration_file: bool = False):
+             write_default_configuration_file: bool = False,
+             invoice_file_is_not_p7m: bool = False):
     r"""Run the pipeline."""
     project_name = 'fattura_elettronica_reader'
     create_appdirs(project_name)
@@ -566,10 +567,10 @@ def pipeline(metadata_file: str,
 
     # Apparently, invoices must be signed for 'PA' and not necessarly for
     # 'B2B' and other cases. I could not find official documentation
-    # corroborating this. For the moment we will assume that all invoices
-    # need to be signed.
-    if not is_invoice_file_signed(invoice_filename):
-        raise InvoiceFileDoesNotHaveACoherentCryptographicalSignature
+    # corroborating this but it happened at least one.
+    if not invoice_file_is_not_p7m:
+        if not is_invoice_file_signed(invoice_filename):
+            raise InvoiceFileDoesNotHaveACoherentCryptographicalSignature
 
     if force_trusted_list_file_download or not pathlib.Path(
             trusted_list_file).exists():
@@ -582,11 +583,11 @@ def pipeline(metadata_file: str,
                         config['trusted list file']['XML namespace'],
                         config['trusted list file']['XML certificate tag'])
 
-
-    if not is_invoice_file_authentic(invoice_filename, ca_certificate_pem_file,
-                                     ignore_signature_check,
-                                     ignore_signers_certificate_check):
-        raise InvoiceFileNotAuthentic
+    if not invoice_file_is_not_p7m:
+        if not is_invoice_file_authentic(invoice_filename, ca_certificate_pem_file,
+                                         ignore_signature_check,
+                                         ignore_signers_certificate_check):
+            raise InvoiceFileNotAuthentic
 
     if not no_invoice_xml_validation:
 
@@ -602,11 +603,23 @@ def pipeline(metadata_file: str,
 
     # Create a temporary directory to store the original XML invoice file.
     with tempfile.TemporaryDirectory() as tmpdirname:
-        invoice_original_file = invoice_filename + '.xml'
+        # invoice_original_file is the path of the non-signed invoice file. If an invoice file is signed,
+        # the filename usually ends in '.p7m' so the destination file must end with '.xml'
+        # to be transformed into an xml file. On the contrary, the filename of non-signed invoice files
+        # already ends in '.xml'.
+        if invoice_file_is_not_p7m:
+            invoice_original_file = invoice_filename
+        else:
+            invoice_original_file = invoice_filename + '.xml'
 
-        if not remove_signature_from_invoice_file(invoice_filename,
-                                                  str(pathlib.Path(tmpdirname, invoice_original_file))):
-            raise CannotExtractOriginalInvoiceFile
+        if invoice_file_is_not_p7m:
+            # There is no signature to extract but we need to copy the file in the temporary store.
+            shutil.copyfile(invoice_original_file, str(pathlib.Path(tmpdirname, invoice_original_file)))
+        else:
+            # Extract the original invoice and copy it in the temporary store.
+            if not remove_signature_from_invoice_file(invoice_filename,
+                                                      str(pathlib.Path(tmpdirname, invoice_original_file))):
+                raise CannotExtractOriginalInvoiceFile
 
         if not no_invoice_xml_validation:
             if not is_xml_file_conforming_to_schema(str(pathlib.Path(tmpdirname, invoice_original_file)), invoice_schema_file):

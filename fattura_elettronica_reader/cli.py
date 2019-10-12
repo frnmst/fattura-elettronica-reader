@@ -66,7 +66,9 @@ class CliToApi():
                 invoice_xslt_type=args.invoice_xslt_type,
                 ignore_attachment_extension_whitelist=args.ignore_attachment_extension_whitelist,
                 ignore_attachment_filetype_whitelist=args.ignore_attachment_filetype_whitelist,
-                write_default_configuration_file=args.write_default_configuration_file)
+                write_default_configuration_file=args.write_default_configuration_file,
+                invoice_file_is_not_p7m=args.invoice_file_is_not_p7m)
+
 
 class CliInterface():
     """The interface exposed to the final user."""
@@ -145,6 +147,13 @@ class CliInterface():
             '--force-invoice-schema-file-download',
             action='store_true',
             help='force download of the XML schema necessary for the validation of the invoice file')
+
+        parser.add_argument(
+            '-b',
+            '--invoice-file-is-not-p7m',
+            default=False,
+            action='store_true',
+            help='avoids running any type of cryptographical signature and certificate checks. This is useful for certain B2B invoice files.')
 
         parser.add_argument(
             '-s',

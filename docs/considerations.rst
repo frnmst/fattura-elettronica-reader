@@ -169,6 +169,9 @@ in other cases it is not.
 
 If you find any official source please let me know and/or open a pull request.
 
+Support for non-signed invoice files has been added because of at least one 
+reported case.
+
 Closing note
 ------------
 
