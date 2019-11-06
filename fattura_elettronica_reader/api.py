@@ -612,20 +612,24 @@ def pipeline(metadata_file: str,
         else:
             invoice_original_file = invoice_filename + '.xml'
 
+        # In case absolute paths are passed to this function the concatenation of an absolute path
+        # and a temporary directory name, which is also an absolue path, would not work as expected.
+        invoice_original_file_relative = pathlib.Path(invoice_original_file).name
+
         if invoice_file_is_not_p7m:
             # There is no signature to extract but we need to copy the file in the temporary store.
-            shutil.copyfile(invoice_original_file, str(pathlib.Path(tmpdirname, invoice_original_file)))
+            shutil.copyfile(invoice_original_file, str(pathlib.Path(tmpdirname, invoice_original_file_relative)))
         else:
             # Extract the original invoice and copy it in the temporary store.
             if not remove_signature_from_invoice_file(invoice_filename,
-                                                      str(pathlib.Path(tmpdirname, invoice_original_file))):
+                                                      str(pathlib.Path(tmpdirname, invoice_original_file_relative))):
                 raise CannotExtractOriginalInvoiceFile
 
         if not no_invoice_xml_validation:
-            if not is_xml_file_conforming_to_schema(str(pathlib.Path(tmpdirname, invoice_original_file)), invoice_schema_file):
+            if not is_xml_file_conforming_to_schema(str(pathlib.Path(tmpdirname, invoice_original_file_relative)), invoice_schema_file):
                 raise XMLFileNotConformingToSchema
 
-        invoice_root = parse_xml_file(str(pathlib.Path(tmpdirname, invoice_original_file)))
+        invoice_root = parse_xml_file(str(pathlib.Path(tmpdirname, invoice_original_file_relative)))
 
         if extract_attachments:
             extract_attachments_from_invoice_file(
@@ -653,7 +657,7 @@ def pipeline(metadata_file: str,
                                 config['invoice file']['text encoding'])
 
         if keep_original_invoice:
-            shutil.move(str(pathlib.Path(tmpdirname, invoice_original_file)),  invoice_original_file)
+            shutil.move(str(pathlib.Path(tmpdirname, invoice_original_file_relative)),  invoice_original_file)
 
 
 if __name__ == '__main__':
