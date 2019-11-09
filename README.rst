@@ -40,7 +40,8 @@ http://frnmst.github.io/fattura-elettronica-reader
 API examples
 ------------
 
-TODO
+Have a look at the `archive_invoice_files<https://github.com/frnmst/automated-tasks/blob/master/archiving/archive_invoice_files.py>`_
+script in the `automated tasks<https://github.com/frnmst/automated-tasks>`_ repository.
 
 CLI helps
 ---------
