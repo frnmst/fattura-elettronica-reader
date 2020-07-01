@@ -1,9 +1,8 @@
 #!/usr/bin/env make
-
 #
 # Makefile
 #
-# Copyright (C) 2019 Franco Masotti <franco.masotti@live.com>
+# Copyright (C) 2019-2020 Franco Masotti <franco.masotti@live.com>
 #
 # This file is part of fattura-elettronica-reader.
 #
@@ -27,29 +26,37 @@ githook:
 	git config core.hooksPath .githooks
 
 pep:
-	yapf --style '{based_on_style: pep8; indent_width: 4}' -i fattura_pa_reader/*.py tests/*.py
-	flake8 fattura_pa_reader/*.py --ignore=F401,E501 tests/*.py
+	pipenv run yapf --style '{based_on_style: pep8; indent_width: 4}' -i fattura_pa_reader/*.py tests/*.py
+	pipenv run flake8 fattura_pa_reader/*.py --ignore=F401,E501 tests/*.py
 
 doc:
-	$(MAKE) -C docs html
+	pipenv run $(MAKE) -C docs html
 
 install:
 	pip install .
 
-test:
-	python setup.py test
-
 uninstall:
 	pip uninstall fattura_elettronica_reader
 
+install-dev:
+	pipenv install
+
+uninstall-dev:
+	pipenv --rm
+
+test:
+	pipenv run python setup.py test
+
 dist:
-	python setup.py sdist
-	python setup.py bdist_wheel
+	pipenv run python setup.py sdist
+	pipenv run python setup.py bdist_wheel
+	pipenv run pipenv run twine check dist/*
 
 upload:
-	twine upload dist/*
+	pipenv run twine upload dist/*
 
 clean:
 	rm -rf build dist *.egg-info
+	pipenv run $(MAKE) -C docs clean
 
-.PHONY: default pep doc install test uninstall dist upload clean
+.PHONY: default pep doc install install-dev test uninstall uninstall-dev dist upload clean
