@@ -48,6 +48,9 @@ class CliToApi():
             args.extract_attachments = True
             args.generate_html_output = True
             args.keep_original_invoice = True
+        if args.generic_p7m_file:
+            # The generic p7m file might not be an XML file.
+            args.no_invoice_xml_validation = True
         for metadata_file in args.metadata_file:
             pipeline(
                 metadata_file=metadata_file,
@@ -67,8 +70,8 @@ class CliToApi():
                 ignore_attachment_extension_whitelist=args.ignore_attachment_extension_whitelist,
                 ignore_attachment_filetype_whitelist=args.ignore_attachment_filetype_whitelist,
                 write_default_configuration_file=args.write_default_configuration_file,
-                invoice_file_is_not_p7m=args.invoice_file_is_not_p7m)
-
+                invoice_file_is_not_p7m=args.invoice_file_is_not_p7m,
+                generic_p7m_file=args.generic_p7m_file)
 
 class CliInterface():
     """The interface exposed to the final user."""
@@ -99,6 +102,13 @@ class CliInterface():
             '--write-default-configuration-file',
             action='store_true',
             help='write the default configuration file')
+
+        parser.add_argument(
+            '-g',
+            '--generic-p7m-file',
+            action='store_true',
+            help=("""the input file is a generic p7m file, not a p7m invoice file.
+                  You need to provide a dummy metadata file"""))
 
         parser.add_argument(
             '-i',
