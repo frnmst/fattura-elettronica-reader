@@ -32,16 +32,6 @@ fattura-elettronica-reader
 Validate, extract, and generate printables of electronic invoice files received
 from the "Sistema di Interscambio".
 
-NOTE
-----
-
-This software is in a pre-alpha stage: it is NOT ready for production use.
-
-All contributions are welcome.
-See http://frnmst.github.io/fattura-elettronica-reader/contributing.html#todo-and-fixme
-
-Discussion here: https://gitter.im/fattura-elettronica-reader/community
-
 Video
 -----
 
@@ -55,7 +45,7 @@ http://frnmst.github.io/fattura-elettronica-reader
 API examples
 ------------
 
-Have a look at the `archive_invoice_files <https://github.com/frnmst/automated-tasks/blob/master/archiving/archive_invoice_files.py>`_
+Have a look at the `archive_invoice_files <https://raw.githubusercontent.com/frnmst/automated-tasks/master/src/archiving/archive_invoice_files.py>`_
 script in the `automated tasks <https://github.com/frnmst/automated-tasks>`_ repository.
 
 CLI helps
