@@ -22,16 +22,16 @@
 """Exceptions file."""
 
 
-class InvoiceFileDoesNotHaveACoherentCryptographicalSignature(Exception):
-    """Invoice does not have a PKCS#7 signature."""
+class P7MFileDoesNotHaveACoherentCryptographicalSignature(Exception):
+    """Not a PKCS#7 signature."""
 
 class InvoiceFileChecksumFailed(Exception):
     """Checksum of the invoice file does not match the one in the metadata file."""
 
-class InvoiceFileNotAuthentic(Exception):
+class P7MFileNotAuthentic(Exception):
     """An error with the signature or the signers certificate of the invoice."""
 
-class CannotExtractOriginalInvoiceFile(Exception):
+class CannotExtractOriginalP7MFile(Exception):
     """The cryptographical signature from the invoice file cannot be removed."""
 
 class MissingTagInMetadataFile(Exception):

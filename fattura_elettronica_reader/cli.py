@@ -27,7 +27,7 @@ from pkg_resources import (get_distribution, DistributionNotFound)
 from .api import pipeline
 from .constants import File
 
-PROGRAM_DESCRIPTION = 'fattura-elettronica-reader: Validate, extract, and generate printables\nof electronic invoice files received from the "Sistema di Interscambio"'
+PROGRAM_DESCRIPTION = 'fattura-elettronica-reader: Validate, extract, and generate printables\nof electronic invoice files received from the "Sistema di Interscambio"\nas well as other P7M files'
 VERSION_NAME = 'fattura_elettronica_reader'
 try:
     VERSION_NUMBER = str(get_distribution('fattura_elettronica_reader').version)
@@ -40,38 +40,66 @@ PROGRAM_EPILOG = RETURN_VALUES + '\n\n' + VERSION_COPYRIGHT + '\n' + VERSION_LIC
 
 
 class CliToApi():
-    """An interface between the CLI and API functions."""
+    r"""An interface between the CLI and API functions."""
 
     def run(self, args):
-        """Run the pipeline."""
-        if args.keep_all:
-            args.extract_attachments = True
-            args.generate_html_output = True
-            args.keep_original_invoice = True
-        if args.generic_p7m_file:
-            # The generic p7m file might not be an XML file.
-            args.no_invoice_xml_validation = True
-        for metadata_file in args.metadata_file:
-            pipeline(
-                metadata_file=metadata_file,
-                configuration_file=args.configuration_file,
-                invoice_filename=args.invoice_filename,
-                ignore_signature_check=args.ignore_signature_check,
-                ignore_signers_certificate_check=args.ignore_signers_certificate_check,
-                no_checksum_check=args.no_checksum_check,
-                extract_attachments=args.extract_attachments,
-                generate_html_output=args.generate_html_output,
-                keep_original_invoice = args.keep_original_invoice,
-                force_trusted_list_file_download=args.force_trusted_list_file_download,
-                force_invoice_xml_stylesheet_file_download=args.force_invoice_xml_stylesheet_file_download,
-                force_invoice_schema_file_download=args.force_invoice_schema_file_download,
-                no_invoice_xml_validation=args.no_invoice_xml_validation,
-                invoice_xslt_type=args.invoice_xslt_type,
-                ignore_attachment_extension_whitelist=args.ignore_attachment_extension_whitelist,
-                ignore_attachment_filetype_whitelist=args.ignore_attachment_filetype_whitelist,
-                write_default_configuration_file=args.write_default_configuration_file,
-                invoice_file_is_not_p7m=args.invoice_file_is_not_p7m,
-                generic_p7m_file=args.generic_p7m_file)
+        r"""Run the pipeline."""
+        common_data = {
+            'patched': False,
+            'configuration file': args.configuration_file,
+            'write default configuration file': args.write_default_configuration_file,
+        }
+
+        # Prepare the data structure.
+        if args.source == 'invoice':
+            data = {
+                'extract attachments': args.extract_attachments,
+                'metadata files': args.metadata_file,
+                'invoice xslt type': args.invoice_xslt_type,
+                'no invoice xml validation': args.no_invoice_xml_validation,
+                'force invoice schema file download': args.force_invoice_schema_file_download,
+                'generate html output': args.generate_html_output,
+                'invoice filename': args.invoice_filename,
+                'no checksum check': args.no_checksum_check,
+                'force invoice xml stylesheet file download': args.force_invoice_xml_stylesheet_file_download,
+                'ignore attachment extension whitelist': args.ignore_attachment_extension_whitelist,
+                'ignore attachment filetype whitelist': args.ignore_attachment_filetype_whitelist,
+            }
+            if args.file_type == 'p7m':
+                data['ignore signature check']= args.ignore_signature_check
+                data['ignore signers certificate check']= args.ignore_signers_certificate_check
+                data['force trusted list file download']= args.force_trusted_list_file_download
+                data['keep original file'] = args.keep_original_file
+            elif args.file_type == 'plain':
+                pass
+        elif args.source == 'generic':
+            data = {
+                'p7m files': args.p7m_file,
+                'ignore signature check': args.ignore_signature_check,
+                'ignore signers certificate check': args.ignore_signers_certificate_check,
+                'force trusted list file download': args.force_trusted_list_file_download,
+                'keep original file': args.keep_original_file,
+            }
+
+        print(args.configuration_file)
+
+        data = {**common_data, **data}
+        print(data)
+
+        if args.source == 'invoice':
+            iterator = data['metadata files']
+        elif args.source == 'generic':
+            iterator = data['p7m files']
+
+        for i in iterator:
+            # patch data with single files
+            data['patched'] = True
+            if args.source == 'invoice':
+                data['metadata file'] = i
+            elif args.source == 'generic':
+                data['p7m file'] = i
+            pipeline(args.source, args.file_type, data)
+
 
 class CliInterface():
     """The interface exposed to the final user."""
@@ -87,11 +115,169 @@ class CliInterface():
             formatter_class=argparse.RawDescriptionHelpFormatter,
             epilog=textwrap.dedent(PROGRAM_EPILOG))
 
-        parser.add_argument(
+        source_subparsers = parser.add_subparsers(title='source',
+                                          dest='source',
+                                          required=True)
+
+        ###########
+        # Sources #
+        ###########
+        invoice_parser = source_subparsers.add_parser('invoice', help='invoice file')
+        generic_parser = source_subparsers.add_parser('generic', help='generic file')
+
+        invoice_parser.add_argument(
+            '-X',
+            '--invoice-xslt-type',
+            choices=['ordinaria','PA'],
+            default='ordinaria',
+            help='select the XML stylesheet file for the invoice. Defaults to "ordinaria". This option is ignored if "-H" is not set')
+
+        invoice_parser.add_argument(
+            '-V',
+            '--no-invoice-xml-validation',
+            action='store_true',
+            help='do not perform XML validation of the invoice file')
+
+        invoice_parser.add_argument(
+            '-a',
+            '--extract-attachments',
+            action='store_true',
+            help='extract embedded attachments')
+
+        invoice_parser.add_argument(
+            '-E',
+            '--force-invoice-schema-file-download',
+            action='store_true',
+            help='force download of the XML schema necessary for the validation of the invoice file')
+
+        invoice_parser.add_argument(
+            '-H',
+            '--generate-html-output',
+            action='store_true',
+            help='generate the HTML output')
+
+        invoice_parser.add_argument(
+            '-i',
+            '--invoice-filename',
+            help='override the invoice file name specified in the metadata file')
+
+        invoice_parser.add_argument(
+            '-k',
+            '--no-checksum-check',
+            action='store_true',
+            help='do not perform a file integrity check of the invoice file')
+
+        invoice_parser.add_argument(
+            '-y',
+            '--force-invoice-xml-stylesheet-file-download',
+            action='store_true',
+            help='force download of the XML stylesheet file')
+
+        invoice_parser.add_argument(
+            '-w',
+            '--ignore-attachment-extension-whitelist',
+            action='store_true',
+            help='do not perform file extension checks for the attachments. This option is ignored if "-a" is not set')
+
+        invoice_parser.add_argument(
+            '-W',
+            '--ignore-attachment-filetype-whitelist',
+            action='store_true',
+            help='do not perform filetype checks for the attachments. This option is ignored if "-a" is not set')
+
+
+        ###########
+        # Invoice #
+        ###########
+        invoice_subparsers = invoice_parser.add_subparsers(title='file type',
+                                                           dest='file_type',
+                                                           required=True)
+
+        invoice_p7m_parser = invoice_subparsers.add_parser('p7m',
+                                               help='p7m')
+
+        invoice_p7m_parser.add_argument(
+            '-s',
+            '--ignore-signature-check',
+            default=False,
+            action='store_true',
+            help='avoids checking the cryptographic signature of the invoice file')
+
+        invoice_p7m_parser.add_argument(
+            '-S',
+            '--ignore-signers-certificate-check',
+            action='store_true',
+            help='avoids checking the cryptographic certificate')
+
+        invoice_p7m_parser.add_argument(
+            '-t',
+            '--force-trusted-list-file-download',
+            action='store_true',
+            help='force download of the trusted list file')
+
+        invoice_p7m_parser.add_argument(
+            '-o',
+            '--keep-original-file',
+            action='store_true',
+            help='keep the original file')
+
+        invoice_p7m_parser.add_argument(
             'metadata_file',
             nargs='+',
             help='the metadata file names')
 
+        invoice_plain_parser = invoice_subparsers.add_parser('plain',
+                                               help='plain')
+
+        invoice_plain_parser.add_argument(
+            'metadata_file',
+            nargs='+',
+            help='the metadata file names')
+
+        ###########
+        # Generic #
+        ###########
+        generic_subparsers = generic_parser.add_subparsers(title='file type',
+                                                           dest='file_type',
+                                                           required=True)
+
+
+        generic_p7m_parser = generic_subparsers.add_parser('p7m',
+                                               help='p7m')
+
+        generic_p7m_parser.add_argument(
+            '-s',
+            '--ignore-signature-check',
+            default=False,
+            action='store_true',
+            help='avoids checking the cryptographic signature of the p7m file')
+
+        generic_p7m_parser.add_argument(
+            '-S',
+            '--ignore-signers-certificate-check',
+            action='store_true',
+            help='avoids checking the cryptographic certificate')
+
+        generic_p7m_parser.add_argument(
+            '-t',
+            '--force-trusted-list-file-download',
+            action='store_true',
+            help='force download of the trusted list file')
+
+        generic_p7m_parser.add_argument(
+            '-o',
+            '--keep-original-file',
+            action='store_true',
+            help='keep the original file')
+
+        generic_p7m_parser.add_argument(
+            'p7m_file',
+            nargs='+',
+            help='the p7m file names')
+
+        ###########
+        # Common  #
+        ###########
         parser.add_argument(
             '-c',
             '--configuration-file',
@@ -102,111 +288,6 @@ class CliInterface():
             '--write-default-configuration-file',
             action='store_true',
             help='write the default configuration file')
-
-        parser.add_argument(
-            '-g',
-            '--generic-p7m-file',
-            action='store_true',
-            help=("""the input file is a generic p7m file, not a p7m invoice file.
-                  You need to provide a dummy metadata file"""))
-
-        parser.add_argument(
-            '-i',
-            '--invoice-filename',
-            help='defaults to the one specified in the metadata file')
-
-        parser.add_argument(
-            '-A',
-            '--keep-all',
-            action='store_true',
-            help='keep all extracted and generated files. This is the same as "-Hao"')
-
-        parser.add_argument(
-            '-H',
-            '--generate-html-output',
-            action='store_true',
-            help='generate the HTML output of the invoice file')
-
-        parser.add_argument(
-            '-a',
-            '--extract-attachments',
-            action='store_true',
-            help='extract embedded attachments')
-
-        parser.add_argument(
-            '-o',
-            '--keep-original-invoice',
-            action='store_true',
-            help='keep the original invoice XML file')
-
-        parser.add_argument(
-            '-X',
-            '--invoice-xslt-type',
-            choices=['ordinaria','PA'],
-            default='ordinaria',
-            help='select the XML stylesheet file for the invoice. Defaults to "ordinaria". This option is ignored if "-H" is not set')
-
-        parser.add_argument(
-            '-V',
-            '--no-invoice-xml-validation',
-            action='store_true',
-            help='do not perform XML validation of the invoice file')
-
-        parser.add_argument(
-            '-E',
-            '--force-invoice-schema-file-download',
-            action='store_true',
-            help='force download of the XML schema necessary for the validation of the invoice file')
-
-        parser.add_argument(
-            '-b',
-            '--invoice-file-is-not-p7m',
-            default=False,
-            action='store_true',
-            help='avoids running any type of cryptographical signature and certificate checks. This is useful for certain B2B invoice files.')
-
-        parser.add_argument(
-            '-s',
-            '--ignore-signature-check',
-            default=False,
-            action='store_true',
-            help='avoids checking the cryptographic signature of the invoice file')
-
-        parser.add_argument(
-            '-S',
-            '--ignore-signers-certificate-check',
-            action='store_true',
-            help='avoids checking the cryptographic certificate')
-
-        parser.add_argument(
-            '-k',
-            '--no-checksum-check',
-            action='store_true',
-            help='do not perform a file integrity check of the invoice file')
-
-        parser.add_argument(
-            '-t',
-            '--force-trusted-list-file-download',
-            action='store_true',
-            help='force download of the trusted list file')
-
-        parser.add_argument(
-            '-y',
-            '--force-invoice-xml-stylesheet-file-download',
-            action='store_true',
-            help='force download of the XML stylesheet file')
-
-        parser.add_argument(
-            '-w',
-            '--ignore-attachment-extension-whitelist',
-            action='store_true',
-            help='do not perform file extension checks for the attachments. This option is ignored if "-a" is not set')
-
-        parser.add_argument(
-            '-W',
-            '--ignore-attachment-filetype-whitelist',
-            action='store_true',
-            help='do not perform filetype checks for the attachments. This option is ignored if "-a" is not set')
 
         parser.add_argument(
             '-v',

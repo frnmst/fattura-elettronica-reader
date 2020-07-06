@@ -34,9 +34,9 @@ import atomicwrites
 import filetype
 import appdirs
 import configparser
-from .exceptions import (InvoiceFileDoesNotHaveACoherentCryptographicalSignature,
-                         InvoiceFileChecksumFailed, InvoiceFileNotAuthentic,
-                         CannotExtractOriginalInvoiceFile,
+from .exceptions import (P7MFileDoesNotHaveACoherentCryptographicalSignature,
+                         InvoiceFileChecksumFailed, P7MFileNotAuthentic,
+                         CannotExtractOriginalP7MFile,
                          MissingTagInMetadataFile, XMLFileNotConformingToSchema,
                          ExtractedAttachmentNotInExtensionWhitelist,
                          ExtractedAttachmentNotInFileTypeWhitelist)
@@ -93,18 +93,17 @@ def get_invoice_filename(metadata_file_xml_root,
                                        metadata_file_xml_namespace).text
 
 
-def is_invoice_file_signed(invoice_file: str) -> bool:
+def is_p7m_file_signed(p7m_file: str) -> bool:
     r"""Check if the invoice file is signed with a PKCS#7 signature.
 
-    :param invoice_file: the path of the invoice file.
-    :type invoice_file: str
+    :param p7m_file: the path of the invoice file.
+    :type p7m_file: str
     :returns: True if the file is signed, False otherwise.
     :rtype: bool
     :raises: a subprocess or a built-in exception.
     """
     command = 'openssl pkcs7 -print_certs -text -noout -inform DER -in {}'.format(
-        shlex.quote(invoice_file))
-    print(command)
+        shlex.quote(p7m_file))
     return True if subprocess.run(
         shlex.split(command)).returncode == 0 else False
 
@@ -209,19 +208,19 @@ def get_ca_certificates(trusted_list_xml_root: str,
             f.write(stricttextualmsg)
 
 
-def is_invoice_file_authentic(invoice_file: str,
+def is_p7m_file_authentic(p7m_file: str,
                               ca_certificate_pem_file: str,
                               ignore_signature_check: bool = False,
                               ignore_signers_certificate_check: bool = False):
     r"""Check authenticity of the invoice file on various levels.
 
-    :param invoice_file: the path of the signed invoice file.
+    :param p7m_file: the path of the signed invoice file.
     :param ca_certificate_pem_file: the certificates file in PEM format.
     :param ignore_signature_check: avoid checking the signature.
         Defaults to ``False``.
     :param ignore_signers_certificate_check: avoid checking the signer's
         certificate. Defaults to ``False``.
-    :type invoice_file: str
+    :type p7m_file: str
     :type ca_certificate_pem_file: str
     :type ignore_signature_check: bool
     :type ignore_signers_certificate_check: bool
@@ -238,25 +237,25 @@ def is_invoice_file_authentic(invoice_file: str,
     command = (
         'openssl smime ' + pre + ' -verify ' + post + ' -CAfile {}'.format(
             shlex.quote(ca_certificate_pem_file)) + ' -in {}'.format(
-                shlex.quote(invoice_file)) + ' -inform DER -out /dev/null')
+                shlex.quote(p7m_file)) + ' -inform DER -out /dev/null')
     return True if subprocess.run(
         shlex.split(command)).returncode == 0 else False
 
 
-def remove_signature_from_invoice_file(invoice_file: str,
+def remove_signature_from_p7m_file(p7m_file: str,
                                        output_file: str) -> bool:
     r"""Remove signature from the signed invoice file and save the original one.
 
-    :param invoice_file: the path of the invoice file.
+    :param p7m_file: the path of the invoice file.
     :param output_file: the path of the destination file.
-    :type invoice_file: str
+    :type p7m_file: str
     :type output_file: str
     :returns: ``True`` if the operation is successful, ``False`` otherwise.
     :rtype: bool
     :raises: a subprocess or built-in exception.
     """
     command = ('openssl smime -nosigs -verify -noverify -in {}'.format(
-        shlex.quote(invoice_file)) + ' -inform DER -out {}'.format(
+        shlex.quote(p7m_file)) + ' -inform DER -out {}'.format(
             shlex.quote(output_file)))
     return True if subprocess.run(
         shlex.split(command)).returncode == 0 else False
@@ -504,61 +503,48 @@ def load_configuration(configuration_file: str):
 
     return configuration
 
-def pipeline(metadata_file: str,
-             configuration_file: str = None,
-             invoice_filename: str = None,
-             ignore_signature_check: bool = False,
-             ignore_signers_certificate_check: bool = False,
-             no_checksum_check: bool = False,
-             extract_attachments: bool = False,
-             generate_html_output: bool = False,
-             keep_original_invoice: bool = False,
-             force_trusted_list_file_download: bool = False,
-             force_invoice_xml_stylesheet_file_download: bool = False,
-             force_invoice_schema_file_download: bool = False,
-             no_invoice_xml_validation: bool = False,
-             invoice_xslt_type: str = 'ordinaria',
-             ignore_attachment_extension_whitelist: bool = False,
-             ignore_attachment_filetype_whitelist: bool = False,
-             write_default_configuration_file: bool = False,
-             invoice_file_is_not_p7m: bool = False,
-             generic_p7m_file = False):
+def assert_data_structure(source: str, file_type: str, data: dict):
+    pass
+
+def pipeline(source: str, file_type: str, data: dict):
     r"""Run the pipeline."""
+    assert_data_structure(source, file_type, data)
+
     project_name = 'fattura_elettronica_reader'
     create_appdirs(project_name)
+    configuration_file = data['configuration file']
     if configuration_file is None:
         configuration_file = define_appdirs_user_config_dir_file_path(project_name, Paths['configuration file'])
-    if write_default_configuration_file:
-        write_configuration_file(configuration_file)
+    if data['write default configuration file']:
+        write_configuration_file(data['configuration file'])
 
     config = load_configuration(configuration_file)
 
     # Define all the paths for the static elements.
     trusted_list_file = define_appdirs_user_data_dir_file_path(project_name, Paths['trusted list file'])
     ca_certificate_pem_file = define_appdirs_user_data_dir_file_path(project_name, Paths['CA certificate pem file'])
-    invoice_schema_file = define_appdirs_user_data_dir_file_path(project_name,Paths['invoice file']['XSD']['default'])
     w3c_schema_file_for_xml_signatures = define_appdirs_user_data_dir_file_path(project_name,Paths['invoice file']['XSD']['W3C Schema for XML Signatures'])
-    invoice_xslt_ordinaria_file =  define_appdirs_user_data_dir_file_path(project_name, Paths['invoice file']['XSLT']['ordinaria'])
-    invoice_xslt_PA_file =  define_appdirs_user_data_dir_file_path(project_name, Paths['invoice file']['XSLT']['PA'])
-    if invoice_xslt_type == 'ordinaria':
-        invoice_xslt_file = invoice_xslt_ordinaria_file
-    elif invoice_xslt_type == 'PA':
-        invoice_xslt_file = invoice_xslt_PA_file
-    else:
-        invoice_xslt_file = invoice_xslt_ordinaria_file
+    if source == 'invoice':
+        invoice_schema_file = define_appdirs_user_data_dir_file_path(project_name,Paths['invoice file']['XSD']['default'])
+        invoice_xslt_file =  define_appdirs_user_data_dir_file_path(project_name, Paths['invoice file']['XSLT'][data['invoice xslt type']])
 
-    if not generic_p7m_file:
         # See also:
         # https://www.fatturapa.gov.it/export/fatturazione/sdi/messaggi/v1.0/MT_v1.0.xsl
-        metadata_root = parse_xml_file(metadata_file)
-        if invoice_filename is None:
+        metadata_root = parse_xml_file(data['metadata file'])
+        if data['invoice filename'] is None:
             invoice_filename = get_invoice_filename(
             metadata_root, config['metadata file']['XML invoice filename tag'],
             dict(default = config['metadata file']['XML namespace']))
             if invoice_filename is None:
                 raise MissingTagInMetadataFile
+        else:
+            invoice_filename = data['invoice filename']
 
-        if not no_checksum_check:
+        # Assume the invoice file is in the same directory of the metadata file.
+        if not pathlib.Path(invoice_filename).is_file():
+            invoice_filename = str(pathlib.Path(pathlib.Path(data['metadata file']).parent, pathlib.Path(invoice_filename)))
+
+        if not data['no checksum check']:
             checksum_matches, checksum = invoice_file_checksum_matches(
                 metadata_root, invoice_filename,
                 config['metadata file']['XML invoice checksum tag'],
@@ -568,97 +554,101 @@ def pipeline(metadata_file: str,
             if not checksum_matches:
                 raise InvoiceFileChecksumFailed
 
+        file_to_consider = invoice_filename
+    elif source == 'generic':
+        file_to_consider = data['p7m file']
+
     # Apparently, invoices must be signed for 'PA' and not necessarly for
     # 'B2B' and other cases. I could not find official documentation
     # corroborating this but it happened at least one.
-    if not invoice_file_is_not_p7m:
-        if not is_invoice_file_signed(invoice_filename):
-            raise InvoiceFileDoesNotHaveACoherentCryptographicalSignature
+    if (source == 'invoice' and file_type == 'p7m') or (source == 'generic' and file_type == 'p7m'):
+        if not is_p7m_file_signed(file_to_consider):
+            raise P7MFileDoesNotHaveACoherentCryptographicalSignature
 
-    if force_trusted_list_file_download or not pathlib.Path(
-            trusted_list_file).exists():
-        get_remote_file(trusted_list_file,
-                              config['trusted list file']['download'])
+        if data['force trusted list file download'] or not pathlib.Path(
+                trusted_list_file).is_file():
+            get_remote_file(trusted_list_file,
+                                  config['trusted list file']['download'])
 
-    trusted_list_xml_root = parse_xml_file(trusted_list_file)
+        trusted_list_xml_root = parse_xml_file(trusted_list_file)
 
-    get_ca_certificates(trusted_list_xml_root, ca_certificate_pem_file,
-                        config['trusted list file']['XML namespace'],
-                        config['trusted list file']['XML certificate tag'])
+        get_ca_certificates(trusted_list_xml_root, ca_certificate_pem_file,
+                            config['trusted list file']['XML namespace'],
+                            config['trusted list file']['XML certificate tag'])
 
-    if not invoice_file_is_not_p7m:
-        if not is_invoice_file_authentic(invoice_filename, ca_certificate_pem_file,
-                                         ignore_signature_check,
-                                         ignore_signers_certificate_check):
-            raise InvoiceFileNotAuthentic
+    if (not (source == 'invoice' and file_type == 'plain' )) or (source == 'invoice' and file_type == 'p7m') or (source == 'generic' and file_type == 'p7m'):
+        if not is_p7m_file_authentic(file_to_consider, ca_certificate_pem_file,
+                                         data['ignore signature check'],
+                                         data['ignore signers certificate check']):
+            raise P7MFileNotAuthentic
 
-    if not generic_p7m_file or not no_invoice_xml_validation:
-
+    if source == 'invoice' or ('no invoice xml validation' in data and (not data['no invoice xml validation'])):
         # This W3C file should not change any time soon so we can avoid the force download option.
-        if not pathlib.Path(w3c_schema_file_for_xml_signatures).exists():
+        if not pathlib.Path(w3c_schema_file_for_xml_signatures).is_file():
             get_remote_file(w3c_schema_file_for_xml_signatures,config['invoice file']['W3C XSD download'])
 
-        if force_invoice_schema_file_download or not pathlib.Path(invoice_schema_file).exists():
+        if data['force invoice schema file download'] or not pathlib.Path(invoice_schema_file).is_file():
             get_remote_file(
                     invoice_schema_file, config['invoice file']['XSD download'])
 
         patch_invoice_schema_file(invoice_schema_file, Patch['invoice file']['XSD']['line'][0]['offending'],Patch['invoice file']['XSD']['line'][0]['fix'])
 
-    if not generic_p7m_file:
-        # Create a temporary directory to store the original XML invoice file.
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            # invoice_original_file is the path of the non-signed invoice file. If an invoice file is signed,
-            # the filename usually ends in '.p7m' so the destination file must end with '.xml'
-            # to be transformed into an xml file. On the contrary, the filename of non-signed invoice files
-            # already ends in '.xml'.
-            if invoice_file_is_not_p7m:
-                invoice_original_file = invoice_filename
-            else:
-                invoice_original_file = invoice_filename + '.xml'
+    # Create a temporary directory to store the original XML invoice file.
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        # file_to_consider_original is the path of the non-signed p7m file. signed files
+        # end in '.p7m' so the destination file (original) must end with '.xml' or '.generic'
+        # to be transformed into an xml file. On the contrary, the filename of non-signed files
+        # already ends with the correct extension.
+        if source == 'invoice' and file_type == 'plain':
+            file_to_consider_original = file_to_consider
+        elif source == 'invoice' and file_type == 'p7m':
+            file_to_consider_original = file_to_consider + '.xml'
+        elif source == 'generic' and file_type == 'p7m':
+            file_to_consider_original = file_to_consider + '.generic'
 
-            # In case absolute paths are passed to this function the concatenation of an absolute path
-            # and a temporary directory name, which is also an absolue path, would not work as expected.
-            invoice_original_file_relative = pathlib.Path(invoice_original_file).name
+        # In case absolute paths are passed to this function the concatenation of an absolute path
+        # and a temporary directory name, which is also an absolue path, would not work as expected.
+        file_to_consider_original_relative = pathlib.Path(file_to_consider_original).name
 
-            if invoice_file_is_not_p7m:
-                # There is no signature to extract but we need to copy the file in the temporary store.
-                shutil.copyfile(invoice_original_file, str(pathlib.Path(tmpdirname, invoice_original_file_relative)))
-            else:
-                # Extract the original invoice and copy it in the temporary store.
-                if not remove_signature_from_invoice_file(invoice_filename,
-                                                          str(pathlib.Path(tmpdirname, invoice_original_file_relative))):
-                    raise CannotExtractOriginalInvoiceFile
+        if source == 'invoice' and file_type == 'plain':
+            # There is no signature to extract but we need to copy the file in the temporary storage.
+            shutil.copyfile(file_to_consider_original, str(pathlib.Path(tmpdirname, file_to_consider_original_relative)))
+        elif (source == 'invoice' and file_type == 'p7m') or (source == 'generic' and file_type == 'p7m'):
+            # Extract the original invoice and copy it in the temporary store.
+            if not remove_signature_from_p7m_file(file_to_consider,
+                                                          str(pathlib.Path(tmpdirname, file_to_consider_original_relative))):
+                    raise CannotExtractOriginalP7MFile
 
-            if not no_invoice_xml_validation:
-                if not is_xml_file_conforming_to_schema(str(pathlib.Path(tmpdirname, invoice_original_file_relative)), invoice_schema_file):
+        if source == 'invoice':
+            if not data['no invoice xml validation']:
+                if not is_xml_file_conforming_to_schema(str(pathlib.Path(tmpdirname, file_to_consider_original_relative)), invoice_schema_file):
                     raise XMLFileNotConformingToSchema
 
-            invoice_root = parse_xml_file(str(pathlib.Path(tmpdirname, invoice_original_file_relative)))
+            invoice_root = parse_xml_file(str(pathlib.Path(tmpdirname, file_to_consider_original_relative)))
 
-            if extract_attachments:
+            if data['extract attachments']:
                 extract_attachments_from_invoice_file(
                     invoice_root, config['invoice file']['XML attachment XPath'],
                     config['invoice file']['XML attachment tag'],
                     config['invoice file']['XML attachment filename tag'],
                     config['invoice file']['text encoding'],
-                    ignore_attachment_extension_whitelist,
-                    ignore_attachment_filetype_whitelist,
+                    data['ignore attachment extension whitelist'],
+                    data['ignore attachment filetype whitelist'],
                     config['invoice file']['attachment extension whitelist'],
                     config['invoice file']['attachment filetype whitelist'])
 
-            if generate_html_output:
-
-                if force_invoice_xml_stylesheet_file_download or not pathlib.Path(
-                    invoice_xslt_file).exists():
+            if data['generate html output']:
+                if data['force invoice xml stylesheet file download'] or not pathlib.Path(
+                    invoice_xslt_file).is_file():
                     get_remote_file(
                         invoice_xslt_file, config['invoice file']['XSLT ' + invoice_xslt_type + ' download'])
                 invoice_xslt_root = parse_xml_file(invoice_xslt_file)
-                html_output = invoice_filename + '.html'
+                html_output = file_to_consider + '.html'
                 get_invoice_as_html(invoice_root, invoice_xslt_root, html_output,
                                     config['invoice file']['text encoding'])
 
-            if keep_original_invoice:
-                shutil.move(str(pathlib.Path(tmpdirname, invoice_original_file_relative)),  invoice_original_file)
+        if data['keep original file']:
+            shutil.move(str(pathlib.Path(tmpdirname, file_to_consider_original_relative)),  file_to_consider_original)
 
 
 if __name__ == '__main__':
