@@ -1,7 +1,10 @@
 fattura-elettronica-reader
 ==========================
 
-|license|    |pyver|   |gitter|
+|pypiver|    |license|    |pyver|    |downloads|    |gitter|    |dependentrepos|    |buymeacoffee|
+
+.. |pypiver| image:: https://img.shields.io/pypi/fattura-elettronica-reader.svg
+               :alt: PyPI md-toc version
 
 .. |license| image:: https://img.shields.io/pypi/l/fattura-elettronica-reader.svg?color=blue
                :alt: PyPI - License
@@ -10,9 +13,21 @@ fattura-elettronica-reader
 .. |pyver| image:: https://img.shields.io/pypi/pyversions/fattura-elettronica-reader.svg
              :alt: PyPI - Python Version
 
+.. |downloads| image:: https://pepy.tech/badge/fattura-elettronica-reader
+                 :alt: Downloads
+                 :target: https://pepy.tech/project/fattura-elettronica-reader
+
 .. |gitter| image:: https://badges.gitter.im/fattura-elettronica-reader/community.svg
               :alt: Gitter
               :target: https://gitter.im/fattura-elettronica-reader/community
+
+.. |dependentrepos| image:: https://img.shields.io/librariesio/dependent-repos/pypi/fattura-elettronica-reader.svg
+                      :alt: Dependent repos (via libraries.io)
+
+.. |buymeacoffee| image:: assets/buy_me_a_coffee.svg
+                   :alt: Buy me a coffee
+                   :target: https://buymeacoff.ee/frnmst
+
 
 Validate, extract, and generate printables of electronic invoice files received
 from the "Sistema di Interscambio".
