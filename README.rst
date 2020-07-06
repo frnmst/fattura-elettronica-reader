@@ -3,7 +3,7 @@ fattura-elettronica-reader
 
 |pypiver|    |license|    |pyver|    |downloads|    |gitter|    |dependentrepos|    |buymeacoffee|
 
-.. |pypiver| image:: https://img.shields.io/pypi/fattura-elettronica-reader.svg
+.. |pypiver| image:: https://img.shields.io/pypi/v/fattura-elettronica-reader.svg
                :alt: PyPI md-toc version
 
 .. |license| image:: https://img.shields.io/pypi/l/fattura-elettronica-reader.svg?color=blue
@@ -23,6 +23,7 @@ fattura-elettronica-reader
 
 .. |dependentrepos| image:: https://img.shields.io/librariesio/dependent-repos/pypi/fattura-elettronica-reader.svg
                       :alt: Dependent repos (via libraries.io)
+                      :target: https://libraries.io/pypi/fattura-elettronica-reader/dependents
 
 .. |buymeacoffee| image:: assets/buy_me_a_coffee.svg
                    :alt: Buy me a coffee
