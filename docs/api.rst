@@ -15,12 +15,12 @@ output types.
 .. autofunction:: is_xml_file_conforming_to_schema
 .. autofunction:: parse_xml_file
 .. autofunction:: get_invoice_filename
-.. autofunction:: is_invoice_file_signed
+.. autofunction:: is_p7m_file_signed
 .. autofunction:: invoice_file_checksum_matches
 .. autofunction:: get_remote_file
 .. autofunction:: get_ca_certificates
-.. autofunction:: is_invoice_file_authentic
-.. autofunction:: remove_signature_from_invoice_file
+.. autofunction:: is_p7m_file_authentic
+.. autofunction:: remove_signature_from_p7m_file
 .. autofunction:: extract_attachments_from_invoice_file
 .. autofunction:: get_invoice_as_html
 .. autofunction:: patch_invoice_schema_file
@@ -29,15 +29,16 @@ output types.
 .. autofunction:: define_appdirs_user_config_dir_file_path
 .. autofunction:: write_configuration_file
 .. autofunction:: load_configuration
+.. autofunction:: assert_data_structure
 .. autofunction:: pipeline
 
 Exceptions
 ----------
 
-.. autoexception:: InvoiceFileDoesNotHaveACoherentCryptographicalSignature
+.. autoexception:: P7MFileDoesNotHaveACoherentCryptographicalSignature
 .. autoexception:: InvoiceFileChecksumFailed
-.. autoexception:: InvoiceFileNotAuthentic
-.. autoexception:: CannotExtractOriginalInvoiceFile
+.. autoexception:: P7MFileNotAuthentic
+.. autoexception:: CannotExtractOriginalP7MFile
 .. autoexception:: MissingTagInMetadataFile
 .. autoexception:: XMLFileNotConformingToSchema
 .. autoexception:: ExtractedAttachmentNotInExtensionWhitelist

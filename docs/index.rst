@@ -15,6 +15,7 @@ Welcome to fattura-pa-reader's documentation!
    considerations
    examples
    contributing
+   source_code
    copyright_license
 
 Indices and tables

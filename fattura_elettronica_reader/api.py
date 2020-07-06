@@ -504,6 +504,7 @@ def load_configuration(configuration_file: str):
     return configuration
 
 def assert_data_structure(source: str, file_type: str, data: dict):
+    r"""TODO."""
     pass
 
 def pipeline(source: str, file_type: str, data: dict):

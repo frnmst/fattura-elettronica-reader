@@ -35,10 +35,10 @@ class CannotExtractOriginalP7MFile(Exception):
     """The cryptographical signature from the invoice file cannot be removed."""
 
 class MissingTagInMetadataFile(Exception):
-    """There is something useful missing in the metadata file."""
+    """A necessary element is missing from the metadata file."""
 
 class XMLFileNotConformingToSchema(Exception):
-    """XML file is not conformant to the XML schema."""
+    """XML file is not-conforming to the XML schema."""
 
 class ExtractedAttachmentNotInExtensionWhitelist(Exception):
     """An extracted attachment is not in the extension whitelist."""

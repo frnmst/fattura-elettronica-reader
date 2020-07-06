@@ -27,7 +27,7 @@ from .api import (
     get_ca_certificates, is_p7m_file_authentic, remove_signature_from_p7m_file,
     extract_attachments_from_invoice_file, get_invoice_as_html, patch_invoice_schema_file,
     create_appdirs, define_appdirs_user_data_dir_file_path, define_appdirs_user_config_dir_file_path,
-    write_configuration_file, load_configuration, pipeline)
+    write_configuration_file, load_configuration, assert_data_structure, pipeline)
 from .cli import (CliInterface)
 from .exceptions import (P7MFileDoesNotHaveACoherentCryptographicalSignature,
                          InvoiceFileChecksumFailed, P7MFileNotAuthentic,

@@ -1,12 +1,20 @@
 Contributing
 ============
 
+Talk
+----
+
+Suggestions, improvements and discussion:
+
+- https://gitter.im/fattura-elettronica-reader/community
+
 Git branches
 ------------
 
-What follows is a table of the git branches used in fattura-elettronica-reader's repository.
-Please, do NOT open pull requests on the ``master``, ``dev`` or ``gh-pages`` branches.
-Use ``bugfix-${fix_name}`` or ``newfeature-${new_feature_name}`` instead.
+What follows is a table of the git branches used in this repository.
+
+.. important:: Open pull requests on the ``dev`` target branch.
+               Use ``bugfix-${fix_name}`` or ``newfeature-${new_feature_name}`` as names.
 
 =====================================   ====================================================   ==============================
 Branch                                  Description                                            Update schedule
@@ -21,15 +29,16 @@ Branch                                  Description                             
 Dependencies
 ------------
 
-First of all install the software requirements from the ``requirements.txt`` file 
-in the repository's root:
+First of all install `pipenv <https://pipenv.readthedocs.io/en/latest/>`_ and then
+install the software requirements from the Pipfile in the repository's root:
 
 
 ::
 
 
-    $ pip install -r requirements.txt
+    $ make install-dev
 
+.. note:: don't forget to add ``~/.local/bin`` to ``PATH``.
 
 Unit tests
 ----------
@@ -42,14 +51,6 @@ in a terminal:
 ::
 
 
-    $ python setup.py test
-
-
-or simply:
-
-
-::
-
     $ make test
 
 
@@ -57,6 +58,7 @@ You can also add this command before every git commit as by running:
 
 
 ::
+
 
     $ make githook
 
@@ -114,3 +116,5 @@ Contribution Steps
 6. run PEP linter and check
 7. update relevant documentation, if necessary
 8. pull request
+
+.. note:: Have a look at `this post <https://frnmst.gitlab.io/notes/my-python-release-workflow.html>`_ as well.
