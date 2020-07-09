@@ -504,17 +504,88 @@ def load_configuration(configuration_file: str):
     return configuration
 
 def assert_data_structure(source: str, file_type: str, data: dict):
-    r"""TODO."""
-    pass
+    r"""Check the data structure."""
+    assert source in ['invoice', 'generic']
+
+    assert 'patched' in data
+    assert 'configuration file' in data
+    assert 'write default configuration file' in data
+    assert isinstance(data['patched'], bool)
+    print(type(data['configuration file']))
+    assert isinstance(data['configuration file'], str)
+    assert isinstance(data['write default configuration file'], bool)
+
+    if source == 'invoice':
+        assert 'extract attachments' in data
+        assert 'invoice xslt type' in data
+        assert 'no invoice xml validation' in data
+        assert 'force invoice schema file download' in data
+        assert 'generate html output' in data
+        assert 'invoice filename' in data
+        assert 'no checksum check' in data
+        assert 'force invoice xml stylesheet file download' in data
+        assert 'ignore attachment extension whitelist' in data
+        assert 'ignore attachment filetype whitelist' in data
+        assert isinstance(data['extract attachments'], bool)
+        assert isinstance(data['invoice xslt type'], str)
+        assert isinstance(data['no invoice xml validation'], bool)
+        assert isinstance(data['force invoice schema file download'], bool)
+        assert isinstance(data['generate html output'], bool)
+        assert isinstance(data['invoice filename'], str)
+        assert isinstance(data['no checksum check'], bool)
+        assert isinstance(data['force invoice xml stylesheet file download'], bool)
+        assert isinstance(data['ignore attachment extension whitelist'], bool)
+        assert isinstance(data['ignore attachment filetype whitelist'], bool)
+        if data['patched']:
+            assert 'metadata file' in data
+            assert isinstance(data['metadata file'], str)
+        else:
+            assert 'metadata files' in data
+            assert isinstance(data['metadata files'], list)
+            for m in data['metadata files']:
+                assert isinstance(m, str)
+
+        if file_type == 'p7m':
+            assert 'ignore signature check' in data
+            assert 'ignore signers certificate check' in data
+            assert 'force trusted list file download' in data
+            assert 'keep original file' in data
+            assert isinstance(data['ignore signature check'], bool)
+            assert isinstance(data['ignore signers certificate check'], bool)
+            assert isinstance(data['force trusted list file download'], bool)
+            assert isinstance(data['keep original file'], bool)
+        elif file_type == 'plain':
+            pass
+    elif source == 'generic':
+        if file_type == 'p7m':
+            assert 'ignore signature check' in data
+            assert 'ignore signers certificate check' in data
+            assert 'force trusted list file download' in data
+            assert 'keep original file' in data
+            assert isinstance(data['ignore signature check'], bool)
+            assert isinstance(data['ignore signers certificate check'], bool)
+            assert isinstance(data['force trusted list file download'], bool)
+            assert isinstance(data['keep original file'], bool)
+            if data['patched']:
+                assert 'p7m file' in data
+                assert isinstance(data['p7m file'], str)
+            else:
+                assert 'p7m files' in data
+                assert isinstance(data['p7m files'], list)
+                for p in data['p7m files']:
+                    assert isinstance(p, str)
+
 
 def pipeline(source: str, file_type: str, data: dict):
     r"""Run the pipeline."""
     assert_data_structure(source, file_type, data)
+    # data must be patchedfor this function to work.
+    assert data['patched']
 
     project_name = 'fattura_elettronica_reader'
     create_appdirs(project_name)
     configuration_file = data['configuration file']
-    if configuration_file is None:
+    if configuration_file == str():
         configuration_file = define_appdirs_user_config_dir_file_path(project_name, Paths['configuration file'])
     if data['write default configuration file']:
         write_configuration_file(data['configuration file'])
@@ -532,7 +603,7 @@ def pipeline(source: str, file_type: str, data: dict):
         # See also:
         # https://www.fatturapa.gov.it/export/fatturazione/sdi/messaggi/v1.0/MT_v1.0.xsl
         metadata_root = parse_xml_file(data['metadata file'])
-        if data['invoice filename'] is None:
+        if data['invoice filename'] == str():
             invoice_filename = get_invoice_filename(
             metadata_root, config['metadata file']['XML invoice filename tag'],
             dict(default = config['metadata file']['XML namespace']))

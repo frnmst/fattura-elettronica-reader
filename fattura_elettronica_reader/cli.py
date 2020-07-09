@@ -73,13 +73,14 @@ class CliToApi():
             elif args.file_type == 'plain':
                 pass
         elif args.source == 'generic':
-            data = {
-                'p7m files': args.p7m_file,
-                'ignore signature check': args.ignore_signature_check,
-                'ignore signers certificate check': args.ignore_signers_certificate_check,
-                'force trusted list file download': args.force_trusted_list_file_download,
-                'keep original file': args.keep_original_file,
-            }
+            if args.file_type == 'p7m':
+                data = {
+                    'p7m files': args.p7m_file,
+                    'ignore signature check': args.ignore_signature_check,
+                    'ignore signers certificate check': args.ignore_signers_certificate_check,
+                    'force trusted list file download': args.force_trusted_list_file_download,
+                    'keep original file': args.keep_original_file,
+                }
 
         print(args.configuration_file)
 
@@ -159,6 +160,7 @@ class CliInterface():
         invoice_parser.add_argument(
             '-i',
             '--invoice-filename',
+            default=str(),
             help='override the invoice file name specified in the metadata file')
 
         invoice_parser.add_argument(
@@ -281,6 +283,7 @@ class CliInterface():
         parser.add_argument(
             '-c',
             '--configuration-file',
+            default=str(),
             help='the path of the configuration file')
 
         parser.add_argument(
