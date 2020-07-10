@@ -37,7 +37,8 @@ import configparser
 from .exceptions import (P7MFileDoesNotHaveACoherentCryptographicalSignature,
                          InvoiceFileChecksumFailed, P7MFileNotAuthentic,
                          CannotExtractOriginalP7MFile,
-                         MissingTagInMetadataFile, XMLFileNotConformingToSchema,
+                         MissingTagInMetadataFile,
+                         XMLFileNotConformingToSchema,
                          ExtractedAttachmentNotInExtensionWhitelist,
                          ExtractedAttachmentNotInFileTypeWhitelist)
 from .constants import (XML, Paths, Downloads, Patch, File)
@@ -46,7 +47,9 @@ from .constants import (XML, Paths, Downloads, Patch, File)
 # API #
 #######
 
-def is_xml_file_conforming_to_schema(xml_file: str, xml_schema_file: str) -> bool:
+
+def is_xml_file_conforming_to_schema(xml_file: str,
+                                     xml_schema_file: str) -> bool:
     r"""Check that the XML file follows its schema.
 
     :param xml_file: the path of the XML file.
@@ -61,6 +64,7 @@ def is_xml_file_conforming_to_schema(xml_file: str, xml_schema_file: str) -> boo
     xmlschema = ET.XMLSchema(etree=xmlschema_doc)
     return xmlschema.validate(ET.parse(xml_file))
 
+
 def parse_xml_file(xml_file: str):
     r"""Parse the XML file.
 
@@ -72,6 +76,7 @@ def parse_xml_file(xml_file: str):
     """
     tree = ET.parse(xml_file)
     return tree.getroot()
+
 
 def get_invoice_filename(metadata_file_xml_root,
                          metadata_file_invoice_filename_xml_tag: str,
@@ -157,10 +162,12 @@ def get_remote_file(destination: str, url: str):
     """
     r = requests.get(url)
     if r.ok:
-         with atomicwrites.atomic_write(destination, mode='wb', overwrite=True) as f:
+        with atomicwrites.atomic_write(destination, mode='wb',
+                                       overwrite=True) as f:
             f.write(r.content)
     else:
         r.raise_for_status()
+
 
 def get_ca_certificates(trusted_list_xml_root: str,
                         ca_certificate_pem_file: str,
@@ -190,7 +197,9 @@ def get_ca_certificates(trusted_list_xml_root: str,
     preeb = '-----BEGIN CERTIFICATE-----'
     posteb = '-----END CERTIFICATE-----'
     max_line_len = 64
-    with atomicwrites.atomic_write(ca_certificate_pem_file, mode='w', overwrite=True) as f:
+    with atomicwrites.atomic_write(ca_certificate_pem_file,
+                                   mode='w',
+                                   overwrite=True) as f:
         # See https://lxml.de/tutorial.html#elementpath
         # for the exception that gets raised.
         for e in trusted_list_xml_root.iter(
@@ -209,9 +218,9 @@ def get_ca_certificates(trusted_list_xml_root: str,
 
 
 def is_p7m_file_authentic(p7m_file: str,
-                              ca_certificate_pem_file: str,
-                              ignore_signature_check: bool = False,
-                              ignore_signers_certificate_check: bool = False):
+                          ca_certificate_pem_file: str,
+                          ignore_signature_check: bool = False,
+                          ignore_signers_certificate_check: bool = False):
     r"""Check authenticity of the invoice file on various levels.
 
     :param p7m_file: the path of the signed invoice file.
@@ -234,16 +243,15 @@ def is_p7m_file_authentic(p7m_file: str,
         pre = '-nosigs'
     if ignore_signers_certificate_check:
         post = '-noverify'
-    command = (
-        'openssl smime ' + pre + ' -verify ' + post + ' -CAfile {}'.format(
-            shlex.quote(ca_certificate_pem_file)) + ' -in {}'.format(
-                shlex.quote(p7m_file)) + ' -inform DER -out /dev/null')
+    command = ('openssl smime ' + pre + ' -verify ' + post +
+               ' -CAfile {}'.format(shlex.quote(ca_certificate_pem_file)) +
+               ' -in {}'.format(shlex.quote(p7m_file)) +
+               ' -inform DER -out /dev/null')
     return True if subprocess.run(
         shlex.split(command)).returncode == 0 else False
 
 
-def remove_signature_from_p7m_file(p7m_file: str,
-                                       output_file: str) -> bool:
+def remove_signature_from_p7m_file(p7m_file: str, output_file: str) -> bool:
     r"""Remove signature from the signed invoice file and save the original one.
 
     :param p7m_file: the path of the invoice file.
@@ -255,21 +263,22 @@ def remove_signature_from_p7m_file(p7m_file: str,
     :raises: a subprocess or built-in exception.
     """
     command = ('openssl smime -nosigs -verify -noverify -in {}'.format(
-        shlex.quote(p7m_file)) + ' -inform DER -out {}'.format(
-            shlex.quote(output_file)))
+        shlex.quote(p7m_file)) +
+               ' -inform DER -out {}'.format(shlex.quote(output_file)))
     return True if subprocess.run(
         shlex.split(command)).returncode == 0 else False
 
 
 def extract_attachments_from_invoice_file(
-        invoice_file_xml_root, invoice_file_xml_attachment_xpath: str,
-        invoice_file_xml_attachment_tag: str,
-        invoice_file_xml_attachment_filename_tag: str,
-        invoice_file_text_encoding: str,
-        ignore_attachment_extension_whitelist: bool = False,
-        ignore_attachment_filetype_whitelist: bool = False,
-        attachment_extension_whitelist: list = list(),
-        attachment_filetype_whitelist: list = list()):
+    invoice_file_xml_root,
+    invoice_file_xml_attachment_xpath: str,
+    invoice_file_xml_attachment_tag: str,
+    invoice_file_xml_attachment_filename_tag: str,
+    invoice_file_text_encoding: str,
+    ignore_attachment_extension_whitelist: bool = False,
+    ignore_attachment_filetype_whitelist: bool = False,
+    attachment_extension_whitelist: list = list(),
+    attachment_filetype_whitelist: list = list()):
     r"""Extract, decode and save possible attachments within the invoice file.
 
     :param invoice_file_xml_root: the original invoice file.
@@ -306,7 +315,8 @@ def extract_attachments_from_invoice_file(
             invoice_file_xml_attachment_filename_tag).text
 
         if not ignore_attachment_extension_whitelist:
-            if not attachment_dest_path.endswith(tuple(attachment_extension_whitelist)):
+            if not attachment_dest_path.endswith(
+                    tuple(attachment_extension_whitelist)):
                 raise ExtractedAttachmentNotInExtensionWhitelist
 
         # b64decode accepts any bytes-like object. There should not be any
@@ -314,19 +324,24 @@ def extract_attachments_from_invoice_file(
         # using the same character ids on UTF-8 and ASCII.
         # Just in case that there are alien characters in the base64 string
         # (sic, it happened!) we use validate=False as an option to skip them.
-        decoded = base64.b64decode(attachment.encode(invoice_file_text_encoding),validate=False)
+        decoded = base64.b64decode(
+            attachment.encode(invoice_file_text_encoding), validate=False)
         if not ignore_attachment_filetype_whitelist:
             # See https://h2non.github.io/filetype.py/1.0.0/filetype.m.html#filetype.filetype.get_type
-            if filetype.guess(decoded).mime not in attachment_filetype_whitelist:
+            if filetype.guess(
+                    decoded).mime not in attachment_filetype_whitelist:
                 raise ExtractedAttachmentNotInFileTypeWhitelist
 
-        with atomicwrites.atomic_write(attachment_dest_path, mode='wb', overwrite=True) as f:
+        with atomicwrites.atomic_write(attachment_dest_path,
+                                       mode='wb',
+                                       overwrite=True) as f:
             f.write(decoded)
 
 
-def get_invoice_as_html(
-        invoice_file_xml_root, invoice_file_xml_stylesheet_root,
-        html_output_file: str, invoice_file_text_encoding: str):
+def get_invoice_as_html(invoice_file_xml_root,
+                        invoice_file_xml_stylesheet_root,
+                        html_output_file: str,
+                        invoice_file_text_encoding: str):
     r"""Transform the XML invoice file into a styled HTML file.
 
     :param invoice_file_xml_root: the XML tree root of the invoice file
@@ -344,13 +359,15 @@ def get_invoice_as_html(
     """
     transform = ET.XSLT(invoice_file_xml_stylesheet_root)
     newdom = transform(invoice_file_xml_root)
-    with atomicwrites.atomic_write(html_output_file, mode='w', overwrite=True) as f:
+    with atomicwrites.atomic_write(html_output_file, mode='w',
+                                   overwrite=True) as f:
         f.write(
             ET.tostring(newdom,
                         pretty_print=True).decode(invoice_file_text_encoding))
 
 
-def patch_invoice_schema_file(invoice_schema_file: str, offending_line: str, fix_line: str):
+def patch_invoice_schema_file(invoice_schema_file: str, offending_line: str,
+                              fix_line: str):
     r"""Fix the error in the schema file.
 
     :param invoice_schema_file: the path of the schema file.
@@ -375,13 +392,17 @@ def patch_invoice_schema_file(invoice_schema_file: str, offending_line: str, fix
                 save.append(fix_line)
             else:
                 save.append(line)
-    with atomicwrites.atomic_write(invoice_schema_file, mode='w', overwrite=True) as f:
+    with atomicwrites.atomic_write(invoice_schema_file,
+                                   mode='w',
+                                   overwrite=True) as f:
         for s in save:
             f.write(s)
+
 
 ##############################
 # Pipeline related functions #
 ##############################
+
 
 def create_appdirs(program_name: str):
     r"""Create user data and configuration directories.
@@ -394,10 +415,16 @@ def create_appdirs(program_name: str):
 
     .. note: for security reasons the directories have restrictive perimissions.
     """
-    pathlib.Path(appdirs.user_data_dir(program_name)).mkdir(mode=0o700,parents=True,exist_ok=True)
-    pathlib.Path(appdirs.user_config_dir(program_name)).mkdir(mode=0o700,parents=True,exist_ok=True)
+    pathlib.Path(appdirs.user_data_dir(program_name)).mkdir(mode=0o700,
+                                                            parents=True,
+                                                            exist_ok=True)
+    pathlib.Path(appdirs.user_config_dir(program_name)).mkdir(mode=0o700,
+                                                              parents=True,
+                                                              exist_ok=True)
 
-def define_appdirs_user_data_dir_file_path(program_name: str, relative_path: str):
+
+def define_appdirs_user_data_dir_file_path(program_name: str,
+                                           relative_path: str):
     r"""Get the full path of the input file in the users's data directory.
 
     :param program_name: the name of the software.
@@ -407,9 +434,12 @@ def define_appdirs_user_data_dir_file_path(program_name: str, relative_path: str
     :returns: a full path.
     :rtype: str
     """
-    return str(pathlib.Path(appdirs.user_data_dir(program_name), relative_path))
+    return str(pathlib.Path(appdirs.user_data_dir(program_name),
+                            relative_path))
 
-def define_appdirs_user_config_dir_file_path(program_name: str, relative_path: str):
+
+def define_appdirs_user_config_dir_file_path(program_name: str,
+                                             relative_path: str):
     r"""Get the full path of the input file in the user's cofiguration directory.
 
     :param program_name: the name of the software.
@@ -419,7 +449,9 @@ def define_appdirs_user_config_dir_file_path(program_name: str, relative_path: s
     :returns: a path.
     :rtype: str
     """
-    return str(pathlib.Path(appdirs.user_config_dir(program_name), relative_path))
+    return str(
+        pathlib.Path(appdirs.user_config_dir(program_name), relative_path))
+
 
 def write_configuration_file(configuration_file: str):
     r"""Write the default configuration file.
@@ -433,10 +465,14 @@ def write_configuration_file(configuration_file: str):
     config = configparser.ConfigParser()
     config.optionxform = str
     config['metadata file'] = {
-        'XML namespace': XML['metadata file']['namespaces']['default'],
-        'XML invoice checksum tag': XML['metadata file']['tags']['invoice checksum'],
-        'XML invoice filename tag': XML['metadata file']['tags']['invoice filename'],
-        'XML system id tag': XML['metadata file']['tags']['system id']
+        'XML namespace':
+        XML['metadata file']['namespaces']['default'],
+        'XML invoice checksum tag':
+        XML['metadata file']['tags']['invoice checksum'],
+        'XML invoice filename tag':
+        XML['metadata file']['tags']['invoice filename'],
+        'XML system id tag':
+        XML['metadata file']['tags']['system id']
     }
     config['trusted list file'] = {
         'XML namespace': XML['trusted list file']['namespaces']['default'],
@@ -444,21 +480,33 @@ def write_configuration_file(configuration_file: str):
         'download': Downloads['trusted list file']['default'],
     }
     config['invoice file'] = {
-        'XML namespace': XML['invoice file']['namespaces']['default'],
-        'XML attachment tag': XML['invoice file']['tags']['attachment'],
-        'XML attachment filename tag': XML['invoice file']['tags']['attachment filename'],
-        'XML attachment XPath': XML['invoice file']['XPath']['attachment'],
-        'text encoding': XML['invoice file']['proprieties']['text encoding'],
-        'XSD download': Downloads['invoice file']['XSD']['default'],
-        'W3C XSD download': Downloads['invoice file']['XSD']['W3C Schema for XML Signatures'],
-        'XSLT ordinaria download': Downloads['invoice file']['XSLT']['ordinaria'],
-        'XSLT PA download': Downloads['invoice file']['XSLT']['PA'],
-        'attachment extension whitelist': File['invoice']['attachment']['extension whitelist'],
-        'attachment filetype whitelist': File['invoice']['attachment']['filetype whitelist']
+        'XML namespace':
+        XML['invoice file']['namespaces']['default'],
+        'XML attachment tag':
+        XML['invoice file']['tags']['attachment'],
+        'XML attachment filename tag':
+        XML['invoice file']['tags']['attachment filename'],
+        'XML attachment XPath':
+        XML['invoice file']['XPath']['attachment'],
+        'text encoding':
+        XML['invoice file']['proprieties']['text encoding'],
+        'XSD download':
+        Downloads['invoice file']['XSD']['default'],
+        'W3C XSD download':
+        Downloads['invoice file']['XSD']['W3C Schema for XML Signatures'],
+        'XSLT ordinaria download':
+        Downloads['invoice file']['XSLT']['ordinaria'],
+        'XSLT PA download':
+        Downloads['invoice file']['XSLT']['PA'],
+        'attachment extension whitelist':
+        File['invoice']['attachment']['extension whitelist'],
+        'attachment filetype whitelist':
+        File['invoice']['attachment']['filetype whitelist']
     }
 
     with open(configuration_file, 'w') as configfile:
         config.write(configfile)
+
 
 def load_configuration(configuration_file: str):
     r"""Attempt to load the configuration file.
@@ -476,32 +524,90 @@ def load_configuration(configuration_file: str):
     config.read(configuration_file)
 
     configuration = dict()
-    configuration['metadata file']=dict()
-    configuration['trusted list file']=dict()
-    configuration['invoice file']=dict()
+    configuration['metadata file'] = dict()
+    configuration['trusted list file'] = dict()
+    configuration['invoice file'] = dict()
 
-    configuration['metadata file']['XML namespace'] = config.get('metadata file', 'XML namespace', fallback=XML['metadata file']['namespaces']['default'])
-    configuration['metadata file']['XML invoice checksum tag'] = config.get('metadata file', 'XML invoice checksum tag', fallback=XML['metadata file']['tags']['invoice checksum'])
-    configuration['metadata file']['XML invoice filename tag'] = config.get('metadata file', 'invoice filename tag', fallback=XML['metadata file']['tags']['invoice filename'])
-    configuration['metadata file']['XML system id tag'] = config.get('metadata file', 'XML system id tag', fallback=XML['metadata file']['tags']['system id'])
+    configuration['metadata file']['XML namespace'] = config.get(
+        'metadata file',
+        'XML namespace',
+        fallback=XML['metadata file']['namespaces']['default'])
+    configuration['metadata file']['XML invoice checksum tag'] = config.get(
+        'metadata file',
+        'XML invoice checksum tag',
+        fallback=XML['metadata file']['tags']['invoice checksum'])
+    configuration['metadata file']['XML invoice filename tag'] = config.get(
+        'metadata file',
+        'invoice filename tag',
+        fallback=XML['metadata file']['tags']['invoice filename'])
+    configuration['metadata file']['XML system id tag'] = config.get(
+        'metadata file',
+        'XML system id tag',
+        fallback=XML['metadata file']['tags']['system id'])
 
-    configuration['trusted list file']['XML namespace'] = config.get('trusted list file', 'XML namespace', fallback=XML['trusted list file']['namespaces']['default'])
-    configuration['trusted list file']['XML certificate tag'] = config.get('trusted list file', 'XML certificate tag', fallback=XML['trusted list file']['tags']['certificate'])
-    configuration['trusted list file']['download'] = config.get('trusted list file', 'download', fallback=Downloads['trusted list file']['default'])
+    configuration['trusted list file']['XML namespace'] = config.get(
+        'trusted list file',
+        'XML namespace',
+        fallback=XML['trusted list file']['namespaces']['default'])
+    configuration['trusted list file']['XML certificate tag'] = config.get(
+        'trusted list file',
+        'XML certificate tag',
+        fallback=XML['trusted list file']['tags']['certificate'])
+    configuration['trusted list file']['download'] = config.get(
+        'trusted list file',
+        'download',
+        fallback=Downloads['trusted list file']['default'])
 
-    configuration['invoice file']['XML namespace'] = config.get('invoice file', 'XML namespace', fallback=XML['invoice file']['namespaces']['default'])
-    configuration['invoice file']['XML attachment tag'] = config.get('invoice file', 'XML attachment tag', fallback=XML['invoice file']['tags']['attachment'])
-    configuration['invoice file']['XML attachment filename tag'] = config.get('invoice file', 'XML attachment filename tag', fallback=XML['invoice file']['tags']['attachment filename'])
-    configuration['invoice file']['XML attachment XPath'] = config.get('invoice file', 'XML attachment XPath', fallback=XML['invoice file']['XPath']['attachment'])
-    configuration['invoice file']['text encoding'] = config.get('invoice file', 'text encoding', fallback=XML['invoice file']['proprieties']['text encoding'])
-    configuration['invoice file']['XSD download'] = config.get('invoice file', 'XSD download', fallback=Downloads['invoice file']['XSD']['default'])
-    configuration['invoice file']['W3C XSD download'] = config.get('invoice file', 'W3C XSD download', fallback=Downloads['invoice file']['XSD']['W3C Schema for XML Signatures'])
-    configuration['invoice file']['XSLT ordinaria download'] = config.get('invoice file', 'XSLT ordinaria download', fallback=Downloads['invoice file']['XSLT']['ordinaria'])
-    configuration['invoice file']['XSLT PA download'] = config.get('invoice file', 'XSLT PA download', fallback=Downloads['invoice file']['XSLT']['PA'])
-    configuration['invoice file']['attachment extension whitelist'] = config.get('invoice file', 'attachment extension whitelist', fallback=File['invoice']['attachment']['extension whitelist'])
-    configuration['invoice file']['attachment filetype whitelist'] = config.get('invoice file', 'attachment filetype whitelist', fallback=File['invoice']['attachment']['filetype whitelist'])
+    configuration['invoice file']['XML namespace'] = config.get(
+        'invoice file',
+        'XML namespace',
+        fallback=XML['invoice file']['namespaces']['default'])
+    configuration['invoice file']['XML attachment tag'] = config.get(
+        'invoice file',
+        'XML attachment tag',
+        fallback=XML['invoice file']['tags']['attachment'])
+    configuration['invoice file']['XML attachment filename tag'] = config.get(
+        'invoice file',
+        'XML attachment filename tag',
+        fallback=XML['invoice file']['tags']['attachment filename'])
+    configuration['invoice file']['XML attachment XPath'] = config.get(
+        'invoice file',
+        'XML attachment XPath',
+        fallback=XML['invoice file']['XPath']['attachment'])
+    configuration['invoice file']['text encoding'] = config.get(
+        'invoice file',
+        'text encoding',
+        fallback=XML['invoice file']['proprieties']['text encoding'])
+    configuration['invoice file']['XSD download'] = config.get(
+        'invoice file',
+        'XSD download',
+        fallback=Downloads['invoice file']['XSD']['default'])
+    configuration['invoice file']['W3C XSD download'] = config.get(
+        'invoice file',
+        'W3C XSD download',
+        fallback=Downloads['invoice file']['XSD']
+        ['W3C Schema for XML Signatures'])
+    configuration['invoice file']['XSLT ordinaria download'] = config.get(
+        'invoice file',
+        'XSLT ordinaria download',
+        fallback=Downloads['invoice file']['XSLT']['ordinaria'])
+    configuration['invoice file']['XSLT PA download'] = config.get(
+        'invoice file',
+        'XSLT PA download',
+        fallback=Downloads['invoice file']['XSLT']['PA'])
+    configuration['invoice file'][
+        'attachment extension whitelist'] = config.get(
+            'invoice file',
+            'attachment extension whitelist',
+            fallback=File['invoice']['attachment']['extension whitelist'])
+    configuration['invoice file'][
+        'attachment filetype whitelist'] = config.get(
+            'invoice file',
+            'attachment filetype whitelist',
+            fallback=File['invoice']['attachment']['filetype whitelist'])
 
     return configuration
+
 
 def assert_data_structure(source: str, file_type: str, data: dict):
     r"""Check the data structure."""
@@ -511,7 +617,6 @@ def assert_data_structure(source: str, file_type: str, data: dict):
     assert 'configuration file' in data
     assert 'write default configuration file' in data
     assert isinstance(data['patched'], bool)
-    print(type(data['configuration file']))
     assert isinstance(data['configuration file'], str)
     assert isinstance(data['write default configuration file'], bool)
 
@@ -533,7 +638,8 @@ def assert_data_structure(source: str, file_type: str, data: dict):
         assert isinstance(data['generate html output'], bool)
         assert isinstance(data['invoice filename'], str)
         assert isinstance(data['no checksum check'], bool)
-        assert isinstance(data['force invoice xml stylesheet file download'], bool)
+        assert isinstance(data['force invoice xml stylesheet file download'],
+                          bool)
         assert isinstance(data['ignore attachment extension whitelist'], bool)
         assert isinstance(data['ignore attachment filetype whitelist'], bool)
         if data['patched']:
@@ -586,27 +692,36 @@ def pipeline(source: str, file_type: str, data: dict):
     create_appdirs(project_name)
     configuration_file = data['configuration file']
     if configuration_file == str():
-        configuration_file = define_appdirs_user_config_dir_file_path(project_name, Paths['configuration file'])
+        configuration_file = define_appdirs_user_config_dir_file_path(
+            project_name, Paths['configuration file'])
     if data['write default configuration file']:
         write_configuration_file(data['configuration file'])
 
     config = load_configuration(configuration_file)
 
     # Define all the paths for the static elements.
-    trusted_list_file = define_appdirs_user_data_dir_file_path(project_name, Paths['trusted list file'])
-    ca_certificate_pem_file = define_appdirs_user_data_dir_file_path(project_name, Paths['CA certificate pem file'])
-    w3c_schema_file_for_xml_signatures = define_appdirs_user_data_dir_file_path(project_name,Paths['invoice file']['XSD']['W3C Schema for XML Signatures'])
+    trusted_list_file = define_appdirs_user_data_dir_file_path(
+        project_name, Paths['trusted list file'])
+    ca_certificate_pem_file = define_appdirs_user_data_dir_file_path(
+        project_name, Paths['CA certificate pem file'])
+    w3c_schema_file_for_xml_signatures = define_appdirs_user_data_dir_file_path(
+        project_name,
+        Paths['invoice file']['XSD']['W3C Schema for XML Signatures'])
     if source == 'invoice':
-        invoice_schema_file = define_appdirs_user_data_dir_file_path(project_name,Paths['invoice file']['XSD']['default'])
-        invoice_xslt_file =  define_appdirs_user_data_dir_file_path(project_name, Paths['invoice file']['XSLT'][data['invoice xslt type']])
+        invoice_schema_file = define_appdirs_user_data_dir_file_path(
+            project_name, Paths['invoice file']['XSD']['default'])
+        invoice_xslt_file = define_appdirs_user_data_dir_file_path(
+            project_name,
+            Paths['invoice file']['XSLT'][data['invoice xslt type']])
 
         # See also:
         # https://www.fatturapa.gov.it/export/fatturazione/sdi/messaggi/v1.0/MT_v1.0.xsl
         metadata_root = parse_xml_file(data['metadata file'])
         if data['invoice filename'] == str():
             invoice_filename = get_invoice_filename(
-            metadata_root, config['metadata file']['XML invoice filename tag'],
-            dict(default = config['metadata file']['XML namespace']))
+                metadata_root,
+                config['metadata file']['XML invoice filename tag'],
+                dict(default=config['metadata file']['XML namespace']))
             if invoice_filename is None:
                 raise MissingTagInMetadataFile
         else:
@@ -614,13 +729,16 @@ def pipeline(source: str, file_type: str, data: dict):
 
         # Assume the invoice file is in the same directory of the metadata file.
         if not pathlib.Path(invoice_filename).is_file():
-            invoice_filename = str(pathlib.Path(pathlib.Path(data['metadata file']).parent, pathlib.Path(invoice_filename)))
+            invoice_filename = str(
+                pathlib.Path(
+                    pathlib.Path(data['metadata file']).parent,
+                    pathlib.Path(invoice_filename)))
 
         if not data['no checksum check']:
             checksum_matches, checksum = invoice_file_checksum_matches(
                 metadata_root, invoice_filename,
                 config['metadata file']['XML invoice checksum tag'],
-                dict(default = config['metadata file']['XML namespace']))
+                dict(default=config['metadata file']['XML namespace']))
             if checksum is None:
                 raise MissingTagInMetadataFile
             if not checksum_matches:
@@ -633,14 +751,16 @@ def pipeline(source: str, file_type: str, data: dict):
     # Apparently, invoices must be signed for 'PA' and not necessarly for
     # 'B2B' and other cases. I could not find official documentation
     # corroborating this but it happened at least one.
-    if (source == 'invoice' and file_type == 'p7m') or (source == 'generic' and file_type == 'p7m'):
+    if (source == 'invoice'
+            and file_type == 'p7m') or (source == 'generic'
+                                        and file_type == 'p7m'):
         if not is_p7m_file_signed(file_to_consider):
             raise P7MFileDoesNotHaveACoherentCryptographicalSignature
 
         if data['force trusted list file download'] or not pathlib.Path(
                 trusted_list_file).is_file():
             get_remote_file(trusted_list_file,
-                                  config['trusted list file']['download'])
+                            config['trusted list file']['download'])
 
         trusted_list_xml_root = parse_xml_file(trusted_list_file)
 
@@ -648,22 +768,31 @@ def pipeline(source: str, file_type: str, data: dict):
                             config['trusted list file']['XML namespace'],
                             config['trusted list file']['XML certificate tag'])
 
-    if (not (source == 'invoice' and file_type == 'plain')) or (source == 'invoice' and file_type == 'p7m') or (source == 'generic' and file_type == 'p7m'):
+    if (not (source == 'invoice' and file_type == 'plain')) or (
+            source == 'invoice'
+            and file_type == 'p7m') or (source == 'generic'
+                                        and file_type == 'p7m'):
         if not is_p7m_file_authentic(file_to_consider, ca_certificate_pem_file,
-                                         data['ignore signature check'],
-                                         data['ignore signers certificate check']):
+                                     data['ignore signature check'],
+                                     data['ignore signers certificate check']):
             raise P7MFileNotAuthentic
 
-    if source == 'invoice' or ('no invoice xml validation' in data and (not data['no invoice xml validation'])):
+    if source == 'invoice' or ('no invoice xml validation' in data and
+                               (not data['no invoice xml validation'])):
         # This W3C file should not change any time soon so we can avoid the force download option.
         if not pathlib.Path(w3c_schema_file_for_xml_signatures).is_file():
-            get_remote_file(w3c_schema_file_for_xml_signatures,config['invoice file']['W3C XSD download'])
+            get_remote_file(w3c_schema_file_for_xml_signatures,
+                            config['invoice file']['W3C XSD download'])
 
-        if data['force invoice schema file download'] or not pathlib.Path(invoice_schema_file).is_file():
-            get_remote_file(
-                    invoice_schema_file, config['invoice file']['XSD download'])
+        if data['force invoice schema file download'] or not pathlib.Path(
+                invoice_schema_file).is_file():
+            get_remote_file(invoice_schema_file,
+                            config['invoice file']['XSD download'])
 
-        patch_invoice_schema_file(invoice_schema_file, Patch['invoice file']['XSD']['line'][0]['offending'],Patch['invoice file']['XSD']['line'][0]['fix'])
+        patch_invoice_schema_file(
+            invoice_schema_file,
+            Patch['invoice file']['XSD']['line'][0]['offending'],
+            Patch['invoice file']['XSD']['line'][0]['fix'])
 
     # Create a temporary directory to store the original XML invoice file.
     with tempfile.TemporaryDirectory() as tmpdirname:
@@ -680,27 +809,45 @@ def pipeline(source: str, file_type: str, data: dict):
 
         # In case absolute paths are passed to this function the concatenation of an absolute path
         # and a temporary directory name, which is also an absolue path, would not work as expected.
-        file_to_consider_original_relative = pathlib.Path(file_to_consider_original).name
+        file_to_consider_original_relative = pathlib.Path(
+            file_to_consider_original).name
 
         if source == 'invoice' and file_type == 'plain':
             # There is no signature to extract but we need to copy the file in the temporary storage.
-            shutil.copyfile(file_to_consider_original, str(pathlib.Path(tmpdirname, file_to_consider_original_relative)))
-        elif (source == 'invoice' and file_type == 'p7m') or (source == 'generic' and file_type == 'p7m'):
+            shutil.copyfile(
+                file_to_consider_original,
+                str(
+                    pathlib.Path(tmpdirname,
+                                 file_to_consider_original_relative)))
+        elif (source == 'invoice'
+              and file_type == 'p7m') or (source == 'generic'
+                                          and file_type == 'p7m'):
             # Extract the original invoice and copy it in the temporary store.
-            if not remove_signature_from_p7m_file(file_to_consider,
-                                                          str(pathlib.Path(tmpdirname, file_to_consider_original_relative))):
-                    raise CannotExtractOriginalP7MFile
+            if not remove_signature_from_p7m_file(
+                    file_to_consider,
+                    str(
+                        pathlib.Path(tmpdirname,
+                                     file_to_consider_original_relative))):
+                raise CannotExtractOriginalP7MFile
 
         if source == 'invoice':
             if not data['no invoice xml validation']:
-                if not is_xml_file_conforming_to_schema(str(pathlib.Path(tmpdirname, file_to_consider_original_relative)), invoice_schema_file):
+                if not is_xml_file_conforming_to_schema(
+                        str(
+                            pathlib.Path(tmpdirname,
+                                         file_to_consider_original_relative)),
+                        invoice_schema_file):
                     raise XMLFileNotConformingToSchema
 
-            invoice_root = parse_xml_file(str(pathlib.Path(tmpdirname, file_to_consider_original_relative)))
+            invoice_root = parse_xml_file(
+                str(
+                    pathlib.Path(tmpdirname,
+                                 file_to_consider_original_relative)))
 
             if data['extract attachments']:
                 extract_attachments_from_invoice_file(
-                    invoice_root, config['invoice file']['XML attachment XPath'],
+                    invoice_root,
+                    config['invoice file']['XML attachment XPath'],
                     config['invoice file']['XML attachment tag'],
                     config['invoice file']['XML attachment filename tag'],
                     config['invoice file']['text encoding'],
@@ -711,16 +858,26 @@ def pipeline(source: str, file_type: str, data: dict):
 
             if data['generate html output']:
                 if data['force invoice xml stylesheet file download'] or not pathlib.Path(
-                    invoice_xslt_file).is_file():
+                        invoice_xslt_file).is_file():
                     get_remote_file(
-                        invoice_xslt_file, config['invoice file']['XSLT ' + invoice_xslt_type + ' download'])
+                        invoice_xslt_file,
+                        config['invoice file']['XSLT ' + invoice_xslt_type +
+                                               ' download'])
                 invoice_xslt_root = parse_xml_file(invoice_xslt_file)
                 html_output = file_to_consider + '.html'
-                get_invoice_as_html(invoice_root, invoice_xslt_root, html_output,
+                get_invoice_as_html(invoice_root, invoice_xslt_root,
+                                    html_output,
                                     config['invoice file']['text encoding'])
 
-        if data['keep original file']:
-            shutil.move(str(pathlib.Path(tmpdirname, file_to_consider_original_relative)),  file_to_consider_original)
+        if (source == 'invoice'
+                and file_type == 'p7m') or (source == 'generic'
+                                            and file_type == 'p7m'):
+            if data['keep original file']:
+                shutil.move(
+                    str(
+                        pathlib.Path(tmpdirname,
+                                     file_to_consider_original_relative)),
+                    file_to_consider_original)
 
 
 if __name__ == '__main__':

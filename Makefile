@@ -26,8 +26,8 @@ githook:
 	git config core.hooksPath .githooks
 
 pep:
-	pipenv run yapf --style '{based_on_style: pep8; indent_width: 4}' -i fattura_pa_reader/*.py tests/*.py
-	pipenv run flake8 fattura_pa_reader/*.py --ignore=F401,E501 tests/*.py
+	pipenv run yapf --style '{based_on_style: pep8; indent_width: 4}' -i fattura_elettronica_reader/*.py tests/*.py
+	pipenv run flake8 --ignore=F401,E501 fattura_elettronica_reader/*.py tests/*.py
 
 doc:
 	pipenv run $(MAKE) -C docs html

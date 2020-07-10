@@ -25,23 +25,30 @@
 class P7MFileDoesNotHaveACoherentCryptographicalSignature(Exception):
     """Not a PKCS#7 signature."""
 
+
 class InvoiceFileChecksumFailed(Exception):
     """Checksum of the invoice file does not match the one in the metadata file."""
+
 
 class P7MFileNotAuthentic(Exception):
     """An error with the signature or the signers certificate of the invoice."""
 
+
 class CannotExtractOriginalP7MFile(Exception):
     """The cryptographical signature from the invoice file cannot be removed."""
+
 
 class MissingTagInMetadataFile(Exception):
     """A necessary element is missing from the metadata file."""
 
+
 class XMLFileNotConformingToSchema(Exception):
     """XML file is not-conforming to the XML schema."""
 
+
 class ExtractedAttachmentNotInExtensionWhitelist(Exception):
     """An extracted attachment is not in the extension whitelist."""
+
 
 class ExtractedAttachmentNotInFileTypeWhitelist(Exception):
     """An extracted attachment is not in the filetype whitelist."""

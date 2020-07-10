@@ -2,7 +2,7 @@
 # constants.py
 #
 # Copyright (c) 2018 Enio Carboni - Italy
-# Copyright (C) 2019 Franco Masotti <franco.masotti@live.com>
+# Copyright (C) 2019-2020 Franco Masotti <franco.masotti@live.com>
 #
 # This file is part of fattura-elettronica-reader.
 #
@@ -68,7 +68,7 @@ XML['invoice file']['proprieties'] = {'text encoding': 'UTF-8'}
 # Download urls.
 Downloads = dict()
 
-Downloads['invoice file']=dict()
+Downloads['invoice file'] = dict()
 Downloads['invoice file']['XSLT'] = {
     # Pubblica Amministrazione.
     'PA':
@@ -77,8 +77,10 @@ Downloads['invoice file']['XSLT'] = {
     'https://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2.1/fatturaordinaria_v1.2.1.xsl'
 }
 Downloads['invoice file']['XSD'] = {
-    'default': 'https://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2.1/Schema_del_file_xml_FatturaPA_versione_1.2.1.xsd',
-    'W3C Schema for XML Signatures': 'https://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd'
+    'default':
+    'https://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2.1/Schema_del_file_xml_FatturaPA_versione_1.2.1.xsd',
+    'W3C Schema for XML Signatures':
+    'https://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd'
 }
 
 Downloads['trusted list file'] = {
@@ -86,20 +88,24 @@ Downloads['trusted list file'] = {
 }
 
 # File Patches.
-Patch=dict()
-Patch['invoice file']=dict()
-Patch['invoice file']['XSD']=dict()
-Patch['invoice file']['XSD']['line']=dict()
+Patch = dict()
+Patch['invoice file'] = dict()
+Patch['invoice file']['XSD'] = dict()
+Patch['invoice file']['XSD']['line'] = dict()
 Patch['invoice file']['XSD']['line'][0] = {
-    'offending': 2 * ' ' + '<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>\n',
-    'fix': 2 * ' ' + '<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>\n'
+    'offending':
+    2 * ' ' +
+    '<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>\n',
+    'fix':
+    2 * ' ' +
+    '<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>\n'
 }
 
 # Relative paths.
 Paths = dict()
 Paths['trusted list file'] = 'trusted_list.xml'
 Paths['CA certificate pem file'] = 'CA.pem'
-Paths['invoice file']=dict()
+Paths['invoice file'] = dict()
 # Invoice stylesheet files.
 Paths['invoice file']['XSLT'] = {
     'PA': 'invoice_stylesheet_PA.xslt',
@@ -113,7 +119,7 @@ Paths['invoice file']['XSD'] = {
 Paths['configuration file'] = 'fattura_elettronica_reader.conf'
 
 # Stuff related generically to files.
-File=dict()
+File = dict()
 File['invoice'] = dict()
 File['invoice']['attachment'] = {
     'extension whitelist': ['PDF', 'pdf'],

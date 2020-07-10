@@ -165,6 +165,8 @@ Digital signature
 Some websites say that digital signature of the "Fattura PA" is compulsory and 
 in other cases it is not.
 
+- https://www.agendadigitale.eu/documenti/fatturazione-elettronica/fattura-elettronica-e-firma-come-garantire-autenticita-dellorigine-e-integrita-del-contenuto/
+
 If you find any official source please let me know and/or open a pull request.
 
 Support for non-signed invoice files has been added because of at least one 
