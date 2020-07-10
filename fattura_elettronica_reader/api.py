@@ -648,7 +648,7 @@ def pipeline(source: str, file_type: str, data: dict):
                             config['trusted list file']['XML namespace'],
                             config['trusted list file']['XML certificate tag'])
 
-    if (not (source == 'invoice' and file_type == 'plain' )) or (source == 'invoice' and file_type == 'p7m') or (source == 'generic' and file_type == 'p7m'):
+    if (not (source == 'invoice' and file_type == 'plain')) or (source == 'invoice' and file_type == 'p7m') or (source == 'generic' and file_type == 'p7m'):
         if not is_p7m_file_authentic(file_to_consider, ca_certificate_pem_file,
                                          data['ignore signature check'],
                                          data['ignore signers certificate check']):

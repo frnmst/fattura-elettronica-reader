@@ -40,8 +40,8 @@ and its metadata file makes it possible to obtain:
 Description
 ```````````
 
-Without entering in too much detail (you can read the source code), we can divide
-the pipeline into three main steps:
+Without entering in too much detail (you can read the source code for that),
+we can divide the pipeline into three main steps:
 
 ===========     ===================================================
 Step number     Actions
@@ -80,14 +80,16 @@ There are problems with recent versions of OpenSSL concerning PKCS#7 file decodi
 
 A possible solution it use an older system. If you really trust the file you can
 disable signature checking with the appropriate option. I strongly discourage
-this last solution since if you can't prove its authenticity the invoice has no legal
+the latter solution since if you cannot prove its authenticity the invoice has no legal
 value.
 
 lxml vs defusedxml
 ~~~~~~~~~~~~~~~~~~
 
-I decided to use lxml because it supports XML stylesheets (XSLT), something that
-defusedxml does not. At first, using defusedxml seemed the best bet because of
+I decided to use lxml because it supports XML stylesheets (XSLT).
+Infact, defusedxml does not support XSLT.
+
+At first, using defusedxml seemed the best bet because of
 the increased security:
 
 - https://github.com/tiran/defusedxml#python-xml-libraries
@@ -124,12 +126,8 @@ in the contributing section.
 Official documentation
 ----------------------
 
-- this seems to be legal mumbo jumbo but there might be relevant information:
-
-  - https://www.fatturapa.gov.it/export/fatturazione/it/normativa/f-1.htm
-
+- https://www.fatturapa.gov.it/export/fatturazione/it/normativa/f-1.htm
 - https://www.fatturapa.gov.it/export/fatturazione/it/normativa/f-2.htm
-
 - https://www.fatturapa.gov.it/export/fatturazione/it/normativa/f-3.htm
 
 XML schemas for document validations
@@ -138,7 +136,7 @@ XML schemas for document validations
 Most of XML schemas seem to be non-existing. Only the one for the
 invoice file was found, and was reported by lxml as incorrect,
 but according to the server the schema was last modified on
-``Tue, 25 Jun 2019 10:16:31 GMT``, so they fixed the offending ``xsd`` typo:
+``Tue, 25 Jun 2019 10:16:31 GMT``, so they fixed an offending ``xsd`` typo:
 
 - https://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2.1/Schema_del_file_xml_FatturaPA_versione_1.2.1.xsd
 
