@@ -1,29 +1,14 @@
 Installation
 ============
 
-Run the following command in either a root or normal terminal (depending on 
-your Python setup) from the root directory of the project's cloned repository,
+Install fpyutils via pip:
 
 ::
 
-    pip install .
-
-or simply
-
-::
-
-    make install
+    $ pip3 install fattura_elettronica_reader --user
 
 
-You can also install md_toc via pip (i.e: without having to download the source 
-code):
-
-::
-
-    pip install fattura_elettronica_reader
-
-
-All the necessary dependencies should be installed automatically along with the 
+All the necessary dependencies are installed automatically along with the
 program.
 
 Distribution packages
@@ -36,6 +21,6 @@ Distribution packages
 Dependencies
 ------------
 
-- Python 3.5
+- Python >= 3.5
 
 

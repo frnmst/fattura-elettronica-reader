@@ -84,10 +84,10 @@ the latter solution since if you cannot prove its authenticity the invoice has n
 value.
 
 lxml vs defusedxml
-~~~~~~~~~~~~~~~~~~
+``````````````````
 
-I decided to use lxml because it supports XML stylesheets (XSLT).
-Infact, defusedxml does not support XSLT.
+I decided to use lxml because it supports XML stylesheets (XSLT) as
+defusedxml does not.
 
 At first, using defusedxml seemed the best bet because of
 the increased security:
@@ -115,12 +115,6 @@ instead of:
 
 You must also add defusedxml and re-install the requirements as described
 in the contributing section.
-
-
-::
-
-
-    defusedxml==0.5.0
 
 
 Official documentation
@@ -156,13 +150,13 @@ Downloading of the W3C file
 The W3C schema file is a dependency for the invoice schema file and it needs to be downloaded 
 separately. For some reason the downloading of this file takes a few seconds.
 
-Technical differences between "Fattura PA", "Fattura B2B" and other
-```````````````````````````````````````````````````````````````````
+Fattura PA vs Fattura B2B
+``````````````````````````
 
 Digital signature
 ~~~~~~~~~~~~~~~~~
 
-Some websites say that digital signature of the "Fattura PA" is compulsory and 
+Some websites say that digital signature of the *Fattura PA* is compulsory and 
 in other cases it is not.
 
 - https://www.agendadigitale.eu/documenti/fatturazione-elettronica/fattura-elettronica-e-firma-come-garantire-autenticita-dellorigine-e-integrita-del-contenuto/
