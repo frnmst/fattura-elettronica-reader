@@ -861,7 +861,8 @@ def pipeline(source: str, file_type: str, data: dict):
                         invoice_xslt_file).is_file():
                     get_remote_file(
                         invoice_xslt_file,
-                        config['invoice file']['XSLT ' + invoice_xslt_type +
+                        config['invoice file']['XSLT ' +
+                                               data['invoice xslt type'] +
                                                ' download'])
                 invoice_xslt_root = parse_xml_file(invoice_xslt_file)
                 html_output = file_to_consider + '.html'

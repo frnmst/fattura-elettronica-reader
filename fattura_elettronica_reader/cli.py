@@ -119,13 +119,13 @@ class CliToApi():
 
 
 class CliInterface():
-    """The interface exposed to the final user."""
+    r"""The interface exposed to the final user."""
     def __init__(self):
-        """Set the parser variable that will be used instead of using create_parser."""
+        r"""Set the parser variable that will be used instead of using create_parser."""
         self.parser = self.create_parser()
 
     def create_parser(self):
-        """Create the CLI parser."""
+        r"""Create the CLI parser."""
         parser = argparse.ArgumentParser(
             description=PROGRAM_DESCRIPTION,
             formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -143,13 +143,13 @@ class CliInterface():
         generic_parser = source_subparsers.add_parser('generic',
                                                       help='generic file')
 
+        invoice_xslt_type_help = 'select the XML stylesheet file for the invoice. Defaults to "ordinaria". This option is ignored if "-H" is not set'
         invoice_parser.add_argument(
             '-X',
             '--invoice-xslt-type',
             choices=['ordinaria', 'PA'],
             default='ordinaria',
-            help=
-            'select the XML stylesheet file for the invoice. Defaults to "ordinaria". This option is ignored if "-H" is not set'
+            help=invoice_xslt_type_help,
         )
 
         invoice_parser.add_argument(
@@ -163,12 +163,12 @@ class CliInterface():
                                     action='store_true',
                                     help='extract embedded attachments')
 
+        force_invoice_schema_file_download_help = 'force download of the XML schema necessary for the validation of the invoice file'
         invoice_parser.add_argument(
             '-E',
             '--force-invoice-schema-file-download',
             action='store_true',
-            help=
-            'force download of the XML schema necessary for the validation of the invoice file'
+            help=force_invoice_schema_file_download_help,
         )
 
         invoice_parser.add_argument('-H',
@@ -195,20 +195,20 @@ class CliInterface():
             action='store_true',
             help='force download of the XML stylesheet file')
 
+        ignore_attachment_extension_whitelist_help = 'do not perform file extension checks for the attachments. This option is ignored if "-a" is not set'
         invoice_parser.add_argument(
             '-w',
             '--ignore-attachment-extension-whitelist',
             action='store_true',
-            help=
-            'do not perform file extension checks for the attachments. This option is ignored if "-a" is not set'
+            help=ignore_attachment_extension_whitelist_help,
         )
 
+        ignore_attachment_filetype_whitelist_help = 'do not perform filetype checks for the attachments. This option is ignored if "-a" is not set'
         invoice_parser.add_argument(
             '-W',
             '--ignore-attachment-filetype-whitelist',
             action='store_true',
-            help=
-            'do not perform filetype checks for the attachments. This option is ignored if "-a" is not set'
+            help=ignore_attachment_filetype_whitelist_help,
         )
 
         ###########
@@ -220,13 +220,14 @@ class CliInterface():
 
         invoice_p7m_parser = invoice_subparsers.add_parser('p7m', help='p7m')
 
+        ignore_signature_check_help = 'avoids checking the cryptographic signature of the invoice file'
         invoice_p7m_parser.add_argument(
             '-s',
             '--ignore-signature-check',
             default=False,
             action='store_true',
-            help=
-            'avoids checking the cryptographic signature of the invoice file')
+            help=ignore_signature_check_help,
+        )
 
         invoice_p7m_parser.add_argument(
             '-S',

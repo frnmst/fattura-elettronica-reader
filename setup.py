@@ -23,7 +23,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='fattura_elettronica_reader',
-    version='0.1.0',
+    version='1.0.0',
     packages=find_packages(exclude=['*tests*']),
     license='GPL',
     description='A utility that is able to check and extract electronic invoice received from the Sistema di Interscambio.',
@@ -50,6 +50,5 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 3',
     ],
-    install_requires=['atomicwrites==1.3', 'filetype==1.0', 'appdirs==1.4', 'requests==2.21', 'lxml==4.3'],
+    install_requires=['atomicwrites>=1.4.0', 'filetype>=1.0.7', 'appdirs>=1.4.4', 'requests>=2.24.0', 'lxml>=4.5.2'],
 )
-
