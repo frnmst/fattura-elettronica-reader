@@ -41,8 +41,46 @@ http://frnmst.github.io/fattura-elettronica-reader
 API examples
 ------------
 
+fattura-elettronica-reader has a `public API`_.
+This means for example that you can you easily read invoice files within another 
+Python program:
+
+
+::
+
+    >>> import fattura_elettronica_reader
+    >>> data = {
+            'patched': True,
+            'configuration file': str(),
+            'write default configuration file': str(),
+            'extract attachments': True,
+            'metadata file': 'myfile.xml',
+            'invoice xslt type': 'ordinaria',
+            'no invoice xml validation': False,
+            'force invoice schema file download': False,
+            'generate html output': True,
+            'invoice filename': str(),
+            'no checksum check': False,
+            'force invoice xml stylesheet file download': False,
+            'ignore attachment extension whitelist': False,
+            'ignore attachment filetype whitelist': False,
+            'ignore signature check': False,
+            'ignore signers certificate check': False,
+            'force trusted list file download': False,
+            'keep original file': True,
+    }
+    >>> fattura_elettronica_reader.assert_data_structure(source='invoice', file_type='p7m', data=data)
+    >>> fattura_elettronica_reader.pipeline(
+            source='invoice',
+            file_type='p7m',
+            data=data,
+        )
+    
+
 Have a look at the `archive_invoice_files <https://raw.githubusercontent.com/frnmst/automated-tasks/master/src/archiving/archive_invoice_files.py>`_
 script in the `automated tasks <https://github.com/frnmst/automated-tasks>`_ repository.
+
+.. _public API: https://frnmst.github.io/fattura-elettronica-reader/api.html
 
 CLI helps
 ---------

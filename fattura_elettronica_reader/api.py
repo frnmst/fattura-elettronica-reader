@@ -610,7 +610,23 @@ def load_configuration(configuration_file: str):
 
 
 def assert_data_structure(source: str, file_type: str, data: dict):
-    r"""Check the data structure."""
+    r"""Check the data structure.
+
+        :param source: the type of document to be considered.
+        Choose between ``invoice`` and ``generic``.
+    :param file_type the type of file to be considered:
+        Choose between ``p7m`` and ``plain``, depending on the
+        source parameter.
+    :param data: a data structure containing all the fields.
+    :type source: str
+    :type file_type: str
+    :type data: dict
+    :returns: None
+    :rtype: None
+    :raises: AssertionError
+    """
+    # Check if file_type is coherent with source.
+    ok = False
     assert source in ['invoice', 'generic']
 
     assert 'patched' in data
@@ -660,8 +676,9 @@ def assert_data_structure(source: str, file_type: str, data: dict):
             assert isinstance(data['ignore signers certificate check'], bool)
             assert isinstance(data['force trusted list file download'], bool)
             assert isinstance(data['keep original file'], bool)
+            ok = True
         elif file_type == 'plain':
-            pass
+            ok = True
     elif source == 'generic':
         if file_type == 'p7m':
             assert 'ignore signature check' in data
@@ -680,12 +697,29 @@ def assert_data_structure(source: str, file_type: str, data: dict):
                 assert isinstance(data['p7m files'], list)
                 for p in data['p7m files']:
                     assert isinstance(p, str)
+            ok = True
+
+    if not ok:
+        raise AssertionError
 
 
 def pipeline(source: str, file_type: str, data: dict):
-    r"""Run the pipeline."""
+    r"""Run the pipeline.
+
+    :param source: the type of document to be considered.
+        Choose between ``invoice`` and ``generic``.
+    :param file_type the type of file to be considered:
+        Choose between ``p7m`` and ``plain``, depending on the
+        source parameter.
+    :param data: a data structure containing all the fields.
+    :type source: str
+    :type file_type: str
+    :type data: dict
+    :returns: None
+    :rtype: None
+    """
     assert_data_structure(source, file_type, data)
-    # data must be patchedfor this function to work.
+    # data must be patched for this function to work.
     assert data['patched']
 
     project_name = 'fattura_elettronica_reader'
