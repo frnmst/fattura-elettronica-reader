@@ -612,7 +612,7 @@ def load_configuration(configuration_file: str):
 def assert_data_structure(source: str, file_type: str, data: dict):
     r"""Check the data structure.
 
-        :param source: the type of document to be considered.
+    :param source: the type of document to be considered.
         Choose between ``invoice`` and ``generic``.
     :param file_type the type of file to be considered:
         Choose between ``p7m`` and ``plain``, depending on the
