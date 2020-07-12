@@ -2,7 +2,7 @@
 # __init__.py
 #
 # Copyright (c) 2018 Enio Carboni - Italy
-# Copyright (C) 2017-2019 Franco Masotti <franco.masotti@live.com>
+# Copyright (C) 2019-2020 Franco Masotti <franco.masotti@live.com>
 #
 # This file is part of fattura-elettronica-reader.
 #
