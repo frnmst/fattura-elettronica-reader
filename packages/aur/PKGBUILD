@@ -1,0 +1,29 @@
+# Maintainer: Franco Masotti <franco dot masotti at live dot com>
+# Contributor: Franco Masotti <franco dot masotti at live dot com>
+pkgname=python-fattura_elettronica_reader
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="'A utility that is able to check and extract electronic invoice received from the Sistema di Interscambio"
+arch=('any')
+url="https://github.com/frnmst/fattura-elettronica-reader"
+license=('GPL3')
+depends=('python'
+         'python-setuptools'
+         'python-atomicwrites>=1.4.0'
+         'python-filetype>=1.0.7'
+         'python-appdirs>=1.4.4'
+         'python-requests>=2.24.0'
+         'python-lxml>=4.5.2')
+options=(!emptydirs)
+source=("https://frnmst.gitlab.io/software/fattura-elettronica-reader-${pkgver}.tar.gz.sig" "https://frnmst.gitlab.io/software/fattura-elettronica-reader-${pkgver}.tar.gz")
+sha512sums=('SKIP' 'SKIP')
+
+check() {
+  cd "${srcdir}"/fattura-elettronica-reader-"${pkgver}"
+  python setup.py test
+}
+
+package() {
+  cd "${srcdir}"/fattura-elettronica-reader-"${pkgver}"
+  python setup.py install --root="${pkgdir}/" --optimize=1
+}
