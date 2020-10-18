@@ -15,6 +15,7 @@ Welcome to fattura-pa-reader's documentation!
    considerations
    examples
    contributing
+   workflow
    source_code
    copyright_license
 
