@@ -20,26 +20,22 @@
 # along with fattura-elettronica-reader.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-default: pep doc test
+export PACKAGE_NAME=fattura_elettronica_reader
 
-githook:
-	git config core.hooksPath .githooks
-
-pep:
-	pipenv run yapf --style '{based_on_style: pep8; indent_width: 4}' -i fattura_elettronica_reader/*.py tests/*.py
-	pipenv run flake8 --ignore=F401,E501 fattura_elettronica_reader/*.py tests/*.py
+default: doc
 
 doc:
 	pipenv run $(MAKE) -C docs html
 
 install:
-	pip install .
+	pip3 install . --user
 
 uninstall:
-	pip uninstall fattura_elettronica_reader
+	pip3 uninstall $(PACKAGE_NAME)
 
 install-dev:
-	pipenv install
+	pipenv install --dev
+	pipenv run pre-commit install
 
 uninstall-dev:
 	pipenv --rm
@@ -59,4 +55,4 @@ clean:
 	rm -rf build dist *.egg-info
 	pipenv run $(MAKE) -C docs clean
 
-.PHONY: default pep doc install install-dev test uninstall uninstall-dev dist upload clean
+.PHONY: default doc install uninstall install-dev uninstall-dev test clean
