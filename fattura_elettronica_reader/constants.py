@@ -95,7 +95,7 @@ Patch['invoice file']['XSD']['line'] = dict()
 Patch['invoice file']['XSD']['line'][0] = {
     'offending':
     2 * ' ' +
-    '<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>\n',
+    '<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd" />\n',
     'fix':
     2 * ' ' +
     '<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>\n'
