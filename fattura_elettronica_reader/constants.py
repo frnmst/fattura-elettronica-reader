@@ -78,7 +78,7 @@ Downloads['invoice file']['XSLT'] = {
 }
 Downloads['invoice file']['XSD'] = {
     'default':
-    'https://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2.1/Schema_del_file_xml_FatturaPA_versione_1.2.1.xsd',
+    'https://www.fatturapa.gov.it/export/documenti/fatturapa/v1.2.1/Schema_del_file_xml_FatturaPA_versione_1.2.1a.xsd',
     'W3C Schema for XML Signatures':
     'https://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd'
 }
