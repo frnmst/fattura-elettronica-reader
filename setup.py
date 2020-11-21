@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with fattura-elettronica-reader.  If not, see <http://www.gnu.org/licenses/>.
 #
+"""setup."""
 
 from setuptools import setup, find_packages
 
@@ -51,5 +52,5 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 3',
     ],
-    install_requires=['atomicwrites>=1.4.0', 'filetype>=1.0.7', 'appdirs>=1.4.4', 'requests>=2.24.0', 'lxml>=4.5.2'],
+    install_requires=['atomicwrites>=1.4,<1.5', 'filetype>=1.0,<1.1', 'appdirs>=1.4,<1.5', 'requests>=2.25,<2.26', 'lxml>=4.6,<4.7'],
 )
