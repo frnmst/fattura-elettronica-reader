@@ -132,7 +132,7 @@ XML schemas for document validations
 ````````````````````````````````````
 
 Most of XML schemas seem to be non-existing. Only the one for the
-invoice file was found, and was reported by lxml as incorrect.
+invoice file was found.
 
 For sake of completeness the current supported versions
 and the SHA-512 and SHA-256 checksums are reported in the following table:
@@ -171,6 +171,11 @@ According to the server the schema was last modified on
 ``Tue, 25 Jun 2019 10:16:31 GMT``, so they fixed an offending ``xsd`` typo:
 
 - https://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2.1/Schema_del_file_xml_FatturaPA_versione_1.2.1.xsd
+
+Before June 2019
+................
+
+Initially the schema file was reported as incorrect by lxml because of a typo.
 
 Considerations
 ~~~~~~~~~~~~~~
