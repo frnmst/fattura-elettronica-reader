@@ -781,7 +781,7 @@ def pipeline(source: str, file_type: str, data: dict):
         configuration_file = define_appdirs_user_config_dir_file_path(
             project_name, Paths['configuration file'])
     if data['write default configuration file']:
-        write_configuration_file(data['configuration file'])
+        write_configuration_file(configuration_file)
 
     config = load_configuration(configuration_file)
 
