@@ -22,5 +22,3 @@ Dependencies
 ------------
 
 - Python >= 3.5
-
-

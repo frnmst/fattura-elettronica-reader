@@ -25,7 +25,6 @@ import argparse
 import textwrap
 from pkg_resources import (get_distribution, DistributionNotFound)
 from .api import pipeline
-from .constants import File
 
 PROGRAM_DESCRIPTION = 'fattura-elettronica-reader: Validate, extract, and generate printables\nof electronic invoice files received from the "Sistema di Interscambio"\nas well as other P7M files'
 VERSION_NAME = 'fattura_elettronica_reader'
@@ -42,6 +41,7 @@ PROGRAM_EPILOG = RETURN_VALUES + '\n\n' + VERSION_COPYRIGHT + '\n' + VERSION_LIC
 
 class CliToApi():
     r"""An interface between the CLI and API functions."""
+
     def run(self, args):
         r"""Run the pipeline."""
         common_data = {
@@ -120,6 +120,7 @@ class CliToApi():
 
 class CliInterface():
     r"""The interface exposed to the final user."""
+
     def __init__(self):
         r"""Set the parser variable that will be used instead of using create_parser."""
         self.parser = self.create_parser()

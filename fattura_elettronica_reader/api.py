@@ -109,8 +109,7 @@ def is_p7m_file_signed(p7m_file: str) -> bool:
     """
     command = 'openssl pkcs7 -print_certs -text -noout -inform DER -in {}'.format(
         shlex.quote(p7m_file))
-    return True if subprocess.run(
-        shlex.split(command)).returncode == 0 else False
+    return True if subprocess.run(shlex.split(command)).returncode == 0 else False
 
 
 def invoice_file_checksum_matches(metadata_file_xml_root, invoice_file: str,
@@ -265,8 +264,7 @@ def remove_signature_from_p7m_file(p7m_file: str, output_file: str) -> bool:
     command = ('openssl smime -nosigs -verify -noverify -in {}'.format(
         shlex.quote(p7m_file)) +
                ' -inform DER -out {}'.format(shlex.quote(output_file)))
-    return True if subprocess.run(
-        shlex.split(command)).returncode == 0 else False
+    return True if subprocess.run(shlex.split(command)).returncode == 0 else False
 
 
 def extract_attachments_from_invoice_file(
@@ -623,84 +621,137 @@ def assert_data_structure(source: str, file_type: str, data: dict):
     :type data: dict
     :returns: None
     :rtype: None
-    :raises: AssertionError
+    :raises: ValueError or TypeError
     """
     # Check if file_type is coherent with source.
     ok = False
-    assert source in ['invoice', 'generic']
+    if source not in ['invoice', 'generic']:
+        raise ValueError
 
-    assert 'patched' in data
-    assert 'configuration file' in data
-    assert 'write default configuration file' in data
-    assert isinstance(data['patched'], bool)
-    assert isinstance(data['configuration file'], str)
-    assert isinstance(data['write default configuration file'], bool)
+    if 'patched' not in data:
+        raise ValueError
+    if'configuration file' not in data:
+        raise ValueError
+    if'write default configuration file' not in data:
+        raise ValueError
+    if not isinstance(data['patched'], bool):
+        raise TypeError
+    if not isinstance(data['configuration file'], str):
+        raise TypeError
+    if not isinstance(data['write default configuration file'], bool):
+        raise TypeError
 
     if source == 'invoice':
-        assert 'extract attachments' in data
-        assert 'invoice xslt type' in data
-        assert 'no invoice xml validation' in data
-        assert 'force invoice schema file download' in data
-        assert 'generate html output' in data
-        assert 'invoice filename' in data
-        assert 'no checksum check' in data
-        assert 'force invoice xml stylesheet file download' in data
-        assert 'ignore attachment extension whitelist' in data
-        assert 'ignore attachment filetype whitelist' in data
-        assert isinstance(data['extract attachments'], bool)
-        assert isinstance(data['invoice xslt type'], str)
-        assert isinstance(data['no invoice xml validation'], bool)
-        assert isinstance(data['force invoice schema file download'], bool)
-        assert isinstance(data['generate html output'], bool)
-        assert isinstance(data['invoice filename'], str)
-        assert isinstance(data['no checksum check'], bool)
-        assert isinstance(data['force invoice xml stylesheet file download'],
-                          bool)
-        assert isinstance(data['ignore attachment extension whitelist'], bool)
-        assert isinstance(data['ignore attachment filetype whitelist'], bool)
+        if 'extract attachments' not in data:
+            raise ValueError
+        if 'invoice xslt type' not in data:
+            raise ValueError
+        if 'no invoice xml validation' not in data:
+            raise ValueError
+        if 'force invoice schema file download' not in data:
+            raise ValueError
+        if 'generate html output' not in data:
+            raise ValueError
+        if 'invoice filename' not in data:
+            raise ValueError
+        if 'no checksum check' not in data:
+            raise ValueError
+        if 'force invoice xml stylesheet file download' not in data:
+            raise ValueError
+        if 'ignore attachment extension whitelist' not in data:
+            raise ValueError
+        if 'ignore attachment filetype whitelist' not in data:
+            raise ValueError
+        if not isinstance(data['extract attachments'], bool):
+            raise TypeError
+        if not isinstance(data['invoice xslt type'], str):
+            raise TypeError
+        if not isinstance(data['no invoice xml validation'], bool):
+            raise TypeError
+        if not isinstance(data['force invoice schema file download'], bool):
+            raise TypeError
+        if not isinstance(data['generate html output'], bool):
+            raise TypeError
+        if not isinstance(data['invoice filename'], str):
+            raise TypeError
+        if not isinstance(data['no checksum check'], bool):
+            raise TypeError
+        if not isinstance(data['force invoice xml stylesheet file download'],
+                          bool):
+            raise TypeError
+        if not isinstance(data['ignore attachment extension whitelist'], bool):
+            raise TypeError
+        if not isinstance(data['ignore attachment filetype whitelist'], bool):
+            raise TypeError
         if data['patched']:
-            assert 'metadata file' in data
-            assert isinstance(data['metadata file'], str)
+            if 'metadata file' not in data:
+                raise ValueError
+            if not isinstance(data['metadata file'], str):
+                raise TypeError
         else:
-            assert 'metadata files' in data
-            assert isinstance(data['metadata files'], list)
+            if 'metadata files' not in data:
+                raise ValueError
+            if not isinstance(data['metadata files'], list):
+                raise TypeError
             for m in data['metadata files']:
-                assert isinstance(m, str)
+                if not isinstance(m, str):
+                    raise TypeError
 
         if file_type == 'p7m':
-            assert 'ignore signature check' in data
-            assert 'ignore signers certificate check' in data
-            assert 'force trusted list file download' in data
-            assert 'keep original file' in data
-            assert isinstance(data['ignore signature check'], bool)
-            assert isinstance(data['ignore signers certificate check'], bool)
-            assert isinstance(data['force trusted list file download'], bool)
-            assert isinstance(data['keep original file'], bool)
+            if 'ignore signature check' not in data:
+                raise ValueError
+            if 'ignore signers certificate check' not in data:
+                raise ValueError
+            if 'force trusted list file download' not in data:
+                raise ValueError
+            if 'keep original file' not in data:
+                raise ValueError
+            if not isinstance(data['ignore signature check'], bool):
+                raise TypeError
+            if not isinstance(data['ignore signers certificate check'], bool):
+                raise TypeError
+            if not isinstance(data['force trusted list file download'], bool):
+                raise TypeError
+            if not isinstance(data['keep original file'], bool):
+                raise TypeError
             ok = True
         elif file_type == 'plain':
             ok = True
     elif source == 'generic':
         if file_type == 'p7m':
-            assert 'ignore signature check' in data
-            assert 'ignore signers certificate check' in data
-            assert 'force trusted list file download' in data
-            assert 'keep original file' in data
-            assert isinstance(data['ignore signature check'], bool)
-            assert isinstance(data['ignore signers certificate check'], bool)
-            assert isinstance(data['force trusted list file download'], bool)
-            assert isinstance(data['keep original file'], bool)
+            if 'ignore signature check' not in data:
+                raise ValueError
+            if 'ignore signers certificate check' not in data:
+                raise ValueError
+            if 'force trusted list file download' not in data:
+                raise ValueError
+            if 'keep original file' not in data:
+                raise ValueError
+            if not isinstance(data['ignore signature check'], bool):
+                raise TypeError
+            if not isinstance(data['ignore signers certificate check'], bool):
+                raise TypeError
+            if not isinstance(data['force trusted list file download'], bool):
+                raise TypeError
+            if not isinstance(data['keep original file'], bool):
+                raise TypeError
             if data['patched']:
-                assert 'p7m file' in data
-                assert isinstance(data['p7m file'], str)
+                if 'p7m file' not in data:
+                    raise ValueError
+                if not isinstance(data['p7m file'], str):
+                    raise TypeError
             else:
-                assert 'p7m files' in data
-                assert isinstance(data['p7m files'], list)
+                if 'p7m files' not in data:
+                    raise ValueError
+                if not isinstance(data['p7m files'], list):
+                    raise TypeError
                 for p in data['p7m files']:
-                    assert isinstance(p, str)
+                    if not isinstance(p, str):
+                        raise TypeError
             ok = True
 
     if not ok:
-        raise AssertionError
+        raise ValueError
 
 
 def pipeline(source: str, file_type: str, data: dict):
@@ -720,7 +771,8 @@ def pipeline(source: str, file_type: str, data: dict):
     """
     assert_data_structure(source, file_type, data)
     # data must be patched for this function to work.
-    assert data['patched']
+    if not data['patched']:
+        raise ValueError
 
     project_name = 'fattura_elettronica_reader'
     create_appdirs(project_name)

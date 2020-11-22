@@ -42,7 +42,7 @@ API examples
 ------------
 
 fattura-elettronica-reader has a `public API`_.
-This means for example that you can you easily read invoice files within another 
+This means for example that you can you easily read invoice files within another
 Python program:
 
 
@@ -75,7 +75,7 @@ Python program:
             file_type='p7m',
             data=data,
         )
-    
+
 
 Have a look at the `archive_invoice_files <https://raw.githubusercontent.com/frnmst/automated-tasks/master/src/archiving/archive_invoice_files.py>`_
 script in the `automated tasks <https://github.com/frnmst/automated-tasks>`_ repository.

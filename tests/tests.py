@@ -20,7 +20,7 @@
 #
 """The tests module."""
 
-from fattura_elettronica_reader import (api, exceptions, constants)
+# from fattura_elettronica_reader import (api, exceptions, constants)
 import unittest
 
 # Some static generic variables.
