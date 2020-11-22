@@ -23,6 +23,7 @@
 
 import argparse
 import textwrap
+import sys
 from pkg_resources import (get_distribution, DistributionNotFound)
 from .api import pipeline
 
@@ -99,6 +100,8 @@ class CliToApi():
                     args.force_trusted_list_file_download,
                     'keep original file': args.keep_original_file,
                 }
+        else:
+            data = {'write default configuration file': True}
 
         # Merge the dicts.
         data = {**common_data, **data}
@@ -107,15 +110,25 @@ class CliToApi():
             iterator = data['metadata files']
         elif args.source == 'generic':
             iterator = data['p7m files']
+        else:
+            # Write the config file and quit.
+            iterator = ['config file']
 
         for i in iterator:
-            # patch data with single files
+            # Patch data with single files.
             data['patched'] = True
             if args.source == 'invoice':
                 data['metadata file'] = i
+                source = args.source
+                file_type = args.file_type
             elif args.source == 'generic':
                 data['p7m file'] = i
-            pipeline(args.source, args.file_type, data)
+                source = args.source
+                file_type = args.file_type
+            else:
+                source = 'NOOP'
+                file_type = 'NOOP'
+            pipeline(source, file_type, data)
 
 
 class CliInterface():
@@ -132,9 +145,10 @@ class CliInterface():
             formatter_class=argparse.RawDescriptionHelpFormatter,
             epilog=textwrap.dedent(PROGRAM_EPILOG))
 
+        source_required = '--write-default-configuration-file' not in sys.argv and '-C' not in sys.argv
         source_subparsers = parser.add_subparsers(title='source',
                                                   dest='source',
-                                                  required=True)
+                                                  required=source_required)
 
         ###########
         # Sources #
