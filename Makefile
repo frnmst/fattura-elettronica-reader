@@ -34,7 +34,7 @@ uninstall:
 	pip3 uninstall $(PACKAGE_NAME)
 
 install-dev:
-	pipenv install --dev
+	pipenv install
 	pipenv run pre-commit install
 
 uninstall-dev:
