@@ -13,6 +13,7 @@ Welcome to fattura-pa-reader's documentation!
    install
    api
    considerations
+   assets
    examples
    contributing
    workflow
