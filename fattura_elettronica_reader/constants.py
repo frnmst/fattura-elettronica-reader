@@ -72,9 +72,9 @@ Downloads['invoice file'] = dict()
 Downloads['invoice file']['XSLT'] = {
     # Pubblica Amministrazione.
     'PA':
-    'https://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2.1/fatturaPA_v1.2.1.xsl',
+    'https://www.fatturapa.gov.it/export/documenti/fatturapa/v1.2.1/Foglio_di_stile_fatturaPA_v1.2.1.xsl',
     'ordinaria':
-    'https://www.fatturapa.gov.it/export/fatturazione/sdi/fatturapa/v1.2.1/fatturaordinaria_v1.2.1.xsl'
+    'https://www.fatturapa.gov.it/export/documenti/fatturapa/v1.2.1/Foglio_di_stile_fatturaordinaria_v1.2.1.xsl'
 }
 Downloads['invoice file']['XSD'] = {
     'default':
