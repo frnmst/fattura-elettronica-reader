@@ -21,7 +21,6 @@
 #
 """The main file."""
 
-import subprocess
 import shlex
 import lxml.etree as ET
 import hashlib
@@ -106,11 +105,11 @@ def is_p7m_file_signed(p7m_file: str) -> bool:
     :type p7m_file: str
     :returns: True if the file is signed, False otherwise.
     :rtype: bool
-    :raises: a subprocess or a built-in exception.
+    :raises: a fpyutils or a built-in exception.
     """
     command = 'openssl pkcs7 -print_certs -text -noout -inform DER -in {}'.format(
         shlex.quote(p7m_file))
-    return True if subprocess.run(shlex.split(command)).returncode == 0 else False
+    return True if fpyutils.execute_command_live_output(command) == 0 else False
 
 
 def invoice_file_checksum_matches(metadata_file_xml_root, invoice_file: str,
@@ -235,7 +234,7 @@ def is_p7m_file_authentic(p7m_file: str,
     :type ignore_signers_certificate_check: bool
     :returns: ``True`` if the operation is successful, ``False`` otherwise.
     :rtype: bool
-    :raises: a subprocess or built-in exception.
+    :raises: a fpyutils or built-in exception.
     """
     pre = str()
     post = str()
@@ -247,8 +246,7 @@ def is_p7m_file_authentic(p7m_file: str,
                ' -CAfile {}'.format(shlex.quote(ca_certificate_pem_file)) +
                ' -in {}'.format(shlex.quote(p7m_file)) +
                ' -inform DER -out /dev/null')
-    return True if subprocess.run(
-        shlex.split(command)).returncode == 0 else False
+    return True if fpyutils.execute_command_live_output(command) == 0 else False
 
 
 def remove_signature_from_p7m_file(p7m_file: str, output_file: str) -> bool:
@@ -260,12 +258,12 @@ def remove_signature_from_p7m_file(p7m_file: str, output_file: str) -> bool:
     :type output_file: str
     :returns: ``True`` if the operation is successful, ``False`` otherwise.
     :rtype: bool
-    :raises: a subprocess or built-in exception.
+    :raises: a fpyutils or built-in exception.
     """
     command = ('openssl smime -nosigs -verify -noverify -in {}'.format(
         shlex.quote(p7m_file)) +
                ' -inform DER -out {}'.format(shlex.quote(output_file)))
-    return True if subprocess.run(shlex.split(command)).returncode == 0 else False
+    return True if fpyutils.execute_command_live_output(command) == 0 else False
 
 
 def extract_attachments_from_invoice_file(
