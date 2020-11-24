@@ -22,6 +22,21 @@ Public keys file                                        https://eidas.agid.gov.i
 
 .. warning:: fattura-elettronica-reader is guaranteed to work with these file versions only!
 
+.. important:: The XML schema file for FatturaPA version 1.2.1 needs to be patched. fattura_elettronica_reader
+                runs the SHA-512 checksum on the patched version of the file which corresponds to:
+
+                ::
+
+
+                    a1b02818f81ac91f35358260dd12e1bf4480e1545bb457caffa0d434200a1bd05bedd88df2d897969485a989dda78922850ebe978b92524778a37cb0afacba27
+
+
+Some of these file are checked in the pipeline:
+if the checksum does not match the ones present in the source code an exception is raised.
+You can use the ``--ignore-assets-checksum`` option to override this behaviour.
+
+
+
 Updates
 -------
 

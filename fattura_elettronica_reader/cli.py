@@ -52,6 +52,8 @@ class CliToApi():
             args.configuration_file,
             'write default configuration file':
             args.write_default_configuration_file,
+            'ignore assets checksum':
+            args.ignore_assets_checksum,
         }
 
         # Prepare the data structure.
@@ -321,6 +323,11 @@ class CliInterface():
                             '--write-default-configuration-file',
                             action='store_true',
                             help='write the default configuration file')
+
+        parser.add_argument('-k',
+                            '--ignore-assets-checksum',
+                            action='store_true',
+                            help='avoid running checksums for the downloadable assets')
 
         parser.add_argument('-v',
                             '--version',

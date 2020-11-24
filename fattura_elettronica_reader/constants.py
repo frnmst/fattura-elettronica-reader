@@ -127,5 +127,17 @@ File['invoice']['attachment'] = {
     'filetype whitelist': ['application/pdf']
 }
 
+# Checksums.
+# SHA-512 checksum of the assets.
+Checksum = dict()
+Checksum[Paths['invoice file']['XSLT']['PA']] = '301db9da3c0715c0ab5db22c561bfb2812fea3cef150ff4a2124fe6141ebb3cb1c898d7ca3c931f716eff3b7b1946ebc86ca8bdd6d7561979f2f3a0cb95ff560'
+Checksum[Paths['invoice file']['XSLT']['ordinaria']] = '849c4b50956b9e9eaccbbbffb04c1f345ff4abdc0dd191a14c54d48092c661984b1fcdb910c4c92291e158a62ecbb1c588d94e6bd6479e61ff6376746154df6c'
+
+# Checksum of the patched schema file, not of the original one which is
+# 2a7c3f2913ee390c167e41ae5618c303b481f548f9b2a8d60dddc36804ddd3ebf7cb5003e5cc6996480c67d085b82b438aff7cc0f74d7c104225449785cb575b
+Checksum[Paths['invoice file']['XSD']['default']] = 'a1b02818f81ac91f35358260dd12e1bf4480e1545bb457caffa0d434200a1bd05bedd88df2d897969485a989dda78922850ebe978b92524778a37cb0afacba27'
+
+Checksum[Paths['trusted list file']] = '09c2cf39120a6ca869083a659e8861aae8d677957cbbd89be1286f0bb5ef5cbb33a17b15637e6245662e2a4fa60a26efa8fd1101bed2c4dcdff0bbbcbc7811fe'
+
 if __name__ == '__main__':
     pass

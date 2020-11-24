@@ -29,7 +29,7 @@ from .api import (
     patch_invoice_schema_file, create_appdirs,
     define_appdirs_user_data_dir_file_path,
     define_appdirs_user_config_dir_file_path, write_configuration_file,
-    assert_data_structure, pipeline)
+    assert_data_structure, asset_checksum_matches, pipeline)
 from .cli import (CliInterface)
 from .exceptions import (P7MFileDoesNotHaveACoherentCryptographicalSignature,
                          InvoiceFileChecksumFailed, P7MFileNotAuthentic,
@@ -37,4 +37,5 @@ from .exceptions import (P7MFileDoesNotHaveACoherentCryptographicalSignature,
                          MissingTagInMetadataFile,
                          XMLFileNotConformingToSchema,
                          ExtractedAttachmentNotInExtensionWhitelist,
-                         ExtractedAttachmentNotInFileTypeWhitelist)
+                         ExtractedAttachmentNotInFileTypeWhitelist,
+                         AssetsChecksumDoesNotMatch)

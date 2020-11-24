@@ -40,7 +40,8 @@ from .exceptions import (P7MFileDoesNotHaveACoherentCryptographicalSignature,
                          MissingTagInMetadataFile,
                          XMLFileNotConformingToSchema,
                          ExtractedAttachmentNotInExtensionWhitelist,
-                         ExtractedAttachmentNotInFileTypeWhitelist)
+                         ExtractedAttachmentNotInFileTypeWhitelist,
+                         AssetsChecksumDoesNotMatch)
 from . import constants as const
 
 #######
@@ -219,7 +220,7 @@ def get_ca_certificates(trusted_list_xml_root: str,
 def is_p7m_file_authentic(p7m_file: str,
                           ca_certificate_pem_file: str,
                           ignore_signature_check: bool = False,
-                          ignore_signers_certificate_check: bool = False):
+                          ignore_signers_certificate_check: bool = False) -> bool:
     r"""Check authenticity of the invoice file on various levels.
 
     :param p7m_file: the path of the signed invoice file.
@@ -436,7 +437,7 @@ def define_appdirs_user_data_dir_file_path(program_name: str,
 
 
 def define_appdirs_user_config_dir_file_path(program_name: str,
-                                             relative_path: str):
+                                             relative_path: str) -> str:
     r"""Get the full path of the input file in the user's cofiguration directory.
 
     :param program_name: the name of the software.
@@ -527,15 +528,19 @@ def assert_data_structure(source: str, file_type: str, data: dict):
 
     if 'patched' not in data:
         raise ValueError
-    if'configuration file' not in data:
+    if 'configuration file' not in data:
         raise ValueError
-    if'write default configuration file' not in data:
+    if 'write default configuration file' not in data:
+        raise ValueError
+    if 'ignore assets checksum' not in data:
         raise ValueError
     if not isinstance(data['patched'], bool):
         raise TypeError
     if not isinstance(data['configuration file'], str):
         raise TypeError
     if not isinstance(data['write default configuration file'], bool):
+        raise TypeError
+    if not isinstance(data['ignore assets checksum'], bool):
         raise TypeError
 
     if source == 'invoice':
@@ -660,6 +665,24 @@ def assert_data_structure(source: str, file_type: str, data: dict):
         raise ValueError
 
 
+def asset_checksum_matches(file: str) -> bool:
+    r"""Check that the asset file is the expected one.
+
+    :param file: the file name that needs to be checked.
+    :type file: str
+    :returns: matches
+    :rtype: str
+    :raises: a built-in exception.
+    """
+    m = hashlib.sha512()
+    matches = False
+    m.update(open(file, 'rb').read())
+    if m.hexdigest() == const.Checksum[pathlib.Path(file).name]:
+        matches = True
+
+    return matches
+
+
 def pipeline(source: str, file_type: str, data: dict):
     r"""Run the pipeline.
 
@@ -699,6 +722,7 @@ def pipeline(source: str, file_type: str, data: dict):
         w3c_schema_file_for_xml_signatures = define_appdirs_user_data_dir_file_path(
             project_name,
             const.Paths['invoice file']['XSD']['W3C Schema for XML Signatures'])
+
         if source == 'invoice':
             invoice_schema_file = define_appdirs_user_data_dir_file_path(
                 project_name, const.Paths['invoice file']['XSD']['default'])
@@ -754,6 +778,10 @@ def pipeline(source: str, file_type: str, data: dict):
                 get_remote_file(trusted_list_file,
                                 config['trusted list file']['download'])
 
+            if not data['ignore assets checksum']:
+                if not asset_checksum_matches(trusted_list_file):
+                    raise AssetsChecksumDoesNotMatch("Run the program with the '--ignore-assets-checksum' option, contact the developer or open a pull request. Have a look at https://frnmst.github.io/fattura-elettronica-reader/assets.html")
+
             trusted_list_xml_root = parse_xml_file(trusted_list_file)
 
             get_ca_certificates(trusted_list_xml_root, ca_certificate_pem_file,
@@ -785,6 +813,11 @@ def pipeline(source: str, file_type: str, data: dict):
                 invoice_schema_file,
                 const.Patch['invoice file']['XSD']['line'][0]['offending'],
                 const.Patch['invoice file']['XSD']['line'][0]['fix'])
+
+            # Verify the checksum of the patched file.
+            if not data['ignore assets checksum']:
+                if not asset_checksum_matches(invoice_schema_file):
+                    raise AssetsChecksumDoesNotMatch("Run the program with the '--ignore-assets-checksum' option, contact the developer or open a pull request. Have a look at https://frnmst.github.io/fattura-elettronica-reader/assets.html")
 
         # Create a temporary directory to store the original XML invoice file.
         with tempfile.TemporaryDirectory() as tmpdirname:
@@ -856,6 +889,11 @@ def pipeline(source: str, file_type: str, data: dict):
                             config['invoice file']['XSLT ' +
                                                    data['invoice xslt type'] +
                                                    ' download'])
+
+                    if not data['ignore assets checksum']:
+                        if not asset_checksum_matches(invoice_xslt_file):
+                            raise AssetsChecksumDoesNotMatch("Run the program with the '--ignore-assets-checksum' option, contact the developer or open a pull request. Have a look at https://frnmst.github.io/fattura-elettronica-reader/assets.html")
+
                     invoice_xslt_root = parse_xml_file(invoice_xslt_file)
                     html_output = file_to_consider + '.html'
                     get_invoice_as_html(invoice_root, invoice_xslt_root,

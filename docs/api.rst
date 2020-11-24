@@ -28,8 +28,8 @@ output types.
 .. autofunction:: define_appdirs_user_data_dir_file_path
 .. autofunction:: define_appdirs_user_config_dir_file_path
 .. autofunction:: write_configuration_file
-.. autofunction:: load_configuration
 .. autofunction:: assert_data_structure
+.. autofunction:: asset_checksum_matches
 .. autofunction:: pipeline
 
 Exceptions
@@ -43,3 +43,4 @@ Exceptions
 .. autoexception:: XMLFileNotConformingToSchema
 .. autoexception:: ExtractedAttachmentNotInExtensionWhitelist
 .. autoexception:: ExtractedAttachmentNotInFileTypeWhitelist
+.. autoexception:: AssetsChecksumDoesNotMatch

@@ -52,3 +52,7 @@ class ExtractedAttachmentNotInExtensionWhitelist(Exception):
 
 class ExtractedAttachmentNotInFileTypeWhitelist(Exception):
     """An extracted attachment is not in the filetype whitelist."""
+
+
+class AssetsChecksumDoesNotMatch(Exception):
+    """A downloaded file might make this program malfuncioning."""
