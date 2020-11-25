@@ -4,10 +4,10 @@ Assets
 fattura-elettronica-reader needs to download some files from the
 *Agenzia delle Entrate* website.
 
-No files can be included in this repository because of the website copyright.
+Files cannot be included in this repository because of the website copyright.
 See https://www.fatturapa.gov.it/it/copyright/index.html
 
-For sake of completeness the current supported versions
+For sake of completeness, the current supported versions
 and the SHA-512 and SHA-256 checksums are reported in the following table:
 
 ======================================================  ================================================================================================================  ====================================================================================================================================  ====================================================================
@@ -23,7 +23,7 @@ Public keys file                                        https://eidas.agid.gov.i
 .. warning:: fattura-elettronica-reader is guaranteed to work with these file versions only!
 
 .. important:: The XML schema file for FatturaPA version 1.2.1 needs to be patched. fattura_elettronica_reader
-                runs the SHA-512 checksum on the patched version of the file which corresponds to:
+                runs the SHA-512 checksum on the patched version of that file which corresponds to:
 
                 ::
 
@@ -34,8 +34,6 @@ Public keys file                                        https://eidas.agid.gov.i
 Some of these file are checked in the pipeline:
 if the checksum does not match the ones present in the source code an exception is raised.
 You can use the ``--ignore-assets-checksum`` option to override this behaviour.
-
-
 
 Updates
 -------

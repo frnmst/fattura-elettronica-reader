@@ -24,7 +24,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='fattura_elettronica_reader',
-    version='1.0.0',
+    version='2.0.0',
     packages=find_packages(exclude=['*tests*']),
     license='GPL',
     description='A utility that is able to check and extract electronic invoice received from the Sistema di Interscambio.',

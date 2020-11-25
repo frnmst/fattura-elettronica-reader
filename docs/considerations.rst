@@ -155,7 +155,7 @@ Fattura PA vs Fattura B2B
 Digital signature
 ~~~~~~~~~~~~~~~~~
 
-Some websites say that digital signature of the *Fattura PA* is compulsory and
+Some websites say that digital signature of the *Fattura PA* is required and
 in other cases it is not.
 
 - https://www.agendadigitale.eu/documenti/fatturazione-elettronica/fattura-elettronica-e-firma-come-garantire-autenticita-dellorigine-e-integrita-del-contenuto/

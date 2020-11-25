@@ -15,7 +15,6 @@ TODO and FIXME
 
 Important stuff
 ```````````````
-- unit tests: I guess we should use the examples from the government's website,
-  if the license permits it.
+- unit tests: Find usable XML examples or generate them.
 - GUI: for example https://github.com/chriskiehl/Gooey
 - i18n (both CLI and GUI): https://docs.python.org/3/library/gettext.html

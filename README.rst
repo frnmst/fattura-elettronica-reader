@@ -52,7 +52,7 @@ Python program:
     >>> data = {
             'patched': True,
             'configuration file': str(),
-            'write default configuration file': str(),
+            'write default configuration file': False,
             'extract attachments': True,
             'metadata file': 'myfile.xml',
             'invoice xslt type': 'ordinaria',
@@ -68,6 +68,7 @@ Python program:
             'ignore signers certificate check': False,
             'force trusted list file download': False,
             'keep original file': True,
+            'ignore assets checksum': False,
     }
     >>> fattura_elettronica_reader.assert_data_structure(source='invoice', file_type='p7m', data=data)
     >>> fattura_elettronica_reader.pipeline(
