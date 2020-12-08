@@ -34,7 +34,7 @@ twine = "~=3.2"
 pre-commit = "~=2.9"
 
 [packages]
-requests = "~=2.24"
+requests = "~=2.25"
 lxml = "~=4.6"
 atomicwrites = "~=1.4"
 filetype = "~=1.0"
@@ -43,4 +43,4 @@ PyYAML = "~=5.3"
 fpyutils = "~=1.2"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
