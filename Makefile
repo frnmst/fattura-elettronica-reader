@@ -24,7 +24,7 @@ export PACKAGE_NAME=fattura_elettronica_reader
 
 default: doc
 
-doc:
+doc: clean
 	pipenv run $(MAKE) -C docs html
 
 install:
