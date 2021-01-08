@@ -56,7 +56,7 @@ setup(
         'filetype>=1.0,<1.1',
         'appdirs>=1.4,<1.5',
         'requests>=2.25,<2.26',
-        'lxml>=4.6,<4.7',
+        'lxml>=4.6.2,<4.7',
         'PyYAML>=5.3,<5.4',
         'fpyutils>=1.2,<1.3'
     ],

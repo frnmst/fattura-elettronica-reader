@@ -35,7 +35,7 @@ pre-commit = "~=2.9"
 
 [packages]
 requests = "~=2.25"
-lxml = "~=4.6"
+lxml = ">=4.6.2,<4.7"
 atomicwrites = "~=1.4"
 filetype = "~=1.0"
 appdirs = "~=1.4"
