@@ -2,7 +2,7 @@
 #
 # Makefile
 #
-# Copyright (C) 2019-2020 Franco Masotti <franco.masotti@live.com>
+# Copyright (C) 2019-2021 Franco Masotti <franco.masotti@live.com>
 #
 # This file is part of fattura-elettronica-reader.
 #
@@ -41,7 +41,7 @@ uninstall-dev:
 	pipenv --rm
 
 test:
-	pipenv run python setup.py test
+	python -m unittest $(PACKAGE_NAME).tests.tests --failfast --locals --verbose
 
 dist:
 	pipenv run python setup.py sdist

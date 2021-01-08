@@ -98,7 +98,7 @@ License
 
 Copyright (c) 2018 Enio Carboni - Italy
 
-Copyright (C) 2019-2020 frnmst (Franco Masotti) <franco.masotti@live.com>
+Copyright (C) 2019-2021 frnmst (Franco Masotti) <franco.masotti@live.com>
 
 fattura-elettronica-reader is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

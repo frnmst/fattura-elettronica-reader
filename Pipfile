@@ -1,7 +1,7 @@
 #
 # Pipfile
 #
-# Copyright (C) 2020 Franco Masotti <franco.masotti@live.com>
+# Copyright (C) 2020-2021 Franco Masotti <franco.masotti@live.com>
 #
 # This file is part of fattura-elettronica-reader.
 #
@@ -26,11 +26,11 @@ verify_ssl = true
 
 [dev-packages]
 # Documentation.
-Sphinx = "~=3.3"
+Sphinx = "~=3.4"
 sphinx-rtd-theme = '~=0.5'
 
 # Tools.
-twine = "~=3.2"
+twine = "~=3.3"
 pre-commit = "~=2.9"
 
 [packages]

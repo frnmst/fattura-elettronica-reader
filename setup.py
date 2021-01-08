@@ -1,7 +1,7 @@
 #
 # setup.py
 #
-# Copyright (C) 2019 Franco Masotti <franco.masotti@live.com>
+# Copyright (C) 2019-2021 Franco Masotti <franco.masotti@live.com>
 #
 # This file is part of fattura-elettronica-reader.
 #
@@ -24,7 +24,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='fattura_elettronica_reader',
-    version='2.0.1',
+    version='2.0.2',
     packages=find_packages(exclude=['*tests*']),
     license='GPL',
     description='A utility that is able to check and extract electronic invoice received from the Sistema di Interscambio.',
@@ -43,7 +43,6 @@ setup(
             'fattura_elettronica_reader=fattura_elettronica_reader.__main__:main',
         ],
     },
-    test_suite='tests',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Topic :: Utilities',
