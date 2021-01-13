@@ -1,0 +1,739 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Developer Interface &mdash; fattura-elettronica-reader 2.0.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Considerations" href="considerations.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: light-blue" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> fattura-elettronica-reader
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#main-interface">Main Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="considerations.html">Considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assets.html">Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source_code.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright_license.html">Copyright and License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fattura-elettronica-reader</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Developer Interface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-fattura_elettronica_reader">
+<span id="developer-interface"></span><h1>Developer Interface<a class="headerlink" href="#module-fattura_elettronica_reader" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="main-interface">
+<h2>Main Interface<a class="headerlink" href="#main-interface" title="Permalink to this headline">¶</a></h2>
+<p>Examples for the most relevant api functions can be viewed in the test
+file. fattura_elettronica_reader’s API uses <a class="reference external" href="https://docs.python.org/3/library/typing.html">type hints</a> instead of assertions to check input and
+output types.</p>
+<dl class="py function">
+<dt id="fattura_elettronica_reader.is_xml_file_conforming_to_schema">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">is_xml_file_conforming_to_schema</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">xml_schema_file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#is_xml_file_conforming_to_schema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.is_xml_file_conforming_to_schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the XML file follows its schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xml_file</strong> (<em>str</em>) – the path of the XML file.</p></li>
+<li><p><strong>xml_schema_file</strong> (<em>str</em>) – the path of the schema file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the schema is followed, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>an lxml or a built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.parse_xml_file">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">parse_xml_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#parse_xml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.parse_xml_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the XML file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>xml_file</strong> (<em>str</em>) – the input XML file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the XML root as a data structure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ET.parse.getroot</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>an lxml or a built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.get_invoice_filename">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">get_invoice_filename</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metadata_file_xml_root</span></em>, <em class="sig-param"><span class="n">metadata_file_invoice_filename_xml_tag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">metadata_file_xml_namespace</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#get_invoice_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.get_invoice_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the file name of the invoice file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metadata_file_xml_root</strong> (<em>lxml.etree._Element</em>) – the root of the metadata XML tree.</p></li>
+<li><p><strong>metadata_file_invoice_filename_xml_tag</strong> (<em>str</em>) – the tag name corresponding
+to the invoice filename.</p></li>
+<li><p><strong>metadata_file_xml_namespace</strong> (<em>str</em>) – the XML namespace of the metadata file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the element or <code class="docutils literal notranslate"><span class="pre">None</span></code>, if no match is found.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>an lxml or a built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.is_p7m_file_signed">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">is_p7m_file_signed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p7m_file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#is_p7m_file_signed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.is_p7m_file_signed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the invoice file is signed with a PKCS#7 signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>p7m_file</strong> (<em>str</em>) – the path of the invoice file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the file is signed, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>a fpyutils or a built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.invoice_file_checksum_matches">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">invoice_file_checksum_matches</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metadata_file_xml_root</span></em>, <em class="sig-param"><span class="n">invoice_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">metadata_file_invoice_checksum_xml_tag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">metadata_file_xml_namespace</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#invoice_file_checksum_matches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.invoice_file_checksum_matches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the invoice checksum matches the one in the metadata file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metadata_file_xml_root</strong> (<em>lxml.etree._Element</em>) – the root of the metadata XML tree.</p></li>
+<li><p><strong>invoice_file</strong> (<em>str</em>) – the path of the invoice file.</p></li>
+<li><p><strong>metadata_file_invoice_checksum_xml_tag</strong> (<em>str</em>) – the XML tag name
+corresponding to the invoice file checksum.</p></li>
+<li><p><strong>metadata_file_xml_namespace</strong> (<em>str</em>) – the XML namespace of the metadata file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the checksum matches, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.
+The expected checksum is also returned.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>a hashlib, lxml or a built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.get_remote_file">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">get_remote_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">destination</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#get_remote_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.get_remote_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download and save a remote file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>destination</strong> (<em>str</em>) – the local path of the downloaded file.</p></li>
+<li><p><strong>url</strong> (<em>str</em>) – the remote path of the file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>a built-in exception or a requests error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.get_ca_certificates">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">get_ca_certificates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">trusted_list_xml_root</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">ca_certificate_pem_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">trusted_list_file_xml_namespace</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">trusted_list_file_xml_certificate_tag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">eol</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'\n'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#get_ca_certificates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.get_ca_certificates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the CA certificates file using the trusted list file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trusted_list_file</strong> – the input file.</p></li>
+<li><p><strong>ca_certificate_pem_file</strong> (<em>str</em>) – the destination file.</p></li>
+<li><p><strong>trusted_list_file_xml_namespace</strong> (<em>str</em>) – the XML namespace of the
+trusted list file.</p></li>
+<li><p><strong>trusted_list_file_xml_certificate_tag</strong> (<em>str</em>) – the XML tag name corresponding
+to the certificates in the trusted list file.</p></li>
+<li><p><strong>eol</strong> (<em>str</em>) – the end of line character to be used in the PEM file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>an atomicwrites, an lxml or a built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.is_p7m_file_authentic">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">is_p7m_file_authentic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p7m_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">ca_certificate_pem_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">ignore_signature_check</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ignore_signers_certificate_check</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#is_p7m_file_authentic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.is_p7m_file_authentic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check authenticity of the invoice file on various levels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p7m_file</strong> (<em>str</em>) – the path of the signed invoice file.</p></li>
+<li><p><strong>ca_certificate_pem_file</strong> (<em>str</em>) – the certificates file in PEM format.</p></li>
+<li><p><strong>ignore_signature_check</strong> (<em>bool</em>) – avoid checking the signature.
+Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>ignore_signers_certificate_check</strong> (<em>bool</em>) – avoid checking the signer’s
+certificate. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the operation is successful, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>a fpyutils or built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.remove_signature_from_p7m_file">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">remove_signature_from_p7m_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p7m_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">output_file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#remove_signature_from_p7m_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.remove_signature_from_p7m_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove signature from the signed invoice file and save the original one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p7m_file</strong> (<em>str</em>) – the path of the invoice file.</p></li>
+<li><p><strong>output_file</strong> (<em>str</em>) – the path of the destination file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the operation is successful, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>a fpyutils or built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.extract_attachments_from_invoice_file">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">extract_attachments_from_invoice_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">invoice_file_xml_root</span></em>, <em class="sig-param"><span class="n">invoice_file_xml_attachment_xpath</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">invoice_file_xml_attachment_tag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">invoice_file_xml_attachment_filename_tag</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">invoice_file_text_encoding</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">ignore_attachment_extension_whitelist</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ignore_attachment_filetype_whitelist</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">attachment_extension_whitelist</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">attachment_filetype_whitelist</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#extract_attachments_from_invoice_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.extract_attachments_from_invoice_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract, decode and save possible attachments within the invoice file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>invoice_file_xml_root</strong> (<em>str</em>) – the original invoice file.</p></li>
+<li><p><strong>invoice_file_xml_attachment_xpath</strong> (<em>str</em>) – the full path, from the XML root,
+corresponding to the attachments.</p></li>
+<li><p><strong>invoice_file_xml_attachment_tag</strong> (<em>str</em>) – the XML tag name corresponding to the
+attachment content.</p></li>
+<li><p><strong>invoice_file_xml_attachment_filename_tag</strong> (<em>str</em>) – the XML tag name
+corresponing to the attachment filename.</p></li>
+<li><p><strong>invoice_file_text_encoding</strong> (<em>str</em>) – the text encoding used for the
+invoice file.</p></li>
+<li><p><strong>ignore_attachment_extension_whitelist</strong> (<em>bool</em>) – avoid cheking file extensions.
+Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>ignore_attachment_filetype_whitelist</strong> (<em>bool</em>) – avoid cheking file types.
+Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>attachment_extension_whitelist</strong> (<em>list</em>) – . Defaults to <code class="docutils literal notranslate"><span class="pre">list()</span></code>.</p></li>
+<li><p><strong>attachment_filetype_whitelist</strong> (<em>list</em>) – . Defaults to <code class="docutils literal notranslate"><span class="pre">list()</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>base64.binascii.Error, filetype, atomicwrites, or a built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.get_invoice_as_html">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">get_invoice_as_html</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">invoice_file_xml_root</span></em>, <em class="sig-param"><span class="n">invoice_file_xml_stylesheet_root</span></em>, <em class="sig-param"><span class="n">html_output_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">invoice_file_text_encoding</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#get_invoice_as_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.get_invoice_as_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform the XML invoice file into a styled HTML file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>invoice_file_xml_root</strong> (<em>lxml.etree._Element</em>) – the XML tree root of the invoice file</p></li>
+<li><p><strong>invoice_file_xml_stylesheet_root</strong> (<em>lxml.etree._Element</em>) – the XML tree root of the stylesheet file</p></li>
+<li><p><strong>html_output_file</strong> (<em>str</em>) – the destination file.</p></li>
+<li><p><strong>invoice_file_text_encoding</strong> (<em>str</em>) – the text encoding used for the
+invoice file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>an lxml, atomicwrites, or a built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.patch_invoice_schema_file">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">patch_invoice_schema_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">invoice_schema_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">offending_line</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">fix_line</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#patch_invoice_schema_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.patch_invoice_schema_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fix the error in the schema file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>invoice_schema_file</strong> (<em>str</em>) – the path of the schema file.</p></li>
+<li><p><strong>offending_line</strong> (<em>str</em>) – the string in the schema file that needs to be changed.</p></li>
+<li><p><strong>fix_line</strong> (<em>str</em>) – a string that replaces the offending line.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>an atomicwrites, or a built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.create_appdirs">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">create_appdirs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">program_name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#create_appdirs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.create_appdirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create user data and configuration directories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>program_name</strong> (<em>str</em>) – the name of the software.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>a pathlib or a built-in exception.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.define_appdirs_user_data_dir_file_path">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">define_appdirs_user_data_dir_file_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">program_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">relative_path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#define_appdirs_user_data_dir_file_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.define_appdirs_user_data_dir_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the full path of the input file in the users’s data directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>program_name</strong> (<em>str</em>) – the name of the software.</p></li>
+<li><p><strong>relative_path</strong> (<em>str</em>) – the relative path of the file, i.e: the file name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a full path.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.define_appdirs_user_config_dir_file_path">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">define_appdirs_user_config_dir_file_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">program_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">relative_path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#define_appdirs_user_config_dir_file_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.define_appdirs_user_config_dir_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the full path of the input file in the user’s cofiguration directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>program_name</strong> (<em>str</em>) – the name of the software.</p></li>
+<li><p><strong>relative_path</strong> (<em>str</em>) – the relative path of the file, i.e: the file name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a path.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.write_configuration_file">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">write_configuration_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">configuration_file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#write_configuration_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.write_configuration_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the default configuration file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>configuration_file</strong> (<em>str</em>) – the path of the configuration file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>a configparser or a built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.assert_data_structure">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">assert_data_structure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">file_type</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#assert_data_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.assert_data_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the data structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> (<em>str</em>) – the type of document to be considered.
+Choose between <code class="docutils literal notranslate"><span class="pre">invoice</span></code> and <code class="docutils literal notranslate"><span class="pre">generic</span></code>.</p></li>
+<li><p><strong>the type of file to be considered</strong> (<em>file_type</em>) – Choose between <code class="docutils literal notranslate"><span class="pre">p7m</span></code> and <code class="docutils literal notranslate"><span class="pre">plain</span></code>, depending on the
+source parameter.</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – a data structure containing all the fields.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ValueError or TypeError</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.asset_checksum_matches">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">asset_checksum_matches</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#asset_checksum_matches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.asset_checksum_matches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the asset file is the expected one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – the file name that needs to be checked.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>matches</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>a built-in exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fattura_elettronica_reader.pipeline">
+<code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">pipeline</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">file_type</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fattura_elettronica_reader/api.html#pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the pipeline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> (<em>str</em>) – the type of document to be considered.
+Choose between <code class="docutils literal notranslate"><span class="pre">invoice</span></code> and <code class="docutils literal notranslate"><span class="pre">generic</span></code>.</p></li>
+<li><p><strong>the type of file to be considered</strong> (<em>file_type</em>) – Choose between <code class="docutils literal notranslate"><span class="pre">p7m</span></code> and <code class="docutils literal notranslate"><span class="pre">plain</span></code>, depending on the
+source parameter.</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – a data structure containing all the fields.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt id="fattura_elettronica_reader.P7MFileDoesNotHaveACoherentCryptographicalSignature">
+<em class="property">exception </em><code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">P7MFileDoesNotHaveACoherentCryptographicalSignature</code><a class="reference internal" href="_modules/fattura_elettronica_reader/exceptions.html#P7MFileDoesNotHaveACoherentCryptographicalSignature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.P7MFileDoesNotHaveACoherentCryptographicalSignature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not a PKCS#7 signature.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="fattura_elettronica_reader.InvoiceFileChecksumFailed">
+<em class="property">exception </em><code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">InvoiceFileChecksumFailed</code><a class="reference internal" href="_modules/fattura_elettronica_reader/exceptions.html#InvoiceFileChecksumFailed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.InvoiceFileChecksumFailed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checksum of the invoice file does not match the one in the metadata file.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="fattura_elettronica_reader.P7MFileNotAuthentic">
+<em class="property">exception </em><code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">P7MFileNotAuthentic</code><a class="reference internal" href="_modules/fattura_elettronica_reader/exceptions.html#P7MFileNotAuthentic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.P7MFileNotAuthentic" title="Permalink to this definition">¶</a></dt>
+<dd><p>An error with the signature or the signers certificate of the invoice.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="fattura_elettronica_reader.CannotExtractOriginalP7MFile">
+<em class="property">exception </em><code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">CannotExtractOriginalP7MFile</code><a class="reference internal" href="_modules/fattura_elettronica_reader/exceptions.html#CannotExtractOriginalP7MFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.CannotExtractOriginalP7MFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cryptographical signature from the invoice file cannot be removed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="fattura_elettronica_reader.MissingTagInMetadataFile">
+<em class="property">exception </em><code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">MissingTagInMetadataFile</code><a class="reference internal" href="_modules/fattura_elettronica_reader/exceptions.html#MissingTagInMetadataFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.MissingTagInMetadataFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>A necessary element is missing from the metadata file.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="fattura_elettronica_reader.XMLFileNotConformingToSchema">
+<em class="property">exception </em><code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">XMLFileNotConformingToSchema</code><a class="reference internal" href="_modules/fattura_elettronica_reader/exceptions.html#XMLFileNotConformingToSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.XMLFileNotConformingToSchema" title="Permalink to this definition">¶</a></dt>
+<dd><p>XML file is not-conforming to the XML schema.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="fattura_elettronica_reader.ExtractedAttachmentNotInExtensionWhitelist">
+<em class="property">exception </em><code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">ExtractedAttachmentNotInExtensionWhitelist</code><a class="reference internal" href="_modules/fattura_elettronica_reader/exceptions.html#ExtractedAttachmentNotInExtensionWhitelist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.ExtractedAttachmentNotInExtensionWhitelist" title="Permalink to this definition">¶</a></dt>
+<dd><p>An extracted attachment is not in the extension whitelist.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="fattura_elettronica_reader.ExtractedAttachmentNotInFileTypeWhitelist">
+<em class="property">exception </em><code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">ExtractedAttachmentNotInFileTypeWhitelist</code><a class="reference internal" href="_modules/fattura_elettronica_reader/exceptions.html#ExtractedAttachmentNotInFileTypeWhitelist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.ExtractedAttachmentNotInFileTypeWhitelist" title="Permalink to this definition">¶</a></dt>
+<dd><p>An extracted attachment is not in the filetype whitelist.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="fattura_elettronica_reader.AssetsChecksumDoesNotMatch">
+<em class="property">exception </em><code class="sig-prename descclassname">fattura_elettronica_reader.</code><code class="sig-name descname">AssetsChecksumDoesNotMatch</code><a class="reference internal" href="_modules/fattura_elettronica_reader/exceptions.html#AssetsChecksumDoesNotMatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fattura_elettronica_reader.AssetsChecksumDoesNotMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>A downloaded file might make this program malfuncioning.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="considerations.html" class="btn btn-neutral float-right" title="Considerations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019-2021, Franco Masotti.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

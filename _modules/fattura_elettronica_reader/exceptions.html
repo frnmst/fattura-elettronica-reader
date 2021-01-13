@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>fattura_elettronica_reader.exceptions &mdash; fattura-elettronica-reader 2.0.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: light-blue" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> fattura-elettronica-reader
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">Developer Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../considerations.html">Considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assets.html">Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflow.html">Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source_code.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright_license.html">Copyright and License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">fattura-elettronica-reader</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>fattura_elettronica_reader.exceptions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fattura_elettronica_reader.exceptions</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># exceptions.py</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2018 Enio Carboni - Italy</span>
+<span class="c1"># Copyright (C) 2019-2020 Franco Masotti &lt;franco.masotti@live.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of fattura-elettronica-reader.</span>
+<span class="c1">#</span>
+<span class="c1"># fattura-elettronica-reader is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># fattura-elettronica-reader is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with fattura-elettronica-reader.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;Exceptions file.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="P7MFileDoesNotHaveACoherentCryptographicalSignature"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.P7MFileDoesNotHaveACoherentCryptographicalSignature">[docs]</a><span class="k">class</span> <span class="nc">P7MFileDoesNotHaveACoherentCryptographicalSignature</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Not a PKCS#7 signature.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="InvoiceFileChecksumFailed"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.InvoiceFileChecksumFailed">[docs]</a><span class="k">class</span> <span class="nc">InvoiceFileChecksumFailed</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checksum of the invoice file does not match the one in the metadata file.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="P7MFileNotAuthentic"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.P7MFileNotAuthentic">[docs]</a><span class="k">class</span> <span class="nc">P7MFileNotAuthentic</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An error with the signature or the signers certificate of the invoice.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="CannotExtractOriginalP7MFile"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.CannotExtractOriginalP7MFile">[docs]</a><span class="k">class</span> <span class="nc">CannotExtractOriginalP7MFile</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The cryptographical signature from the invoice file cannot be removed.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MissingTagInMetadataFile"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.MissingTagInMetadataFile">[docs]</a><span class="k">class</span> <span class="nc">MissingTagInMetadataFile</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A necessary element is missing from the metadata file.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="XMLFileNotConformingToSchema"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.XMLFileNotConformingToSchema">[docs]</a><span class="k">class</span> <span class="nc">XMLFileNotConformingToSchema</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;XML file is not-conforming to the XML schema.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ExtractedAttachmentNotInExtensionWhitelist"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.ExtractedAttachmentNotInExtensionWhitelist">[docs]</a><span class="k">class</span> <span class="nc">ExtractedAttachmentNotInExtensionWhitelist</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An extracted attachment is not in the extension whitelist.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ExtractedAttachmentNotInFileTypeWhitelist"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.ExtractedAttachmentNotInFileTypeWhitelist">[docs]</a><span class="k">class</span> <span class="nc">ExtractedAttachmentNotInFileTypeWhitelist</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An extracted attachment is not in the filetype whitelist.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="AssetsChecksumDoesNotMatch"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.AssetsChecksumDoesNotMatch">[docs]</a><span class="k">class</span> <span class="nc">AssetsChecksumDoesNotMatch</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A downloaded file might make this program malfuncioning.&quot;&quot;&quot;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019-2021, Franco Masotti.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

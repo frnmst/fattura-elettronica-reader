@@ -1,0 +1,1126 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>fattura_elettronica_reader.api &mdash; fattura-elettronica-reader 2.0.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: light-blue" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> fattura-elettronica-reader
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">Developer Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../considerations.html">Considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assets.html">Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflow.html">Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source_code.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright_license.html">Copyright and License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">fattura-elettronica-reader</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>fattura_elettronica_reader.api</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fattura_elettronica_reader.api</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># api.py</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2018 Enio Carboni - Italy</span>
+<span class="c1"># Copyright (C) 2019-2020 Franco Masotti &lt;franco.masotti@live.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of fattura-elettronica-reader.</span>
+<span class="c1">#</span>
+<span class="c1"># fattura-elettronica-reader is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># fattura-elettronica-reader is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with fattura-elettronica-reader.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;The main file.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">shlex</span>
+<span class="kn">import</span> <span class="nn">lxml.etree</span> <span class="k">as</span> <span class="nn">ET</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">atomicwrites</span>
+<span class="kn">import</span> <span class="nn">filetype</span>
+<span class="kn">import</span> <span class="nn">appdirs</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">fpyutils</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">P7MFileDoesNotHaveACoherentCryptographicalSignature</span><span class="p">,</span>
+                         <span class="n">InvoiceFileChecksumFailed</span><span class="p">,</span> <span class="n">P7MFileNotAuthentic</span><span class="p">,</span>
+                         <span class="n">CannotExtractOriginalP7MFile</span><span class="p">,</span>
+                         <span class="n">MissingTagInMetadataFile</span><span class="p">,</span>
+                         <span class="n">XMLFileNotConformingToSchema</span><span class="p">,</span>
+                         <span class="n">ExtractedAttachmentNotInExtensionWhitelist</span><span class="p">,</span>
+                         <span class="n">ExtractedAttachmentNotInFileTypeWhitelist</span><span class="p">,</span>
+                         <span class="n">AssetsChecksumDoesNotMatch</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">const</span>
+
+<span class="c1">#######</span>
+<span class="c1"># API #</span>
+<span class="c1">#######</span>
+
+
+<div class="viewcode-block" id="is_xml_file_conforming_to_schema"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.is_xml_file_conforming_to_schema">[docs]</a><span class="k">def</span> <span class="nf">is_xml_file_conforming_to_schema</span><span class="p">(</span><span class="n">xml_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                     <span class="n">xml_schema_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Check that the XML file follows its schema.</span>
+
+<span class="sd">    :param xml_file: the path of the XML file.</span>
+<span class="sd">    :param xml_schema_file: the path of the schema file.</span>
+<span class="sd">    :type xml_file: str</span>
+<span class="sd">    :type xml_schema_file: str</span>
+<span class="sd">    :returns: ``True`` if the schema is followed, ``False`` otherwise.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    :raises: an lxml or a built-in exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xmlschema_doc</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">xml_schema_file</span><span class="p">)</span>
+    <span class="n">xmlschema</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">XMLSchema</span><span class="p">(</span><span class="n">etree</span><span class="o">=</span><span class="n">xmlschema_doc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">xmlschema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">xml_file</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="parse_xml_file"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.parse_xml_file">[docs]</a><span class="k">def</span> <span class="nf">parse_xml_file</span><span class="p">(</span><span class="n">xml_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Parse the XML file.</span>
+
+<span class="sd">    :param xml_file: the input XML file.</span>
+<span class="sd">    :type xml_file: str</span>
+<span class="sd">    :returns: the XML root as a data structure</span>
+<span class="sd">    :rtype: ET.parse.getroot</span>
+<span class="sd">    :raises: an lxml or a built-in exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">xml_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="get_invoice_filename"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.get_invoice_filename">[docs]</a><span class="k">def</span> <span class="nf">get_invoice_filename</span><span class="p">(</span><span class="n">metadata_file_xml_root</span><span class="p">,</span>
+                         <span class="n">metadata_file_invoice_filename_xml_tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                         <span class="n">metadata_file_xml_namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return the file name of the invoice file.</span>
+
+<span class="sd">    :param metadata_file_xml_root: the root of the metadata XML tree.</span>
+<span class="sd">    :param metadata_file_invoice_filename_xml_tag: the tag name corresponding</span>
+<span class="sd">        to the invoice filename.</span>
+<span class="sd">    :param metadata_file_xml_namespace: the XML namespace of the metadata file.</span>
+<span class="sd">    :type metadata_file_xml_root: lxml.etree._Element</span>
+<span class="sd">    :type metadata_file_invoice_filename_xml_tag: str</span>
+<span class="sd">    :type metadata_file_xml_namespace: str</span>
+<span class="sd">    :returns: the element or ``None``, if no match is found.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :raises: an lxml or a built-in exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">metadata_file_xml_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">metadata_file_invoice_filename_xml_tag</span><span class="p">,</span>
+                                       <span class="n">metadata_file_xml_namespace</span><span class="p">)</span><span class="o">.</span><span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="is_p7m_file_signed"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.is_p7m_file_signed">[docs]</a><span class="k">def</span> <span class="nf">is_p7m_file_signed</span><span class="p">(</span><span class="n">p7m_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Check if the invoice file is signed with a PKCS#7 signature.</span>
+
+<span class="sd">    :param p7m_file: the path of the invoice file.</span>
+<span class="sd">    :type p7m_file: str</span>
+<span class="sd">    :returns: True if the file is signed, False otherwise.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    :raises: a fpyutils or a built-in exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="s1">&#39;openssl pkcs7 -print_certs -text -noout -inform DER -in </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">shlex</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">p7m_file</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">fpyutils</span><span class="o">.</span><span class="n">execute_command_live_output</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="invoice_file_checksum_matches"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.invoice_file_checksum_matches">[docs]</a><span class="k">def</span> <span class="nf">invoice_file_checksum_matches</span><span class="p">(</span><span class="n">metadata_file_xml_root</span><span class="p">,</span> <span class="n">invoice_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                  <span class="n">metadata_file_invoice_checksum_xml_tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                  <span class="n">metadata_file_xml_namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Check if the invoice checksum matches the one in the metadata file.</span>
+
+<span class="sd">    :param metadata_file_xml_root: the root of the metadata XML tree.</span>
+<span class="sd">    :param invoice_file: the path of the invoice file.</span>
+<span class="sd">    :param metadata_file_invoice_checksum_xml_tag: the XML tag name</span>
+<span class="sd">        corresponding to the invoice file checksum.</span>
+<span class="sd">    :param metadata_file_xml_namespace: the XML namespace of the metadata file.</span>
+<span class="sd">    :type metadata_file_xml_root: lxml.etree._Element</span>
+<span class="sd">    :type invoice_file: str</span>
+<span class="sd">    :type metadata_file_invoice_checksum_xml_tag: str</span>
+<span class="sd">    :type metadata_file_xml_namespace: str</span>
+<span class="sd">    :returns: ``True`` if the checksum matches, ``False`` otherwise.</span>
+<span class="sd">        The expected checksum is also returned.</span>
+<span class="sd">    :rtype: tuple</span>
+<span class="sd">    :raises: a hashlib, lxml or a built-in exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the checksum from the metadata file.</span>
+    <span class="n">expected_checksum</span> <span class="o">=</span> <span class="n">metadata_file_xml_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+        <span class="n">metadata_file_invoice_checksum_xml_tag</span><span class="p">,</span>
+        <span class="n">metadata_file_xml_namespace</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+    <span class="c1"># Compute the checksum.</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">invoice_file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="n">computed_checksum</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">computed_checksum</span> <span class="o">==</span> <span class="n">expected_checksum</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">expected_checksum</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">expected_checksum</span></div>
+
+
+<div class="viewcode-block" id="get_remote_file"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.get_remote_file">[docs]</a><span class="k">def</span> <span class="nf">get_remote_file</span><span class="p">(</span><span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Download and save a remote file.</span>
+
+<span class="sd">    :param destination: the local path of the downloaded file.</span>
+<span class="sd">    :param url: the remote path of the file.</span>
+<span class="sd">    :type destination: str</span>
+<span class="sd">    :type url: str</span>
+<span class="sd">    :returns: None</span>
+<span class="sd">    :rtype: None</span>
+<span class="sd">    :raises: a built-in exception or a requests error.</span>
+
+<span class="sd">    .. note: requests also checks that the url is in a valid form.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">atomicwrites</span><span class="o">.</span><span class="n">atomic_write</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;wb&#39;</span><span class="p">,</span>
+                                       <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="get_ca_certificates"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.get_ca_certificates">[docs]</a><span class="k">def</span> <span class="nf">get_ca_certificates</span><span class="p">(</span><span class="n">trusted_list_xml_root</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="n">ca_certificate_pem_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="n">trusted_list_file_xml_namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="n">trusted_list_file_xml_certificate_tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="n">eol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Write the CA certificates file using the trusted list file.</span>
+
+<span class="sd">    :param trusted_list_file: the input file.</span>
+<span class="sd">    :param ca_certificate_pem_file: the destination file.</span>
+<span class="sd">    :param trusted_list_file_xml_namespace: the XML namespace of the</span>
+<span class="sd">        trusted list file.</span>
+<span class="sd">    :param trusted_list_file_xml_certificate_tag: the XML tag name corresponding</span>
+<span class="sd">        to the certificates in the trusted list file.</span>
+<span class="sd">    :param eol: the end of line character to be used in the PEM file.</span>
+<span class="sd">    :type trusted_list_xml_root: str</span>
+<span class="sd">    :type ca_certificate_pem_file: str</span>
+<span class="sd">    :type trusted_list_file_xml_namespace: str</span>
+<span class="sd">    :type trusted_list_file_xml_certificate_tag: str</span>
+<span class="sd">    :type eol: str</span>
+<span class="sd">    :returns: None</span>
+<span class="sd">    :rtype: None</span>
+<span class="sd">    :raises: an atomicwrites, an lxml or a built-in exception.</span>
+
+<span class="sd">    .. note: See https://tools.ietf.org/html/rfc7468</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">preeb</span> <span class="o">=</span> <span class="s1">&#39;-----BEGIN CERTIFICATE-----&#39;</span>
+    <span class="n">posteb</span> <span class="o">=</span> <span class="s1">&#39;-----END CERTIFICATE-----&#39;</span>
+    <span class="n">max_line_len</span> <span class="o">=</span> <span class="mi">64</span>
+    <span class="k">with</span> <span class="n">atomicwrites</span><span class="o">.</span><span class="n">atomic_write</span><span class="p">(</span><span class="n">ca_certificate_pem_file</span><span class="p">,</span>
+                                   <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span>
+                                   <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="c1"># See https://lxml.de/tutorial.html#elementpath</span>
+        <span class="c1"># for the exception that gets raised.</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">trusted_list_xml_root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span>
+                <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="n">trusted_list_file_xml_namespace</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span> <span class="o">+</span>
+                <span class="n">trusted_list_file_xml_certificate_tag</span><span class="p">):</span>
+            <span class="c1"># This tries to follow RFC7468 even in the variable naming.</span>
+            <span class="c1"># See https://tools.ietf.org/html/rfc7468#section-3</span>
+            <span class="n">base64fullline</span> <span class="o">=</span> <span class="nb">str</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">text</span><span class="p">),</span> <span class="n">max_line_len</span><span class="p">):</span>
+                <span class="n">_64base64char</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">max_line_len</span><span class="p">]</span>
+                <span class="n">base64fullline</span> <span class="o">=</span> <span class="n">base64fullline</span> <span class="o">+</span> <span class="n">_64base64char</span> <span class="o">+</span> <span class="n">eol</span>
+            <span class="n">strictbase64finl</span> <span class="o">=</span> <span class="nb">str</span><span class="p">()</span>
+            <span class="n">strictbase64text</span> <span class="o">=</span> <span class="n">base64fullline</span> <span class="o">+</span> <span class="n">strictbase64finl</span>
+            <span class="n">stricttextualmsg</span> <span class="o">=</span> <span class="n">preeb</span> <span class="o">+</span> <span class="n">eol</span> <span class="o">+</span> <span class="n">strictbase64text</span> <span class="o">+</span> <span class="n">posteb</span> <span class="o">+</span> <span class="n">eol</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">stricttextualmsg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_p7m_file_authentic"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.is_p7m_file_authentic">[docs]</a><span class="k">def</span> <span class="nf">is_p7m_file_authentic</span><span class="p">(</span><span class="n">p7m_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                          <span class="n">ca_certificate_pem_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                          <span class="n">ignore_signature_check</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                          <span class="n">ignore_signers_certificate_check</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Check authenticity of the invoice file on various levels.</span>
+
+<span class="sd">    :param p7m_file: the path of the signed invoice file.</span>
+<span class="sd">    :param ca_certificate_pem_file: the certificates file in PEM format.</span>
+<span class="sd">    :param ignore_signature_check: avoid checking the signature.</span>
+<span class="sd">        Defaults to ``False``.</span>
+<span class="sd">    :param ignore_signers_certificate_check: avoid checking the signer&#39;s</span>
+<span class="sd">        certificate. Defaults to ``False``.</span>
+<span class="sd">    :type p7m_file: str</span>
+<span class="sd">    :type ca_certificate_pem_file: str</span>
+<span class="sd">    :type ignore_signature_check: bool</span>
+<span class="sd">    :type ignore_signers_certificate_check: bool</span>
+<span class="sd">    :returns: ``True`` if the operation is successful, ``False`` otherwise.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    :raises: a fpyutils or built-in exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pre</span> <span class="o">=</span> <span class="nb">str</span><span class="p">()</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="nb">str</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ignore_signature_check</span><span class="p">:</span>
+        <span class="n">pre</span> <span class="o">=</span> <span class="s1">&#39;-nosigs&#39;</span>
+    <span class="k">if</span> <span class="n">ignore_signers_certificate_check</span><span class="p">:</span>
+        <span class="n">post</span> <span class="o">=</span> <span class="s1">&#39;-noverify&#39;</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;openssl smime &#39;</span> <span class="o">+</span> <span class="n">pre</span> <span class="o">+</span> <span class="s1">&#39; -verify &#39;</span> <span class="o">+</span> <span class="n">post</span> <span class="o">+</span>
+               <span class="s1">&#39; -CAfile </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shlex</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">ca_certificate_pem_file</span><span class="p">))</span> <span class="o">+</span>
+               <span class="s1">&#39; -in </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shlex</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">p7m_file</span><span class="p">))</span> <span class="o">+</span>
+               <span class="s1">&#39; -inform DER -out /dev/null&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">fpyutils</span><span class="o">.</span><span class="n">execute_command_live_output</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="remove_signature_from_p7m_file"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.remove_signature_from_p7m_file">[docs]</a><span class="k">def</span> <span class="nf">remove_signature_from_p7m_file</span><span class="p">(</span><span class="n">p7m_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Remove signature from the signed invoice file and save the original one.</span>
+
+<span class="sd">    :param p7m_file: the path of the invoice file.</span>
+<span class="sd">    :param output_file: the path of the destination file.</span>
+<span class="sd">    :type p7m_file: str</span>
+<span class="sd">    :type output_file: str</span>
+<span class="sd">    :returns: ``True`` if the operation is successful, ``False`` otherwise.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    :raises: a fpyutils or built-in exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;openssl smime -nosigs -verify -noverify -in </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">shlex</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">p7m_file</span><span class="p">))</span> <span class="o">+</span>
+               <span class="s1">&#39; -inform DER -out </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shlex</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">output_file</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">fpyutils</span><span class="o">.</span><span class="n">execute_command_live_output</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="extract_attachments_from_invoice_file"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.extract_attachments_from_invoice_file">[docs]</a><span class="k">def</span> <span class="nf">extract_attachments_from_invoice_file</span><span class="p">(</span>
+    <span class="n">invoice_file_xml_root</span><span class="p">,</span>
+    <span class="n">invoice_file_xml_attachment_xpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">invoice_file_xml_attachment_tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">invoice_file_xml_attachment_filename_tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">invoice_file_text_encoding</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ignore_attachment_extension_whitelist</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">ignore_attachment_filetype_whitelist</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">attachment_extension_whitelist</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span>
+    <span class="n">attachment_filetype_whitelist</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Extract, decode and save possible attachments within the invoice file.</span>
+
+<span class="sd">    :param invoice_file_xml_root: the original invoice file.</span>
+<span class="sd">    :param invoice_file_xml_attachment_xpath: the full path, from the XML root,</span>
+<span class="sd">        corresponding to the attachments.</span>
+<span class="sd">    :param invoice_file_xml_attachment_tag: the XML tag name corresponding to the</span>
+<span class="sd">        attachment content.</span>
+<span class="sd">    :param invoice_file_xml_attachment_filename_tag: the XML tag name</span>
+<span class="sd">        corresponing to the attachment filename.</span>
+<span class="sd">    :param invoice_file_text_encoding: the text encoding used for the</span>
+<span class="sd">        invoice file.</span>
+<span class="sd">    :param ignore_attachment_extension_whitelist: avoid cheking file extensions.</span>
+<span class="sd">        Defaults to ``False``.</span>
+<span class="sd">    :param ignore_attachment_filetype_whitelist: avoid cheking file types.</span>
+<span class="sd">        Defaults to ``False``.</span>
+<span class="sd">    :param attachment_extension_whitelist: . Defaults to ``list()``.</span>
+<span class="sd">    :param attachment_filetype_whitelist: . Defaults to ``list()``.</span>
+<span class="sd">    :type invoice_file_xml_root: str</span>
+<span class="sd">    :type invoice_file_xml_attachment_xpath: str</span>
+<span class="sd">    :type invoice_file_xml_attachment_tag: str</span>
+<span class="sd">    :type invoice_file_xml_attachment_filename_tag: str</span>
+<span class="sd">    :type invoice_file_text_encoding: str</span>
+<span class="sd">    :type ignore_attachment_extension_whitelist: bool</span>
+<span class="sd">    :type ignore_attachment_filetype_whitelist: bool</span>
+<span class="sd">    :type attachment_extension_whitelist: list</span>
+<span class="sd">    :type attachment_filetype_whitelist: list</span>
+<span class="sd">    :returns: None</span>
+<span class="sd">    :rtype: None</span>
+<span class="sd">    :raises: base64.binascii.Error, filetype, atomicwrites, or a built-in exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">invoice_file_xml_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">invoice_file_xml_attachment_xpath</span><span class="p">):</span>
+        <span class="n">attachment</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">invoice_file_xml_attachment_tag</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">attachment_dest_path</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+            <span class="n">invoice_file_xml_attachment_filename_tag</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ignore_attachment_extension_whitelist</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">attachment_dest_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span>
+                    <span class="nb">tuple</span><span class="p">(</span><span class="n">attachment_extension_whitelist</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="n">ExtractedAttachmentNotInExtensionWhitelist</span>
+
+        <span class="c1"># b64decode accepts any bytes-like object. There should not be any</span>
+        <span class="c1"># character encoding problems since base64 characters are represented</span>
+        <span class="c1"># using the same character ids on UTF-8 and ASCII.</span>
+        <span class="c1"># Just in case that there are alien characters in the base64 string</span>
+        <span class="c1"># (sic, it happened!) we use validate=False as an option to skip them.</span>
+        <span class="n">decoded</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span>
+            <span class="n">attachment</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">invoice_file_text_encoding</span><span class="p">),</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ignore_attachment_filetype_whitelist</span><span class="p">:</span>
+            <span class="c1"># See https://h2non.github.io/filetype.py/1.0.0/filetype.m.html#filetype.filetype.get_type</span>
+            <span class="k">if</span> <span class="n">filetype</span><span class="o">.</span><span class="n">guess</span><span class="p">(</span>
+                    <span class="n">decoded</span><span class="p">)</span><span class="o">.</span><span class="n">mime</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">attachment_filetype_whitelist</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ExtractedAttachmentNotInFileTypeWhitelist</span>
+
+        <span class="k">with</span> <span class="n">atomicwrites</span><span class="o">.</span><span class="n">atomic_write</span><span class="p">(</span><span class="n">attachment_dest_path</span><span class="p">,</span>
+                                       <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;wb&#39;</span><span class="p">,</span>
+                                       <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">decoded</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_invoice_as_html"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.get_invoice_as_html">[docs]</a><span class="k">def</span> <span class="nf">get_invoice_as_html</span><span class="p">(</span><span class="n">invoice_file_xml_root</span><span class="p">,</span>
+                        <span class="n">invoice_file_xml_stylesheet_root</span><span class="p">,</span>
+                        <span class="n">html_output_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="n">invoice_file_text_encoding</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Transform the XML invoice file into a styled HTML file.</span>
+
+<span class="sd">    :param invoice_file_xml_root: the XML tree root of the invoice file</span>
+<span class="sd">    :param invoice_file_xml_stylesheet_root: the XML tree root of the stylesheet file</span>
+<span class="sd">    :param html_output_file: the destination file.</span>
+<span class="sd">    :param invoice_file_text_encoding: the text encoding used for the</span>
+<span class="sd">        invoice file.</span>
+<span class="sd">    :type invoice_file_xml_root: lxml.etree._Element</span>
+<span class="sd">    :type invoice_file_xml_stylesheet_root: lxml.etree._Element</span>
+<span class="sd">    :type html_output_file: str</span>
+<span class="sd">    :type invoice_file_text_encoding: str</span>
+<span class="sd">    :returns: None</span>
+<span class="sd">    :rtype: None</span>
+<span class="sd">    :raises: an lxml, atomicwrites, or a built-in exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">XSLT</span><span class="p">(</span><span class="n">invoice_file_xml_stylesheet_root</span><span class="p">)</span>
+    <span class="n">newdom</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">invoice_file_xml_root</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">atomicwrites</span><span class="o">.</span><span class="n">atomic_write</span><span class="p">(</span><span class="n">html_output_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span>
+                                   <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="n">ET</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">newdom</span><span class="p">,</span>
+                        <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">invoice_file_text_encoding</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="patch_invoice_schema_file"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.patch_invoice_schema_file">[docs]</a><span class="k">def</span> <span class="nf">patch_invoice_schema_file</span><span class="p">(</span><span class="n">invoice_schema_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">offending_line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                              <span class="n">fix_line</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Fix the error in the schema file.</span>
+
+<span class="sd">    :param invoice_schema_file: the path of the schema file.</span>
+<span class="sd">    :param offending_line: the string in the schema file that needs to be changed.</span>
+<span class="sd">    :param fix_line: a string that replaces the offending line.</span>
+<span class="sd">    :type invoice_schema_file: str</span>
+<span class="sd">    :type offending_line: str</span>
+<span class="sd">    :type fix_line: str</span>
+<span class="sd">    :returns: None</span>
+<span class="sd">    :rtype: None</span>
+<span class="sd">    :raises: an atomicwrites, or a built-in exception.</span>
+
+<span class="sd">    .. note: this cannot be patched with lxml because and exception is raised:</span>
+<span class="sd">             lxml.etree.XMLSyntaxError: Namespace prefix xsd on import is not defined, line 7, column 154</span>
+
+<span class="sd">    .. note: this sucks. A better solution needs to be found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">save</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">invoice_schema_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="n">offending_line</span><span class="p">:</span>
+                <span class="n">save</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fix_line</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">save</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">atomicwrites</span><span class="o">.</span><span class="n">atomic_write</span><span class="p">(</span><span class="n">invoice_schema_file</span><span class="p">,</span>
+                                   <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span>
+                                   <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">save</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+
+<span class="c1">##############################</span>
+<span class="c1"># Pipeline related functions #</span>
+<span class="c1">##############################</span>
+
+
+<div class="viewcode-block" id="create_appdirs"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.create_appdirs">[docs]</a><span class="k">def</span> <span class="nf">create_appdirs</span><span class="p">(</span><span class="n">program_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create user data and configuration directories.</span>
+
+<span class="sd">    :param program_name: the name of the software.</span>
+<span class="sd">    :type program_name: str</span>
+<span class="sd">    :raises: a pathlib or a built-in exception.</span>
+<span class="sd">    :returns: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    .. note: for security reasons the directories have restrictive perimissions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">appdirs</span><span class="o">.</span><span class="n">user_data_dir</span><span class="p">(</span><span class="n">program_name</span><span class="p">))</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="mo">0o700</span><span class="p">,</span>
+                                                            <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                            <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">appdirs</span><span class="o">.</span><span class="n">user_config_dir</span><span class="p">(</span><span class="n">program_name</span><span class="p">))</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="mo">0o700</span><span class="p">,</span>
+                                                              <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                              <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="define_appdirs_user_data_dir_file_path"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.define_appdirs_user_data_dir_file_path">[docs]</a><span class="k">def</span> <span class="nf">define_appdirs_user_data_dir_file_path</span><span class="p">(</span><span class="n">program_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                           <span class="n">relative_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get the full path of the input file in the users&#39;s data directory.</span>
+
+<span class="sd">    :param program_name: the name of the software.</span>
+<span class="sd">    :param relative_path: the relative path of the file, i.e: the file name.</span>
+<span class="sd">    :type program_name: str</span>
+<span class="sd">    :type relative_path: str</span>
+<span class="sd">    :returns: a full path.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">appdirs</span><span class="o">.</span><span class="n">user_data_dir</span><span class="p">(</span><span class="n">program_name</span><span class="p">),</span>
+                            <span class="n">relative_path</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="define_appdirs_user_config_dir_file_path"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.define_appdirs_user_config_dir_file_path">[docs]</a><span class="k">def</span> <span class="nf">define_appdirs_user_config_dir_file_path</span><span class="p">(</span><span class="n">program_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                             <span class="n">relative_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get the full path of the input file in the user&#39;s cofiguration directory.</span>
+
+<span class="sd">    :param program_name: the name of the software.</span>
+<span class="sd">    :param relative_path: the relative path of the file, i.e: the file name.</span>
+<span class="sd">    :type program_name: str</span>
+<span class="sd">    :type relative_path: str</span>
+<span class="sd">    :returns: a path.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span>
+        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">appdirs</span><span class="o">.</span><span class="n">user_config_dir</span><span class="p">(</span><span class="n">program_name</span><span class="p">),</span> <span class="n">relative_path</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="write_configuration_file"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.write_configuration_file">[docs]</a><span class="k">def</span> <span class="nf">write_configuration_file</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Write the default configuration file.</span>
+
+<span class="sd">    :param configuration_file: the path of the configuration file.</span>
+<span class="sd">    :type configuration_file: str</span>
+<span class="sd">    :returns: None</span>
+<span class="sd">    :rtype: None</span>
+<span class="sd">    :raises: a configparser or a built-in exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;XML namespace&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">XML</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">][</span><span class="s1">&#39;namespaces&#39;</span><span class="p">][</span><span class="s1">&#39;default&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;XML invoice checksum tag&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">XML</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">][</span><span class="s1">&#39;tags&#39;</span><span class="p">][</span><span class="s1">&#39;invoice checksum&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;XML invoice filename tag&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">XML</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">][</span><span class="s1">&#39;tags&#39;</span><span class="p">][</span><span class="s1">&#39;invoice filename&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;XML system id tag&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">XML</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">][</span><span class="s1">&#39;tags&#39;</span><span class="p">][</span><span class="s1">&#39;system id&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;trusted list file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;XML namespace&#39;</span><span class="p">:</span> <span class="n">const</span><span class="o">.</span><span class="n">XML</span><span class="p">[</span><span class="s1">&#39;trusted list file&#39;</span><span class="p">][</span><span class="s1">&#39;namespaces&#39;</span><span class="p">][</span><span class="s1">&#39;default&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;XML certificate tag&#39;</span><span class="p">:</span> <span class="n">const</span><span class="o">.</span><span class="n">XML</span><span class="p">[</span><span class="s1">&#39;trusted list file&#39;</span><span class="p">][</span><span class="s1">&#39;tags&#39;</span><span class="p">][</span><span class="s1">&#39;certificate&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;download&#39;</span><span class="p">:</span> <span class="n">const</span><span class="o">.</span><span class="n">Downloads</span><span class="p">[</span><span class="s1">&#39;trusted list file&#39;</span><span class="p">][</span><span class="s1">&#39;default&#39;</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;XML namespace&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">XML</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;namespaces&#39;</span><span class="p">][</span><span class="s1">&#39;default&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;XML attachment tag&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">XML</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;tags&#39;</span><span class="p">][</span><span class="s1">&#39;attachment&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;XML attachment filename tag&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">XML</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;tags&#39;</span><span class="p">][</span><span class="s1">&#39;attachment filename&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;XML attachment XPath&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">XML</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XPath&#39;</span><span class="p">][</span><span class="s1">&#39;attachment&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;text encoding&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">XML</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;proprieties&#39;</span><span class="p">][</span><span class="s1">&#39;text encoding&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;XSD download&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">Downloads</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XSD&#39;</span><span class="p">][</span><span class="s1">&#39;default&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;W3C XSD download&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">Downloads</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XSD&#39;</span><span class="p">][</span><span class="s1">&#39;W3C Schema for XML Signatures&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;XSLT ordinaria download&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">Downloads</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XSLT&#39;</span><span class="p">][</span><span class="s1">&#39;ordinaria&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;XSLT PA download&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">Downloads</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XSLT&#39;</span><span class="p">][</span><span class="s1">&#39;PA&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;attachment extension whitelist&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">File</span><span class="p">[</span><span class="s1">&#39;invoice&#39;</span><span class="p">][</span><span class="s1">&#39;attachment&#39;</span><span class="p">][</span><span class="s1">&#39;extension whitelist&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;attachment filetype whitelist&#39;</span><span class="p">:</span>
+        <span class="n">const</span><span class="o">.</span><span class="n">File</span><span class="p">[</span><span class="s1">&#39;invoice&#39;</span><span class="p">][</span><span class="s1">&#39;attachment&#39;</span><span class="p">][</span><span class="s1">&#39;filetype whitelist&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">configfile</span><span class="p">:</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">configfile</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="assert_data_structure"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.assert_data_structure">[docs]</a><span class="k">def</span> <span class="nf">assert_data_structure</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Check the data structure.</span>
+
+<span class="sd">    :param source: the type of document to be considered.</span>
+<span class="sd">        Choose between ``invoice`` and ``generic``.</span>
+<span class="sd">    :param file_type the type of file to be considered:</span>
+<span class="sd">        Choose between ``p7m`` and ``plain``, depending on the</span>
+<span class="sd">        source parameter.</span>
+<span class="sd">    :param data: a data structure containing all the fields.</span>
+<span class="sd">    :type source: str</span>
+<span class="sd">    :type file_type: str</span>
+<span class="sd">    :type data: dict</span>
+<span class="sd">    :returns: None</span>
+<span class="sd">    :rtype: None</span>
+<span class="sd">    :raises: ValueError or TypeError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if file_type is coherent with source.</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">source</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;invoice&#39;</span><span class="p">,</span> <span class="s1">&#39;generic&#39;</span><span class="p">,</span> <span class="s1">&#39;NOOP&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
+
+    <span class="k">if</span> <span class="s1">&#39;patched&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
+    <span class="k">if</span> <span class="s1">&#39;configuration file&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
+    <span class="k">if</span> <span class="s1">&#39;write default configuration file&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
+    <span class="k">if</span> <span class="s1">&#39;ignore assets checksum&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;patched&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;configuration file&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;write default configuration file&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore assets checksum&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span>
+
+    <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;extract attachments&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">if</span> <span class="s1">&#39;invoice xslt type&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">if</span> <span class="s1">&#39;no invoice xml validation&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">if</span> <span class="s1">&#39;force invoice schema file download&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">if</span> <span class="s1">&#39;generate html output&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">if</span> <span class="s1">&#39;invoice filename&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">if</span> <span class="s1">&#39;no checksum check&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">if</span> <span class="s1">&#39;force invoice xml stylesheet file download&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">if</span> <span class="s1">&#39;ignore attachment extension whitelist&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">if</span> <span class="s1">&#39;ignore attachment filetype whitelist&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;extract attachments&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;invoice xslt type&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;no invoice xml validation&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;force invoice schema file download&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;generate html output&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;invoice filename&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;no checksum check&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;force invoice xml stylesheet file download&#39;</span><span class="p">],</span>
+                          <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore attachment extension whitelist&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore attachment filetype whitelist&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;patched&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="s1">&#39;metadata file&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;metadata files&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;metadata files&#39;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;metadata files&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span>
+
+        <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;ignore signature check&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="s1">&#39;ignore signers certificate check&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="s1">&#39;force trusted list file download&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="s1">&#39;keep original file&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore signature check&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore signers certificate check&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;force trusted list file download&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;keep original file&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;plain&#39;</span><span class="p">:</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;generic&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;ignore signature check&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="s1">&#39;ignore signers certificate check&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="s1">&#39;force trusted list file download&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="s1">&#39;keep original file&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore signature check&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore signers certificate check&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;force trusted list file download&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;keep original file&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;patched&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="s1">&#39;p7m file&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;p7m file&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;p7m files&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;p7m files&#39;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span>
+                <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;p7m files&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;NOOP&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;NOOP&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;write default configuration file&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;write default configuration file&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;write default configuration file&#39;</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span></div>
+
+
+<div class="viewcode-block" id="asset_checksum_matches"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.asset_checksum_matches">[docs]</a><span class="k">def</span> <span class="nf">asset_checksum_matches</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Check that the asset file is the expected one.</span>
+
+<span class="sd">    :param file: the file name that needs to be checked.</span>
+<span class="sd">    :type file: str</span>
+<span class="sd">    :returns: matches</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :raises: a built-in exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha512</span><span class="p">()</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">==</span> <span class="n">const</span><span class="o">.</span><span class="n">Checksum</span><span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
+        <span class="n">matches</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">matches</span></div>
+
+
+<div class="viewcode-block" id="pipeline"><a class="viewcode-back" href="../../api.html#fattura_elettronica_reader.pipeline">[docs]</a><span class="k">def</span> <span class="nf">pipeline</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Run the pipeline.</span>
+
+<span class="sd">    :param source: the type of document to be considered.</span>
+<span class="sd">        Choose between ``invoice`` and ``generic``.</span>
+<span class="sd">    :param file_type the type of file to be considered:</span>
+<span class="sd">        Choose between ``p7m`` and ``plain``, depending on the</span>
+<span class="sd">        source parameter.</span>
+<span class="sd">    :param data: a data structure containing all the fields.</span>
+<span class="sd">    :type source: str</span>
+<span class="sd">    :type file_type: str</span>
+<span class="sd">    :type data: dict</span>
+<span class="sd">    :returns: None</span>
+<span class="sd">    :rtype: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_data_structure</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">file_type</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="c1"># data must be patched for this function to work.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;patched&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
+
+    <span class="n">project_name</span> <span class="o">=</span> <span class="s1">&#39;fattura_elettronica_reader&#39;</span>
+    <span class="n">create_appdirs</span><span class="p">(</span><span class="n">project_name</span><span class="p">)</span>
+    <span class="n">configuration_file</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;configuration file&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">configuration_file</span> <span class="o">==</span> <span class="nb">str</span><span class="p">():</span>
+        <span class="n">configuration_file</span> <span class="o">=</span> <span class="n">define_appdirs_user_config_dir_file_path</span><span class="p">(</span>
+            <span class="n">project_name</span><span class="p">,</span> <span class="n">const</span><span class="o">.</span><span class="n">Paths</span><span class="p">[</span><span class="s1">&#39;configuration file&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;write default configuration file&#39;</span><span class="p">]:</span>
+        <span class="n">write_configuration_file</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">source</span> <span class="o">!=</span> <span class="s1">&#39;NOOP&#39;</span> <span class="ow">and</span> <span class="n">file_type</span> <span class="o">!=</span> <span class="s1">&#39;NOOP&#39;</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">fpyutils</span><span class="o">.</span><span class="n">load_configuration</span><span class="p">(</span><span class="n">configuration_file</span><span class="p">)</span>
+
+        <span class="c1"># Define all the paths for the static elements.</span>
+        <span class="n">trusted_list_file</span> <span class="o">=</span> <span class="n">define_appdirs_user_data_dir_file_path</span><span class="p">(</span>
+            <span class="n">project_name</span><span class="p">,</span> <span class="n">const</span><span class="o">.</span><span class="n">Paths</span><span class="p">[</span><span class="s1">&#39;trusted list file&#39;</span><span class="p">])</span>
+        <span class="n">ca_certificate_pem_file</span> <span class="o">=</span> <span class="n">define_appdirs_user_data_dir_file_path</span><span class="p">(</span>
+            <span class="n">project_name</span><span class="p">,</span> <span class="n">const</span><span class="o">.</span><span class="n">Paths</span><span class="p">[</span><span class="s1">&#39;CA certificate pem file&#39;</span><span class="p">])</span>
+        <span class="n">w3c_schema_file_for_xml_signatures</span> <span class="o">=</span> <span class="n">define_appdirs_user_data_dir_file_path</span><span class="p">(</span>
+            <span class="n">project_name</span><span class="p">,</span>
+            <span class="n">const</span><span class="o">.</span><span class="n">Paths</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XSD&#39;</span><span class="p">][</span><span class="s1">&#39;W3C Schema for XML Signatures&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span><span class="p">:</span>
+            <span class="n">invoice_schema_file</span> <span class="o">=</span> <span class="n">define_appdirs_user_data_dir_file_path</span><span class="p">(</span>
+                <span class="n">project_name</span><span class="p">,</span> <span class="n">const</span><span class="o">.</span><span class="n">Paths</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XSD&#39;</span><span class="p">][</span><span class="s1">&#39;default&#39;</span><span class="p">])</span>
+            <span class="n">invoice_xslt_file</span> <span class="o">=</span> <span class="n">define_appdirs_user_data_dir_file_path</span><span class="p">(</span>
+                <span class="n">project_name</span><span class="p">,</span>
+                <span class="n">const</span><span class="o">.</span><span class="n">Paths</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XSLT&#39;</span><span class="p">][</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;invoice xslt type&#39;</span><span class="p">]])</span>
+
+            <span class="c1"># See also:</span>
+            <span class="c1"># https://www.fatturapa.gov.it/export/fatturazione/sdi/messaggi/v1.0/MT_v1.0.xsl</span>
+            <span class="n">metadata_root</span> <span class="o">=</span> <span class="n">parse_xml_file</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;invoice filename&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">():</span>
+                <span class="n">invoice_filename</span> <span class="o">=</span> <span class="n">get_invoice_filename</span><span class="p">(</span>
+                    <span class="n">metadata_root</span><span class="p">,</span>
+                    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">][</span><span class="s1">&#39;XML invoice filename tag&#39;</span><span class="p">],</span>
+                    <span class="nb">dict</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">][</span><span class="s1">&#39;XML namespace&#39;</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">invoice_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">MissingTagInMetadataFile</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">invoice_filename</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;invoice filename&#39;</span><span class="p">]</span>
+
+            <span class="c1"># Assume the invoice file is in the same directory of the metadata file.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">invoice_filename</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="n">invoice_filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
+                    <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+                        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span>
+                        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">invoice_filename</span><span class="p">)))</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;no checksum check&#39;</span><span class="p">]:</span>
+                <span class="n">checksum_matches</span><span class="p">,</span> <span class="n">checksum</span> <span class="o">=</span> <span class="n">invoice_file_checksum_matches</span><span class="p">(</span>
+                    <span class="n">metadata_root</span><span class="p">,</span> <span class="n">invoice_filename</span><span class="p">,</span>
+                    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">][</span><span class="s1">&#39;XML invoice checksum tag&#39;</span><span class="p">],</span>
+                    <span class="nb">dict</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;metadata file&#39;</span><span class="p">][</span><span class="s1">&#39;XML namespace&#39;</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">checksum</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">MissingTagInMetadataFile</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">checksum_matches</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">InvoiceFileChecksumFailed</span>
+
+            <span class="n">file_to_consider</span> <span class="o">=</span> <span class="n">invoice_filename</span>
+        <span class="k">elif</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;generic&#39;</span><span class="p">:</span>
+            <span class="n">file_to_consider</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;p7m file&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Apparently, invoices must be signed for &#39;PA&#39; and not necessarly for</span>
+        <span class="c1"># &#39;B2B&#39; and other cases. I could not find official documentation</span>
+        <span class="c1"># corroborating this but it happened at least one.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span>
+                <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;generic&#39;</span>
+                                            <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_p7m_file_signed</span><span class="p">(</span><span class="n">file_to_consider</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">P7MFileDoesNotHaveACoherentCryptographicalSignature</span>
+
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;force trusted list file download&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+                    <span class="n">trusted_list_file</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="n">get_remote_file</span><span class="p">(</span><span class="n">trusted_list_file</span><span class="p">,</span>
+                                <span class="n">config</span><span class="p">[</span><span class="s1">&#39;trusted list file&#39;</span><span class="p">][</span><span class="s1">&#39;download&#39;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore assets checksum&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">asset_checksum_matches</span><span class="p">(</span><span class="n">trusted_list_file</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">AssetsChecksumDoesNotMatch</span><span class="p">(</span><span class="s2">&quot;Run the program with the &#39;--ignore-assets-checksum&#39; option, contact the developer or open a pull request. Have a look at https://frnmst.github.io/fattura-elettronica-reader/assets.html&quot;</span><span class="p">)</span>
+
+            <span class="n">trusted_list_xml_root</span> <span class="o">=</span> <span class="n">parse_xml_file</span><span class="p">(</span><span class="n">trusted_list_file</span><span class="p">)</span>
+
+            <span class="n">get_ca_certificates</span><span class="p">(</span><span class="n">trusted_list_xml_root</span><span class="p">,</span> <span class="n">ca_certificate_pem_file</span><span class="p">,</span>
+                                <span class="n">config</span><span class="p">[</span><span class="s1">&#39;trusted list file&#39;</span><span class="p">][</span><span class="s1">&#39;XML namespace&#39;</span><span class="p">],</span>
+                                <span class="n">config</span><span class="p">[</span><span class="s1">&#39;trusted list file&#39;</span><span class="p">][</span><span class="s1">&#39;XML certificate tag&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span> <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;plain&#39;</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span>
+                <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;generic&#39;</span>
+                                            <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_p7m_file_authentic</span><span class="p">(</span><span class="n">file_to_consider</span><span class="p">,</span> <span class="n">ca_certificate_pem_file</span><span class="p">,</span>
+                                         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore signature check&#39;</span><span class="p">],</span>
+                                         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore signers certificate check&#39;</span><span class="p">]):</span>
+                <span class="k">raise</span> <span class="n">P7MFileNotAuthentic</span>
+
+        <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;no invoice xml validation&#39;</span> <span class="ow">in</span> <span class="n">data</span> <span class="ow">and</span>
+                                   <span class="p">(</span><span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;no invoice xml validation&#39;</span><span class="p">])):</span>
+            <span class="c1"># This W3C file should not change any time soon so we can avoid the force download option.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">w3c_schema_file_for_xml_signatures</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="n">get_remote_file</span><span class="p">(</span><span class="n">w3c_schema_file_for_xml_signatures</span><span class="p">,</span>
+                                <span class="n">config</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;W3C XSD download&#39;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;force invoice schema file download&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+                    <span class="n">invoice_schema_file</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="n">get_remote_file</span><span class="p">(</span><span class="n">invoice_schema_file</span><span class="p">,</span>
+                                <span class="n">config</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XSD download&#39;</span><span class="p">])</span>
+
+            <span class="n">patch_invoice_schema_file</span><span class="p">(</span>
+                <span class="n">invoice_schema_file</span><span class="p">,</span>
+                <span class="n">const</span><span class="o">.</span><span class="n">Patch</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XSD&#39;</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;offending&#39;</span><span class="p">],</span>
+                <span class="n">const</span><span class="o">.</span><span class="n">Patch</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XSD&#39;</span><span class="p">][</span><span class="s1">&#39;line&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;fix&#39;</span><span class="p">])</span>
+
+            <span class="c1"># Verify the checksum of the patched file.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore assets checksum&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">asset_checksum_matches</span><span class="p">(</span><span class="n">invoice_schema_file</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">AssetsChecksumDoesNotMatch</span><span class="p">(</span><span class="s2">&quot;Run the program with the &#39;--ignore-assets-checksum&#39; option, contact the developer or open a pull request. Have a look at https://frnmst.github.io/fattura-elettronica-reader/assets.html&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Create a temporary directory to store the original XML invoice file.</span>
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdirname</span><span class="p">:</span>
+            <span class="c1"># file_to_consider_original is the path of the non-signed p7m file. signed files</span>
+            <span class="c1"># end in &#39;.p7m&#39; so the destination file (original) must end with &#39;.xml&#39; or &#39;.generic&#39;</span>
+            <span class="c1"># to be transformed into an xml file. On the contrary, the filename of non-signed files</span>
+            <span class="c1"># already ends with the correct extension.</span>
+            <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span> <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;plain&#39;</span><span class="p">:</span>
+                <span class="n">file_to_consider_original</span> <span class="o">=</span> <span class="n">file_to_consider</span>
+            <span class="k">elif</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span> <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">:</span>
+                <span class="n">file_to_consider_original</span> <span class="o">=</span> <span class="n">file_to_consider</span> <span class="o">+</span> <span class="s1">&#39;.xml&#39;</span>
+            <span class="k">elif</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;generic&#39;</span> <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">:</span>
+                <span class="n">file_to_consider_original</span> <span class="o">=</span> <span class="n">file_to_consider</span> <span class="o">+</span> <span class="s1">&#39;.generic&#39;</span>
+
+            <span class="c1"># In case absolute paths are passed to this function the concatenation of an absolute path</span>
+            <span class="c1"># and a temporary directory name, which is also an absolue path, would not work as expected.</span>
+            <span class="n">file_to_consider_original_relative</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+                <span class="n">file_to_consider_original</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+
+            <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span> <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;plain&#39;</span><span class="p">:</span>
+                <span class="c1"># There is no signature to extract but we need to copy the file in the temporary storage.</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span>
+                    <span class="n">file_to_consider_original</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span>
+                        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tmpdirname</span><span class="p">,</span>
+                                     <span class="n">file_to_consider_original_relative</span><span class="p">)))</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span>
+                  <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;generic&#39;</span>
+                                              <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">):</span>
+                <span class="c1"># Extract the original invoice and copy it in the temporary store.</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">remove_signature_from_p7m_file</span><span class="p">(</span>
+                        <span class="n">file_to_consider</span><span class="p">,</span>
+                        <span class="nb">str</span><span class="p">(</span>
+                            <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tmpdirname</span><span class="p">,</span>
+                                         <span class="n">file_to_consider_original_relative</span><span class="p">))):</span>
+                    <span class="k">raise</span> <span class="n">CannotExtractOriginalP7MFile</span>
+
+            <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;no invoice xml validation&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_xml_file_conforming_to_schema</span><span class="p">(</span>
+                            <span class="nb">str</span><span class="p">(</span>
+                                <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tmpdirname</span><span class="p">,</span>
+                                             <span class="n">file_to_consider_original_relative</span><span class="p">)),</span>
+                            <span class="n">invoice_schema_file</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="n">XMLFileNotConformingToSchema</span>
+
+                <span class="n">invoice_root</span> <span class="o">=</span> <span class="n">parse_xml_file</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span>
+                        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tmpdirname</span><span class="p">,</span>
+                                     <span class="n">file_to_consider_original_relative</span><span class="p">)))</span>
+
+                <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;extract attachments&#39;</span><span class="p">]:</span>
+                    <span class="n">extract_attachments_from_invoice_file</span><span class="p">(</span>
+                        <span class="n">invoice_root</span><span class="p">,</span>
+                        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XML attachment XPath&#39;</span><span class="p">],</span>
+                        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XML attachment tag&#39;</span><span class="p">],</span>
+                        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XML attachment filename tag&#39;</span><span class="p">],</span>
+                        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;text encoding&#39;</span><span class="p">],</span>
+                        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore attachment extension whitelist&#39;</span><span class="p">],</span>
+                        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore attachment filetype whitelist&#39;</span><span class="p">],</span>
+                        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;attachment extension whitelist&#39;</span><span class="p">],</span>
+                        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;attachment filetype whitelist&#39;</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;generate html output&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;force invoice xml stylesheet file download&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+                            <span class="n">invoice_xslt_file</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                        <span class="n">get_remote_file</span><span class="p">(</span>
+                            <span class="n">invoice_xslt_file</span><span class="p">,</span>
+                            <span class="n">config</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;XSLT &#39;</span> <span class="o">+</span>
+                                                   <span class="n">data</span><span class="p">[</span><span class="s1">&#39;invoice xslt type&#39;</span><span class="p">]</span> <span class="o">+</span>
+                                                   <span class="s1">&#39; download&#39;</span><span class="p">])</span>
+
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignore assets checksum&#39;</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">asset_checksum_matches</span><span class="p">(</span><span class="n">invoice_xslt_file</span><span class="p">):</span>
+                            <span class="k">raise</span> <span class="n">AssetsChecksumDoesNotMatch</span><span class="p">(</span><span class="s2">&quot;Run the program with the &#39;--ignore-assets-checksum&#39; option, contact the developer or open a pull request. Have a look at https://frnmst.github.io/fattura-elettronica-reader/assets.html&quot;</span><span class="p">)</span>
+
+                    <span class="n">invoice_xslt_root</span> <span class="o">=</span> <span class="n">parse_xml_file</span><span class="p">(</span><span class="n">invoice_xslt_file</span><span class="p">)</span>
+                    <span class="n">html_output</span> <span class="o">=</span> <span class="n">file_to_consider</span> <span class="o">+</span> <span class="s1">&#39;.html&#39;</span>
+                    <span class="n">get_invoice_as_html</span><span class="p">(</span><span class="n">invoice_root</span><span class="p">,</span> <span class="n">invoice_xslt_root</span><span class="p">,</span>
+                                        <span class="n">html_output</span><span class="p">,</span>
+                                        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;invoice file&#39;</span><span class="p">][</span><span class="s1">&#39;text encoding&#39;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;invoice&#39;</span>
+                    <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">source</span> <span class="o">==</span> <span class="s1">&#39;generic&#39;</span>
+                                                <span class="ow">and</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;p7m&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;keep original file&#39;</span><span class="p">]:</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+                        <span class="nb">str</span><span class="p">(</span>
+                            <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tmpdirname</span><span class="p">,</span>
+                                         <span class="n">file_to_consider_original_relative</span><span class="p">)),</span>
+                        <span class="n">file_to_consider_original</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019-2021, Franco Masotti.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

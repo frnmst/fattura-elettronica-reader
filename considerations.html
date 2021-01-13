@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Considerations &mdash; fattura-elettronica-reader 2.0.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Assets" href="assets.html" />
+    <link rel="prev" title="Developer Interface" href="api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: light-blue" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> fattura-elettronica-reader
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Developer Interface</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Considerations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#purpose">Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pipeline">Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#software-dependencies">Software dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#openssl">OpenSSL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#support">Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bug">Bug</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lxml-vs-defusedxml">lxml vs defusedxml</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#official-documentation">Official documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Considerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#downloading-of-the-w3c-file">Downloading of the W3C file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fattura-pa-vs-fattura-b2b">Fattura PA vs Fattura B2B</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#digital-signature">Digital signature</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#closing-note">Closing note</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="assets.html">Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source_code.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="copyright_license.html">Copyright and License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fattura-elettronica-reader</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Considerations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/considerations.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="considerations">
+<h1>Considerations<a class="headerlink" href="#considerations" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
+<p>This software aims at:</p>
+<ul class="simple">
+<li><p>correctness</p>
+<ul>
+<li><p>XML files are validated whenever possible</p></li>
+</ul>
+</li>
+<li><p>integrity</p>
+<ul>
+<li><p>a checksum is performed on the invoice file</p></li>
+</ul>
+</li>
+<li><p>security</p>
+<ul>
+<li><p>all cryptographical signature and certificates must be valid</p></li>
+<li><p>invoice attachments are examined before saving them permanently</p></li>
+</ul>
+</li>
+<li><p>privacy</p>
+<ul>
+<li><p>works offline once you have downloaded the necessary files</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="pipeline">
+<h2>Pipeline<a class="headerlink" href="#pipeline" title="Permalink to this headline">¶</a></h2>
+<p>See the definition of pipeline:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Pipeline_(software">https://en.wikipedia.org/wiki/Pipeline_(software</a>)</p></li>
+</ul>
+<p>In this software, a pipeline is a sequence of steps that given the signed invoice file
+and its metadata file makes it possible to obtain:</p>
+<ul class="simple">
+<li><p>various integrity and authenticity verifications</p></li>
+<li><p>the html output of the invoice file</p></li>
+<li><p>the extraction of embedded attachments</p></li>
+</ul>
+<div class="section" id="description">
+<h3>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
+<p>Without entering in too much detail (you can read the source code for that),
+we can divide the pipeline into three main steps:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 82%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Step number</p></th>
+<th class="head"><p>Actions</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>compare metadata file content with the invoice file</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>check invoice signature and signer’s certificate</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>generate outputs</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="software-dependencies">
+<h2>Software dependencies<a class="headerlink" href="#software-dependencies" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="openssl">
+<h3>OpenSSL<a class="headerlink" href="#openssl" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="support">
+<h4>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h4>
+<p>Due to the lack of support for most of the PKCS#7 functionality in
+PyOpenSSL, all OpenSSL operations are performed using the <code class="docutils literal notranslate"><span class="pre">subprocess</span></code>
+module which calls the <code class="docutils literal notranslate"><span class="pre">openssl</span></code> binary installed on the system.</p>
+<p>See also:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/45104923/pyopenssls-pkcs7-object-provide-very-little-information-how-can-i-get-the-sha1/45111623#45111623">https://stackoverflow.com/questions/45104923/pyopenssls-pkcs7-object-provide-very-little-information-how-can-i-get-the-sha1/45111623#45111623</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/45782506/is-there-any-python-package-for-parsing-pkcs7?rq=1">https://stackoverflow.com/questions/45782506/is-there-any-python-package-for-parsing-pkcs7?rq=1</a></p></li>
+</ul>
+</div>
+<div class="section" id="bug">
+<h4>Bug<a class="headerlink" href="#bug" title="Permalink to this headline">¶</a></h4>
+<p>There are problems with recent versions of OpenSSL concerning PKCS#7 file decoding:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/eniocarboni/p7m/issues/4">https://github.com/eniocarboni/p7m/issues/4</a></p></li>
+<li><p><a class="reference external" href="https://github.com/eniocarboni/p7m/issues/7">https://github.com/eniocarboni/p7m/issues/7</a></p></li>
+<li><p><a class="reference external" href="https://www.mail-archive.com/openssl-users&#64;openssl.org/msg85901.html">https://www.mail-archive.com/openssl-users&#64;openssl.org/msg85901.html</a></p></li>
+</ul>
+<p>A possible solution it use an older system. If you really trust the file you can
+disable signature checking with the appropriate option. I strongly discourage
+the latter solution since if you cannot prove its authenticity the invoice has no legal
+value.</p>
+</div>
+</div>
+<div class="section" id="lxml-vs-defusedxml">
+<h3>lxml vs defusedxml<a class="headerlink" href="#lxml-vs-defusedxml" title="Permalink to this headline">¶</a></h3>
+<p>I decided to use lxml because it supports XML stylesheets (XSLT) as
+defusedxml does not.</p>
+<p>At first, using defusedxml seemed the best bet because of
+the increased security:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/tiran/defusedxml#python-xml-libraries">https://github.com/tiran/defusedxml#python-xml-libraries</a></p></li>
+</ul>
+<p>There is the possibility to use defusedxml anyway by simply
+editing the API file like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">defusedxml.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+</pre></div>
+</div>
+<p>instead of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lxml.etree</span> <span class="k">as</span> <span class="nn">ET</span>
+</pre></div>
+</div>
+<p>You must also add defusedxml and re-install the requirements as described
+in the contributing section.</p>
+</div>
+</div>
+<div class="section" id="official-documentation">
+<h2>Official documentation<a class="headerlink" href="#official-documentation" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 40%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Current</p></th>
+<th class="head"><p>Obsolete</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Nomativa</p></td>
+<td><p><a class="reference external" href="https://www.fatturapa.gov.it/it/norme-e-regole/normativa/">https://www.fatturapa.gov.it/it/norme-e-regole/normativa/</a></p></td>
+<td><ul class="simple">
+<li><p><a class="reference external" href="https://www.fatturapa.gov.it/export/fatturazione/it/normativa/f-1.htm">https://www.fatturapa.gov.it/export/fatturazione/it/normativa/f-1.htm</a></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Documentazione fatturaPA</p></td>
+<td><p><a class="reference external" href="https://www.fatturapa.gov.it/it/norme-e-regole/documentazione-fatturapa/">https://www.fatturapa.gov.it/it/norme-e-regole/documentazione-fatturapa/</a></p></td>
+<td><ul class="simple">
+<li><p><a class="reference external" href="https://www.fatturapa.gov.it/export/fatturazione/it/normativa/f-2.htm">https://www.fatturapa.gov.it/export/fatturazione/it/normativa/f-2.htm</a></p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Documentazione Sistema d’Interscambio</p></td>
+<td><p><a class="reference external" href="https://www.fatturapa.gov.it/it/norme-e-regole/DocumentazioneSDI/">https://www.fatturapa.gov.it/it/norme-e-regole/DocumentazioneSDI/</a></p></td>
+<td><ul class="simple">
+<li><p><a class="reference external" href="https://www.fatturapa.gov.it/export/fatturazione/it/normativa/f-3.htm">https://www.fatturapa.gov.it/export/fatturazione/it/normativa/f-3.htm</a></p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id1">
+<h3>Considerations<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Not having access to all schema files is a problem since there is no way to tell if</p>
+<ul class="simple">
+<li><p>the metadata file,</p></li>
+<li><p>the trusted list file,</p></li>
+<li><p>the XML stylesheet file</p></li>
+</ul>
+<p>are correct and conforming to specifications.</p>
+<p>If you find these files please let me know and/or open a pull request.</p>
+</div>
+<div class="section" id="downloading-of-the-w3c-file">
+<h3>Downloading of the W3C file<a class="headerlink" href="#downloading-of-the-w3c-file" title="Permalink to this headline">¶</a></h3>
+<p>The W3C schema file is a dependency for the invoice schema file and it needs to be cached
+because the XML resolver can go in timeout.</p>
+<p>Sometimes it takes more than one minute to download this file.</p>
+</div>
+<div class="section" id="fattura-pa-vs-fattura-b2b">
+<h3>Fattura PA vs Fattura B2B<a class="headerlink" href="#fattura-pa-vs-fattura-b2b" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="digital-signature">
+<h4>Digital signature<a class="headerlink" href="#digital-signature" title="Permalink to this headline">¶</a></h4>
+<p>Some websites say that digital signature of the <em>Fattura PA</em> is required and
+in other cases it is not.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.agendadigitale.eu/documenti/fatturazione-elettronica/fattura-elettronica-e-firma-come-garantire-autenticita-dellorigine-e-integrita-del-contenuto/">https://www.agendadigitale.eu/documenti/fatturazione-elettronica/fattura-elettronica-e-firma-come-garantire-autenticita-dellorigine-e-integrita-del-contenuto/</a></p></li>
+</ul>
+<p>If you find any official source please let me know and/or open a pull request.</p>
+<p>Support for non-signed invoice files has been added because of at least one
+reported case.</p>
+</div>
+</div>
+</div>
+<div class="section" id="closing-note">
+<h2>Closing note<a class="headerlink" href="#closing-note" title="Permalink to this headline">¶</a></h2>
+<p>Although this whole system has its merits, it has been put into production
+with lots of missing pieces (see notes above). Given the importance of it I think this
+is unacceptable. I will not make any more comments because I may risk legal actions…</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="assets.html" class="btn btn-neutral float-right" title="Assets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="api.html" class="btn btn-neutral float-left" title="Developer Interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019-2021, Franco Masotti.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
