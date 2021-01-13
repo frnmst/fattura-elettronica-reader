@@ -137,7 +137,7 @@ Checksum[Paths['invoice file']['XSLT']['ordinaria']] = '849c4b50956b9e9eaccbbbff
 # 2a7c3f2913ee390c167e41ae5618c303b481f548f9b2a8d60dddc36804ddd3ebf7cb5003e5cc6996480c67d085b82b438aff7cc0f74d7c104225449785cb575b
 Checksum[Paths['invoice file']['XSD']['default']] = 'a1b02818f81ac91f35358260dd12e1bf4480e1545bb457caffa0d434200a1bd05bedd88df2d897969485a989dda78922850ebe978b92524778a37cb0afacba27'
 
-Checksum[Paths['trusted list file']] = '9c519ef8f665c5d559470eaf49f3a593e8a5e699114ca8e4592ce87b58c24689deeb328408960b2191608ecbd5c4f10417bfe684181cb9eef83855859278fd74'
+Checksum[Paths['trusted list file']] = '96d2c7d04c8e7f84759a140a32d60471f5ce025831f87a69942433305355c54a2138200568db3df419583212d0d56df4895fbb4a704e6a7f5895118e3cc23ff4'
 
 if __name__ == '__main__':
     pass

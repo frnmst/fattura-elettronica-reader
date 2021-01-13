@@ -17,7 +17,7 @@ XML schema for FatturaPA version 1.2                    https://www.fatturapa.go
 XML schema for FatturaPA version 1.2.1                  https://www.fatturapa.gov.it/export/documenti/fatturapa/v1.2.1/Schema_del_file_xml_FatturaPA_versione_1.2.1a.xsd  ``2a7c3f2913ee390c167e41ae5618c303b481f548f9b2a8d60dddc36804ddd3ebf7cb5003e5cc6996480c67d085b82b438aff7cc0f74d7c104225449785cb575b``  ``1a14ecdc867a01f447052ff1613688deef6f88bbee522f120be060f68d251976``
 XML stylesheet for Fattura Ordinaria version 1.2.1      https://www.fatturapa.gov.it/export/documenti/fatturapa/v1.2.1/Foglio_di_stile_fatturaordinaria_v1.2.1.xsl        ``849c4b50956b9e9eaccbbbffb04c1f345ff4abdc0dd191a14c54d48092c661984b1fcdb910c4c92291e158a62ecbb1c588d94e6bd6479e61ff6376746154df6c``  ``7e781d58f301055d3caa55aed2d1a8993185c60369004b418aec03a00ec2835a``
 XML stylesheet for FatturaPA version 1.2.1              https://www.fatturapa.gov.it/export/documenti/fatturapa/v1.2.1/Foglio_di_stile_fatturaPA_v1.2.1.xsl               ``301db9da3c0715c0ab5db22c561bfb2812fea3cef150ff4a2124fe6141ebb3cb1c898d7ca3c931f716eff3b7b1946ebc86ca8bdd6d7561979f2f3a0cb95ff560``  ``ac278f980b84ae59a428544adf3eb52fc1685e381e441f5b8302cfffe902fc7d``
-Public keys file                                        https://eidas.agid.gov.it/TL/TSL-IT.xml                                                                           ``9c519ef8f665c5d559470eaf49f3a593e8a5e699114ca8e4592ce87b58c24689deeb328408960b2191608ecbd5c4f10417bfe684181cb9eef83855859278fd74``  ``82eee96f8183f5137889e616fc1afd7287f569b63b347b840e7bd1b9cf06fa62``
+Public keys file                                        https://eidas.agid.gov.it/TL/TSL-IT.xml                                                                           ``96d2c7d04c8e7f84759a140a32d60471f5ce025831f87a69942433305355c54a2138200568db3df419583212d0d56df4895fbb4a704e6a7f5895118e3cc23ff4``  ``7b185145fc7ec28f6a01fa9f859e5029d2b02d676445f921d82582ba3c77babb``
 ======================================================  ================================================================================================================  ====================================================================================================================================  ====================================================================
 
 .. warning:: fattura-elettronica-reader is guaranteed to work with these file versions only!
@@ -35,8 +35,8 @@ Some of these file are checked in the pipeline:
 if the checksum does not match the ones present in the source code an exception is raised.
 You can use the ``--ignore-assets-checksum`` option to override this behaviour.
 
-Updates
--------
+Relevant Updates
+----------------
 
 October 2020
 ````````````
