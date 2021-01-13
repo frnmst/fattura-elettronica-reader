@@ -1,7 +1,7 @@
 # Maintainer: Franco Masotti <franco dot masotti at live dot com>
 # Contributor: Franco Masotti <franco dot masotti at live dot com>
 pkgname=python-fattura_elettronica_reader
-pkgver=2.0.2
+pkgver=2.0.3
 pkgrel=1
 pkgdesc="'A utility that is able to check and extract electronic invoice received from the Sistema di Interscambio"
 arch=('any')
